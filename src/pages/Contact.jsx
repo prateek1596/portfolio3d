@@ -2,10 +2,13 @@ import { useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import MagneticButton from '../components/MagneticButton'
 
+const EMAIL_ADDRESS = 'prateekyadav1596@gmail.com'
+const MAILTO_HREF = `mailto:${EMAIL_ADDRESS}?subject=${encodeURIComponent('Opportunity / Collaboration')}&body=${encodeURIComponent('Hi Prateek,%0D%0A%0D%0AI came across your portfolio and would like to connect regarding...%0D%0A%0D%0ABest,%0D%0A')}`
+
 const LINKS = [
   { label: 'GitHub',   href: 'https://github.com/prateek1596',   icon: '⌥' },
   { label: 'LinkedIn', href: 'https://linkedin.com/in/prateek-yadav-b9094127b/', icon: '⊞' },
-  { label: 'Email',    href: 'mailto:prateekyadav1596@gmail.com',   icon: '◎' },
+  { label: 'Email',    href: MAILTO_HREF,   icon: '◎' },
 ]
 
 // EmailJS config — fill in your own IDs after signup at emailjs.com (free)
