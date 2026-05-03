@@ -81,7 +81,7 @@ function Grid() {
       pts.push([-size, 0, v, size, 0, v])
     }
     return pts
-  }, [])
+  }, [sceneTheme.gridDivisions])
   return (
     <group ref={group} position={[0, -4.5, 0]} rotation={[-0.28, 0, 0]}>
       {lines.map((p, i) => {
@@ -295,7 +295,7 @@ export default function Scene() {
         style={{ background: 'transparent' }}
         dpr={[1, 1.5]}
       >
-        <fog attach="fog" args={[sceneTheme.fogColor, 12, 24]} />
+        <fogExp2 attach="fog" args={[sceneTheme.fogColor, sceneTheme.fogDensity]} />
         <CameraRig />
         <ambientLight intensity={sceneTheme.ambient} />
         <pointLight position={[10, 10, 10]} intensity={sceneTheme.mainLight} color={sceneTheme.gold} />
