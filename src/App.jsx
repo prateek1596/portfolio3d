@@ -3,7 +3,7 @@ import './styles/globals.css'
 import { ThemeProvider } from './hooks/useTheme'
 import { useSounds } from './hooks/useSounds'
 import { useCommandPalette } from './hooks/useCommandPalette'
-import { useEasterEggs, EASTER_EGGS, onEasterEggTriggered } from './hooks/useEasterEggs'
+import { useEasterEggs } from './hooks/useEasterEggs'
 import Cursor from './components/Cursor'
 import Scene from './components/Scene'
 import BottomNav from './components/BottomNav'
@@ -25,7 +25,9 @@ function Inner() {
   const [transKey, setTransKey] = useState(0)
   const sounds = useSounds()
   const cmdPalette = useCommandPalette()
-  const { registerEasterEgg } = useEasterEggs()
+
+  // Initialize Easter Eggs system
+  useEasterEggs()
 
   // Initialize SEO on mount
   useEffect(() => {
@@ -41,19 +43,6 @@ function Inner() {
       url: `https://prateek.dev/?page=${active}`,
     })
   }, [active])
-
-  // Register Easter Eggs
-  useEffect(() => {
-    // Matrix rain Easter egg
-    registerEasterEgg('matrix', EASTER_EGGS.MATRIX, () => {
-      document.body.classList.toggle('easter-egg-matrix')
-    })
-
-    // Rainbow mode Easter egg
-    registerEasterEgg('rainbow', EASTER_EGGS.RAINBOW, () => {
-      document.body.classList.toggle('easter-egg-rainbow')
-    })
-  }, [registerEasterEgg])
 
   const navigate = useCallback((page) => {
     if (page === active) return

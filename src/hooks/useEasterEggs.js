@@ -7,34 +7,35 @@ export const useEasterEggs = () => {
   const keysPressed = useRef([])
   const easterEggTriggered = useRef({})
 
-  const registerEasterEgg = (name, keys, callback) => {
-    useEffect(() => {
-      const handleKeyDown = (e) => {
-        keysPressed.current.push(e.key.toLowerCase())
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      keysPressed.current.push(e.key.toLowerCase())
 
-        // Keep only last N keys
-        if (keysPressed.current.length > 20) {
-          keysPressed.current.shift()
-        }
-
-        const keySequence = keysPressed.current.join('')
-        if (keySequence.includes(keys.join('').toLowerCase())) {
-          if (!easterEggTriggered.current[name]) {
-            easterEggTriggered.current[name] = true
-            callback()
-            setTimeout(() => {
-              easterEggTriggered.current[name] = false
-            }, 1000)
-          }
-        }
+      // Keep only last N keys
+      if (keysPressed.current.length > 20) {
+        keysPressed.current.shift()
       }
 
-      window.addEventListener('keydown', handleKeyDown)
-      return () => window.removeEventListener('keydown', handleKeyDown)
-    }, [name, keys, callback])
-  }
+      const keySequence = keysPressed.current.join('')
 
-  return { registerEasterEgg }
+      // Check each Easter egg
+      Object.entries(EASTER_EGGS).forEach(([name, keys]) => {
+        const eggSequence = keys.join('').toLowerCase()
+        if (keySequence.includes(eggSequence)) {
+          if (!easterEggTriggered.current[name]) {
+            easterEggTriggered.current[name] = true
+            triggerEasterEgg(name)
+            setTimeout(() => {
+              easterEggTriggered.current[name] = false
+            }, 2000)
+          }
+        }
+      })
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [])
 }
 
 /**

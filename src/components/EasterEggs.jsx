@@ -7,13 +7,39 @@ export default function EasterEggs() {
 
   useEffect(() => {
     const handleEasterEgg = (e) => {
-      setActiveEasterEgg(e.detail.name)
-      setTimeout(() => setActiveEasterEgg(null), 2000)
+      const eggName = e.detail.name
+      setActiveEasterEgg(eggName)
+
+      // Apply CSS classes based on egg type
+      if (eggName === 'MATRIX') {
+        document.body.classList.add('easter-egg-matrix')
+      } else if (eggName === 'RAINBOW') {
+        document.body.classList.add('easter-egg-rainbow')
+      } else if (eggName === 'SECRET') {
+        document.body.classList.add('easter-egg-secret')
+      }
+
+      // Remove notification after 2 seconds
+      const timer = setTimeout(() => {
+        setActiveEasterEgg(null)
+      }, 2000)
+
+      return () => clearTimeout(timer)
     }
 
     window.addEventListener('easterEggTriggered', handleEasterEgg)
     return () => window.removeEventListener('easterEggTriggered', handleEasterEgg)
   }, [])
+
+  const getEasterEggMessage = (name) => {
+    const messages = {
+      MATRIX: '🟢 Matrix mode activated!',
+      RAINBOW: '🌈 Rainbow mode activated!',
+      KONAMI: '🎮 Konami code unlocked!',
+      SECRET: '🔒 Secret mode unlocked!',
+    }
+    return messages[name] || '✨ Easter egg found!'
+  }
 
   return (
     <AnimatePresence>
@@ -24,10 +50,7 @@ export default function EasterEggs() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
         >
-          {activeEasterEgg === 'matrix' && '🟢 Matrix mode activated!'}
-          {activeEasterEgg === 'rainbow' && '🌈 Rainbow mode activated!'}
-          {activeEasterEgg === 'konami' && '🎮 Konami code unlocked!'}
-          {activeEasterEgg === 'secret' && '🔒 Secret mode unlocked!'}
+          {getEasterEggMessage(activeEasterEgg)}
         </motion.div>
       )}
 
