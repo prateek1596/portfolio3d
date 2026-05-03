@@ -1,141 +1,143 @@
 import { useEffect, useRef, useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
+import SkillChart from '../components/SkillChart'
 
-function CountUp({ target, visible }) {
+function CountUp({ target, visible, suffix = '' }) {
   const [val, setVal] = useState(0)
   const done = useRef(false)
-
   useEffect(() => {
     if (!visible || done.current) return
     done.current = true
-    let current = 0
-    const step = target / 28
+    let cur = 0
     const iv = setInterval(() => {
-      current = Math.min(current + step, target)
-      setVal(Math.floor(current))
-      if (current >= target) clearInterval(iv)
+      cur = Math.min(cur + target / 28, target)
+      setVal(Math.floor(cur))
+      if (cur >= target) clearInterval(iv)
     }, 55)
     return () => clearInterval(iv)
   }, [visible, target])
-
-  return <>{val}</>
+  return <>{val}{suffix}</>
 }
 
-const SKILLS = [
-  { cat: 'Frontend', items: ['React', 'Vite', 'TailwindCSS', 'React Native', 'Framer Motion'] },
-  { cat: 'Backend', items: ['FastAPI', 'Python', 'PostgreSQL', 'Redis', 'REST APIs'] },
-  { cat: 'ML / AI', items: ['XGBoost', 'LightGBM', 'SHAP', 'Optuna', 'scikit-learn'] },
-  { cat: 'Tooling', items: ['Git', 'Vite', 'Docker', 'Vercel', 'VS Code Extension API'] },
+const STATS = [
+  { n: 5, suffix: '+', label: 'Projects shipped' },
+  { n: 6, suffix: '',  label: 'ML models built'  },
+  { n: 8, suffix: '',  label: 'Stack layers deep' },
 ]
 
-export default function About({ visible }) {
+const TIMELINE = [
+  { year: '2025', event: 'Building portfolio + open to roles' },
+  { year: '2024', event: 'Built MedPredict, DRAMS, ManhwaVault, DQC' },
+  { year: '2023', event: 'PokéCursor VSCode extension' },
+  { year: '2022', event: 'Started full-stack journey' },
+]
+
+export default function About({ visible, sounds }) {
+  const containerRef = useRef(null)
+  const { scrollYProgress } = useScroll({ container: containerRef })
+  const rawY = useTransform(scrollYProgress, [0, 1], [0, -50])
+  const parallaxY = useSpring(rawY, { stiffness: 60, damping: 20 })
+
   return (
     <motion.div
+      ref={containerRef}
       initial={{ opacity: 0 }}
       animate={{ opacity: visible ? 1 : 0 }}
       transition={{ duration: 0.4 }}
-      style={{
-        position: 'absolute', inset: 0,
-        display: 'flex', alignItems: 'center',
-        padding: '0 8vw',
-        pointerEvents: visible ? 'all' : 'none',
-        overflowY: 'auto',
-      }}
+      style={{ position: 'absolute', inset: 0, overflowY: 'auto', overflowX: 'hidden', pointerEvents: visible ? 'all' : 'none' }}
     >
-      <div style={{ maxWidth: 820, width: '100%' }}>
-        {/* Headline */}
+      <div style={{ minHeight: '100%', padding: '40px 8vw 60px', maxWidth: 900 }}>
+
+        {/* Parallax headline */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 30 }}
-          transition={{ delay: 0.1, duration: 0.6 }}
-          style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(48px, 8vw, 96px)',
-            lineHeight: 0.92, letterSpacing: '-0.01em',
-          }}
+          style={{ y: parallaxY }}
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 40 }}
+          transition={{ delay: 0.1, duration: 0.7 }}
         >
-          <div>I BUILD</div>
-          <div style={{ WebkitTextStroke: '1.5px var(--gold)', color: 'transparent' }}>THINGS</div>
-          <div>THAT WORK.</div>
+          <div style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(50px,8.5vw,100px)', lineHeight: 0.92, letterSpacing: '-0.01em', marginBottom: 28 }}>
+            <div>I BUILD</div>
+            <div style={{ WebkitTextStroke: '1.5px var(--gold)', color: 'transparent' }}>THINGS</div>
+            <div>THAT WORK.</div>
+          </div>
         </motion.div>
 
         {/* Bio */}
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 20 }}
+          initial={{ opacity: 0, y: 20 }} animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 20 }}
           transition={{ delay: 0.3, duration: 0.6 }}
-          style={{
-            fontFamily: 'var(--font-serif)', fontStyle: 'italic',
-            fontSize: 'clamp(15px, 1.7vw, 20px)',
-            lineHeight: 1.7, color: 'rgba(242,236,224,0.65)',
-            maxWidth: 520, marginTop: 24,
-          }}
+          style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: 'clamp(15px,1.7vw,20px)', lineHeight: 1.75, color: 'rgba(242,236,224,0.62)', maxWidth: 520, marginBottom: 36 }}
         >
-          Final-year developer from <span style={{ color: 'var(--gold)', fontStyle: 'normal' }}>Chennai</span>. 
-          I build end-to-end systems — ML pipelines, mobile apps, browser extensions — 
+          Final-year developer from{' '}
+          <span style={{ color: 'var(--gold)', fontStyle: 'normal' }}>Chennai</span>.
+          I build end-to-end systems — ML pipelines, mobile apps, browser extensions —
           whatever the problem needs. I ship clean, fast, and with intention.
         </motion.p>
 
         {/* Stats */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 20 }}
-          transition={{ delay: 0.45, duration: 0.6 }}
-          style={{
-            display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: 1, marginTop: 36,
-            border: '1px solid rgba(200,169,110,0.12)',
-            maxWidth: 480,
-          }}
+          initial={{ opacity: 0, y: 20 }} animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 20 }}
+          transition={{ delay: 0.45 }}
+          style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 1, marginBottom: 40, border: '1px solid rgba(200,169,110,0.12)', maxWidth: 480 }}
         >
-          {[['5+', 'Projects shipped'], ['6', 'ML models built'], ['8', 'Stack layers deep']].map(([n, l], i) => (
-            <div key={i} style={{
-              padding: '18px 22px',
-              background: 'rgba(200,169,110,0.04)',
-            }}>
-              <div style={{
-                fontFamily: 'var(--font-display)', fontSize: 44,
-                color: 'var(--gold)', lineHeight: 1,
-              }}>
-                {n.includes('+') ? <><CountUp target={parseInt(n)} visible={visible} />+</> : <CountUp target={parseInt(n)} visible={visible} />}
+          {STATS.map(({ n, suffix, label }, i) => (
+            <div key={i} style={{ padding: '18px 22px', background: 'rgba(200,169,110,0.04)' }}>
+              <div style={{ fontFamily: 'var(--font-display)', fontSize: 46, color: 'var(--gold)', lineHeight: 1 }}>
+                <CountUp target={n} suffix={suffix} visible={visible} />
               </div>
-              <div style={{
-                fontFamily: 'var(--font-mono)', fontSize: 9,
-                letterSpacing: '0.3em', textTransform: 'uppercase',
-                color: 'rgba(242,236,224,0.38)', marginTop: 5,
-              }}>{l}</div>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(242,236,224,0.38)', marginTop: 5 }}>{label}</div>
             </div>
           ))}
         </motion.div>
 
-        {/* Skills grid */}
+        {/* Skill Chart — radar + bars */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 20 }}
-          transition={{ delay: 0.6, duration: 0.5 }}
-          style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 20, marginTop: 30, maxWidth: 600 }}
+          initial={{ opacity: 0, y: 20 }} animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 20 }}
+          transition={{ delay: 0.55 }}
         >
-          {SKILLS.map((s, i) => (
-            <div key={i}>
-              <div style={{
-                fontFamily: 'var(--font-mono)', fontSize: 9,
-                letterSpacing: '0.35em', textTransform: 'uppercase',
-                color: 'var(--red)', marginBottom: 8,
-              }}>{s.cat}</div>
-              <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-                {s.items.map(item => (
-                  <span key={item} style={{
-                    fontFamily: 'var(--font-mono)', fontSize: 9,
-                    letterSpacing: '0.1em', textTransform: 'uppercase',
-                    border: '1px solid rgba(242,236,224,0.12)',
-                    color: 'rgba(242,236,224,0.55)',
-                    padding: '3px 9px',
-                  }}>{item}</span>
-                ))}
-              </div>
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.4em', textTransform: 'uppercase', color: 'var(--red)', marginBottom: 4 }}>Skills</div>
+          <SkillChart visible={visible} />
+        </motion.div>
+
+        {/* Timeline */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }} animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 20 }}
+          transition={{ delay: 0.7 }}
+          style={{ marginTop: 44, paddingTop: 28, borderTop: '1px solid rgba(200,169,110,0.1)' }}
+        >
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.4em', textTransform: 'uppercase', color: 'var(--red)', marginBottom: 20 }}>Timeline</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+            {TIMELINE.map(({ year, event }, i) => (
+              <motion.div
+                key={year}
+                initial={{ opacity: 0, x: -16 }}
+                animate={{ opacity: visible ? 1 : 0, x: visible ? 0 : -16 }}
+                transition={{ delay: 0.8 + i * 0.08 }}
+                style={{ display: 'grid', gridTemplateColumns: '80px 1px 1fr', gap: '0 20px', alignItems: 'stretch', paddingBottom: 20 }}
+              >
+                <div style={{ fontFamily: 'var(--font-display)', fontSize: 22, color: 'var(--gold)', textAlign: 'right', paddingTop: 2 }}>{year}</div>
+                <div style={{ background: 'rgba(200,169,110,0.2)', position: 'relative' }}>
+                  <div style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--gold)', position: 'absolute', top: 6, left: '50%', transform: 'translateX(-50%)' }} />
+                </div>
+                <div style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: 15, color: 'rgba(242,236,224,0.6)', paddingTop: 4 }}>{event}</div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Vibe footer */}
+        <motion.div
+          initial={{ opacity: 0 }} animate={{ opacity: visible ? 1 : 0 }} transition={{ delay: 1.0 }}
+          style={{ display: 'flex', gap: 40, flexWrap: 'wrap', marginTop: 24, paddingTop: 28, borderTop: '1px solid rgba(200,169,110,0.1)' }}
+        >
+          {[{ label: 'Currently', val: 'Final year student' }, { label: 'Based in', val: 'Chennai, India' }, { label: 'Interests', val: 'Manhwa · ML · Dev tools' }].map(({ label, val }) => (
+            <div key={label}>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.35em', textTransform: 'uppercase', color: 'rgba(242,236,224,0.28)', marginBottom: 5 }}>{label}</div>
+              <div style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: 15, color: 'var(--gold)' }}>{val}</div>
             </div>
           ))}
         </motion.div>
+
       </div>
     </motion.div>
   )

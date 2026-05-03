@@ -1,173 +1,298 @@
 import { useState, useCallback } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
+import GlitchText from '../components/GlitchText'
+import MagneticButton from '../components/MagneticButton'
+
+// Project screenshots — use real URLs or local imports
+// Placeholder: beautiful gradient preview cards
+const makeGradient = (a, b) => `linear-gradient(135deg, ${a} 0%, ${b} 100%)`
 
 const PROJECTS = [
   {
-    num: '01',
-    title: 'MedPredict',
+    num: '01', title: 'MedPredict', year: '2024',
     desc: 'Multi-disease ML prediction system',
-    tech: ['FastAPI', 'XGBoost', 'SHAP', 'React', 'Redis'],
-    year: '2024',
+    long: 'Six ML models (LR, RF, SVM, XGBoost, LightGBM, Stacking Ensemble) with SHAP explainability, fairness analysis using Fairlearn, counterfactual exploration via DiCE, Optuna AutoML tuning, Redis caching and PWA support.',
+    tech: ['FastAPI', 'XGBoost', 'LightGBM', 'SHAP', 'DiCE', 'Optuna', 'React', 'Redis', 'PostgreSQL'],
+    color: 'var(--gold)',
+    liveUrl: '#', githubUrl: '#',
+    screenshots: [
+      { label: 'Dashboard', gradient: makeGradient('#1a1200', '#3d2a00'), icon: '◈', desc: 'Multi-disease prediction dashboard with confidence scores' },
+      { label: 'SHAP View', gradient: makeGradient('#002a1a', '#004030'), icon: '◉', desc: 'SHAP waterfall charts explaining each prediction' },
+      { label: 'Fairness', gradient: makeGradient('#1a0010', '#3a0025'), icon: '◎', desc: 'Fairlearn bias audit across demographic groups' },
+    ],
   },
   {
-    num: '02',
-    title: 'ManhwaVault',
+    num: '02', title: 'ManhwaVault', year: '2024',
     desc: 'Mobile scraper with push notifications',
-    tech: ['React Native', 'Expo', 'FastAPI', 'Git Extensions'],
-    year: '2024',
+    long: 'React Native + Expo mobile app with a FastAPI scraper backend featuring a Git-based extension system. Background update checker with Expo push notifications. Rate limiting with exponential backoff per domain.',
+    tech: ['React Native', 'Expo', 'FastAPI', 'Git Extensions', 'Push Notifications', 'Redis'],
+    color: 'var(--cyan)',
+    liveUrl: '#', githubUrl: '#',
+    screenshots: [
+      { label: 'Library', gradient: makeGradient('#001a1a', '#003040'), icon: '⊞', desc: 'Personal manga library with reading progress' },
+      { label: 'Reader', gradient: makeGradient('#000d1a', '#001a30'), icon: '▣', desc: 'Full-screen chapter reader with offline caching' },
+      { label: 'Extensions', gradient: makeGradient('#001a10', '#003020'), icon: '⊕', desc: 'Git-based source extension manager' },
+    ],
   },
   {
-    num: '03',
-    title: 'DRAMS',
+    num: '03', title: 'DRAMS', year: '2024',
     desc: 'Real-time disaster resource management',
-    tech: ['React', 'Tailwind', 'RBAC', 'CRUD'],
-    year: '2024',
+    long: 'Full-stack React frontend with role-based access control (Admin, Coordinator, Responder), real-time inventory tracking, CRUD-heavy modals, and a polished design system using Rajdhani + DM Sans fonts.',
+    tech: ['React', 'Vite', 'TailwindCSS', 'RBAC', 'SQLite', 'REST API'],
+    color: 'var(--red)',
+    liveUrl: '#', githubUrl: '#',
+    screenshots: [
+      { label: 'Overview', gradient: makeGradient('#1a0005', '#30000a'), icon: '◆', desc: 'Real-time resource allocation map' },
+      { label: 'Admin Panel', gradient: makeGradient('#0d001a', '#1a0030'), icon: '◇', desc: 'Role-based admin dashboard' },
+      { label: 'Inventory', gradient: makeGradient('#001a1a', '#003030'), icon: '○', desc: 'Dynamic inventory tracker with alerts' },
+    ],
   },
   {
-    num: '04',
-    title: 'Dataset Quality Checker',
+    num: '04', title: 'Dataset Quality Checker', year: '2024',
     desc: 'CSV analysis with auto-clean pipeline',
-    tech: ['Python', 'FastAPI', 'React', 'PWA'],
-    year: '2024',
+    long: 'CSV analysis tool reusing the MedPredict preprocessing pipeline. Auto-fix/clean CSV functionality, quality reports with PDF export, and a PWA wrapper for offline use.',
+    tech: ['Python', 'FastAPI', 'React', 'Vite', 'PWA', 'PDF Export'],
+    color: 'var(--gold)',
+    liveUrl: '#', githubUrl: '#',
+    screenshots: [
+      { label: 'Upload', gradient: makeGradient('#001a0d', '#003020'), icon: '↑', desc: 'Drag-and-drop CSV upload interface' },
+      { label: 'Report', gradient: makeGradient('#1a1000', '#302000'), icon: '≡', desc: 'Quality report with visualizations' },
+    ],
   },
   {
-    num: '05',
-    title: 'PokéCursor VSCode',
+    num: '05', title: 'PokéCursor VSCode', year: '2023',
     desc: 'Sprite companion VS Code extension',
-    tech: ['TypeScript', 'WebView API', 'Extension API'],
-    year: '2023',
+    long: 'A VS Code extension featuring a Pokémon sprite that follows cursor movement and reacts to editor events via speech bubbles and animated ribbons. Multiple architectural iterations exploring WebView API deeply.',
+    tech: ['TypeScript', 'WebView API', 'VS Code Extension API', 'Animation'],
+    color: 'var(--cyan)',
+    liveUrl: '#', githubUrl: '#',
+    screenshots: [
+      { label: 'Extension', gradient: makeGradient('#000d1a', '#001a30'), icon: '♦', desc: 'Pokémon sprite companion in VS Code' },
+    ],
   },
 ]
 
-const SCRAMBLE_CHARS = 'アイウエオカキクABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%'
+const SCRAMBLE = 'アイウエオカキクABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%'
 
-function WorkItem({ project, index, visible }) {
+function WorkItem({ project, index, visible, onOpen, sounds }) {
   const [title, setTitle] = useState(project.title)
   const [hovered, setHovered] = useState(false)
 
   const scramble = useCallback(() => {
+    sounds?.glitch()
     const orig = project.title
     let iter = 0
     const iv = setInterval(() => {
       setTitle(orig.split('').map((c, i) => {
         if (c === ' ') return ' '
-        if (i < iter * 0.6) return orig[i]
-        return SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)]
+        if (i < iter * 0.55) return orig[i]
+        return SCRAMBLE[Math.floor(Math.random() * SCRAMBLE.length)]
       }).join(''))
-      iter += 0.7
-      if (iter > orig.length * 1.5) { setTitle(orig); clearInterval(iv) }
-    }, 38)
+      iter += 0.65
+      if (iter > orig.length * 1.6) { setTitle(orig); clearInterval(iv) }
+    }, 36)
   }, [project.title])
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: -30 }}
-      animate={{ opacity: visible ? 1 : 0, x: visible ? 0 : -30 }}
-      transition={{ delay: 0.1 + index * 0.08, duration: 0.5, ease: 'easeOut' }}
+      initial={{ opacity: 0, x: -28 }}
+      animate={{ opacity: visible ? 1 : 0, x: visible ? 0 : -28 }}
+      transition={{ delay: 0.08 + index * 0.08, duration: 0.5, ease: 'easeOut' }}
       onMouseEnter={() => { setHovered(true); scramble() }}
       onMouseLeave={() => setHovered(false)}
+      onClick={() => { onOpen(project); sounds?.whoosh() }}
       data-hover
       style={{
-        display: 'grid',
-        gridTemplateColumns: '52px 1fr 28px',
-        alignItems: 'center',
-        gap: 20, padding: '20px 0',
+        display: 'grid', gridTemplateColumns: '52px 1fr 100px 28px',
+        alignItems: 'center', gap: 20,
+        padding: `20px 0 20px ${hovered ? 14 : 0}px`,
         borderBottom: '1px solid rgba(242,236,224,0.06)',
         cursor: 'pointer', position: 'relative',
-        paddingLeft: hovered ? 14 : 0,
         transition: 'padding-left 0.3s ease',
       }}
     >
-      {/* Left accent bar */}
-      <motion.div
-        style={{
-          position: 'absolute', left: 0, top: 0, bottom: 0,
-          width: 2, background: 'var(--cyan)',
-          originY: 0.5,
-        }}
-        animate={{ scaleY: hovered ? 1 : 0 }}
-        transition={{ duration: 0.25 }}
-      />
+      <motion.div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 2, background: project.color, originY: 0.5 }}
+        animate={{ scaleY: hovered ? 1 : 0 }} transition={{ duration: 0.22 }} />
 
-      {/* Number */}
-      <span style={{
-        fontFamily: 'var(--font-display)', fontSize: 30,
-        color: hovered ? 'var(--gold)' : 'rgba(200,169,110,0.25)',
-        transition: 'color 0.3s', lineHeight: 1,
-      }}>{project.num}</span>
+      <span style={{ fontFamily: 'var(--font-display)', fontSize: 30, color: hovered ? project.color : 'rgba(200,169,110,0.22)', transition: 'color 0.3s', lineHeight: 1 }}>
+        {project.num}
+      </span>
 
-      {/* Content */}
       <div>
-        <div style={{
-          fontFamily: 'var(--font-serif)',
-          fontSize: 'clamp(18px, 2.2vw, 26px)',
-          color: hovered ? 'var(--white)' : 'rgba(242,236,224,0.85)',
-          transition: 'color 0.3s',
-          letterSpacing: hovered ? '0.02em' : 0,
-          transition: 'all 0.3s',
-        }}>{title}</div>
-        <div style={{
-          fontFamily: 'var(--font-mono)', fontSize: 10,
-          letterSpacing: '0.12em', textTransform: 'uppercase',
-          color: 'rgba(242,236,224,0.38)', marginTop: 4,
-        }}>{project.desc}</div>
-        <motion.div
-          animate={{ height: hovered ? 'auto' : 0, opacity: hovered ? 1 : 0 }}
-          transition={{ duration: 0.3 }}
-          style={{ overflow: 'hidden', display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: hovered ? 8 : 0 }}
-        >
-          {project.tech.map(t => (
-            <span key={t} style={{
-              fontFamily: 'var(--font-mono)', fontSize: 9,
-              letterSpacing: '0.15em', textTransform: 'uppercase',
-              border: '1px solid rgba(0,232,255,0.25)',
-              color: 'var(--cyan)', padding: '2px 9px',
-            }}>{t}</span>
-          ))}
-        </motion.div>
+        <div style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(17px,2.2vw,24px)', color: hovered ? 'var(--white)' : 'rgba(242,236,224,0.82)', transition: 'all 0.3s' }}>
+          {title}
+        </div>
+        <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(242,236,224,0.35)', marginTop: 4 }}>
+          {project.desc}
+        </div>
+        <AnimatePresence>
+          {hovered && (
+            <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.25 }}
+              style={{ overflow: 'hidden', display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 8 }}>
+              {project.tech.slice(0, 5).map(t => (
+                <span key={t} style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase', border: `1px solid ${project.color}44`, color: project.color, padding: '2px 8px' }}>{t}</span>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
-      {/* Arrow */}
-      <motion.span
-        animate={{ x: hovered ? 4 : 0, color: hovered ? 'var(--cyan)' : 'rgba(242,236,224,0.15)' }}
-        transition={{ duration: 0.2 }}
-        style={{ fontSize: 20 }}
-      >→</motion.span>
+      <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.2em', color: 'rgba(242,236,224,0.25)', textTransform: 'uppercase', textAlign: 'right' }}>
+        {project.year}
+      </div>
+
+      <motion.div animate={{ x: hovered ? 5 : 0 }} style={{ fontSize: 20, color: hovered ? project.color : 'rgba(242,236,224,0.12)', transition: 'color 0.3s' }}>→</motion.div>
     </motion.div>
   )
 }
 
-export default function Work({ visible }) {
+/* ─── Screenshot Gallery in Modal ─── */
+function ScreenshotGallery({ screenshots, color }) {
+  const [active, setActive] = useState(0)
+
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: visible ? 1 : 0 }}
-      transition={{ duration: 0.4 }}
-      style={{
-        position: 'absolute', inset: 0,
-        display: 'flex', alignItems: 'center',
-        padding: '0 8vw',
-        pointerEvents: visible ? 'all' : 'none',
-        overflowY: 'auto',
-      }}
-    >
-      <div style={{ width: '100%', maxWidth: 680 }}>
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 12 }}
-          transition={{ delay: 0.05, duration: 0.4 }}
-          style={{
-            fontFamily: 'var(--font-mono)', fontSize: 10,
-            letterSpacing: '0.4em', textTransform: 'uppercase',
-            color: 'var(--red)', marginBottom: 20,
-          }}
-        >
-          Selected Work
-        </motion.div>
-        {PROJECTS.map((p, i) => (
-          <WorkItem key={p.num} project={p} index={i} visible={visible} />
+    <div style={{ marginBottom: 32 }}>
+      {/* Main display */}
+      <motion.div
+        key={active}
+        initial={{ opacity: 0, scale: 0.97 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.3 }}
+        style={{
+          height: 200,
+          background: screenshots[active].gradient,
+          border: `1px solid ${color}22`,
+          display: 'flex', flexDirection: 'column',
+          alignItems: 'center', justifyContent: 'center',
+          gap: 10, marginBottom: 12,
+          position: 'relative', overflow: 'hidden',
+        }}
+      >
+        {/* Animated grid lines */}
+        <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+        <div style={{ fontSize: 36, position: 'relative' }}>{screenshots[active].icon}</div>
+        <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.3em', textTransform: 'uppercase', color, position: 'relative' }}>{screenshots[active].label}</div>
+        <div style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: 12, color: 'rgba(242,236,224,0.45)', position: 'relative', textAlign: 'center', maxWidth: '80%' }}>{screenshots[active].desc}</div>
+      </motion.div>
+
+      {/* Thumbnails */}
+      <div style={{ display: 'flex', gap: 8 }}>
+        {screenshots.map((s, i) => (
+          <motion.button
+            key={i}
+            data-hover
+            onClick={() => setActive(i)}
+            whileHover={{ scale: 1.04 }}
+            style={{
+              flex: 1, height: 52,
+              background: s.gradient,
+              border: `1px solid ${i === active ? color : 'rgba(242,236,224,0.08)'}`,
+              cursor: 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: 14, transition: 'border-color 0.2s',
+            }}
+          >
+            {s.icon}
+          </motion.button>
         ))}
       </div>
+    </div>
+  )
+}
+
+function Modal({ project, onClose, sounds }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      onClick={() => { onClose(); sounds?.click() }}
+      style={{ position: 'fixed', inset: 0, zIndex: 2000, background: 'rgba(4,4,10,0.88)', backdropFilter: 'blur(14px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4vw', overflowY: 'auto' }}
+    >
+      <motion.div
+        initial={{ scale: 0.88, y: 40, opacity: 0 }}
+        animate={{ scale: 1, y: 0, opacity: 1 }}
+        exit={{ scale: 0.92, y: 20, opacity: 0 }}
+        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+        onClick={e => e.stopPropagation()}
+        style={{ width: '100%', maxWidth: 660, background: 'rgba(8,8,16,0.98)', border: `1px solid ${project.color}22`, padding: '44px 48px', position: 'relative' }}
+      >
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: project.color }} />
+        <button onClick={() => { onClose(); sounds?.click() }} data-hover
+          style={{ position: 'absolute', top: 20, right: 24, background: 'none', border: 'none', color: 'rgba(242,236,224,0.4)', fontSize: 22, cursor: 'pointer' }}>×</button>
+
+        <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.4em', textTransform: 'uppercase', color: project.color, marginBottom: 10 }}>
+          {project.num} · {project.year}
+        </div>
+
+        <GlitchText
+          as="div"
+          sounds={sounds}
+          style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(32px,5vw,52px)', lineHeight: 0.95, marginBottom: 20 }}
+        >
+          {project.title}
+        </GlitchText>
+
+        {/* Screenshot gallery */}
+        <ScreenshotGallery screenshots={project.screenshots} color={project.color} />
+
+        <p style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: 16, lineHeight: 1.75, color: 'rgba(242,236,224,0.62)', marginBottom: 24 }}>
+          {project.long}
+        </p>
+
+        <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(242,236,224,0.3)', marginBottom: 12 }}>
+          Tech Stack
+        </div>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 32 }}>
+          {project.tech.map(t => (
+            <motion.span key={t} whileHover={{ borderColor: project.color, color: project.color, scale: 1.04 }}
+              style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase', border: `1px solid ${project.color}44`, color: 'rgba(242,236,224,0.55)', padding: '5px 12px', cursor: 'default', transition: 'all 0.2s' }}>
+              {t}
+            </motion.span>
+          ))}
+        </div>
+
+        <div style={{ display: 'flex', gap: 12 }}>
+          <MagneticButton onClick={() => { sounds?.click(); window.open(project.liveUrl, '_blank') }} sounds={sounds}
+            style={{ flex: 1, justifyContent: 'center', borderColor: project.color, color: project.color }}>
+            Live Demo →
+          </MagneticButton>
+          <MagneticButton onClick={() => { sounds?.click(); window.open(project.githubUrl, '_blank') }} sounds={sounds}
+            style={{ flex: 1, justifyContent: 'center', borderColor: 'rgba(242,236,224,0.2)', color: 'rgba(242,236,224,0.5)' }}>
+            GitHub ↗
+          </MagneticButton>
+        </div>
+      </motion.div>
     </motion.div>
+  )
+}
+
+export default function Work({ visible, sounds }) {
+  const [modal, setModal] = useState(null)
+
+  return (
+    <>
+      <motion.div
+        initial={{ opacity: 0 }} animate={{ opacity: visible ? 1 : 0 }} transition={{ duration: 0.4 }}
+        style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', padding: '0 8vw', pointerEvents: visible ? 'all' : 'none', overflowY: 'auto' }}
+      >
+        <div style={{ width: '100%', maxWidth: 720 }}>
+          <motion.div
+            initial={{ opacity: 0, y: 12 }} animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 12 }} transition={{ delay: 0.05 }}
+            style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase', color: 'var(--red)', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 12 }}
+          >
+            Selected Work
+            <span style={{ color: 'rgba(242,236,224,0.2)', fontSize: 9 }}>— hover to preview · click to expand</span>
+          </motion.div>
+
+          {PROJECTS.map((p, i) => (
+            <WorkItem key={p.num} project={p} index={i} visible={visible} onOpen={setModal} sounds={sounds} />
+          ))}
+        </div>
+      </motion.div>
+
+      <AnimatePresence>
+        {modal && <Modal project={modal} onClose={() => setModal(null)} sounds={sounds} />}
+      </AnimatePresence>
+    </>
   )
 }

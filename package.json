@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@gsap/react": "^2.1.2",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.6.1",
@@ -18,7 +19,9 @@
     "leva": "^0.10.1",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
-    "three": "^0.184.0"
+    "react-hook-form": "^7.75.0",
+    "three": "^0.184.0",
+    "use-sound": "^5.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
