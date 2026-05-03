@@ -190,11 +190,15 @@ export default function Contact({ visible, sounds }) {
             style={{ display: 'flex', flexDirection: 'column', gap: 14 }}
           >
             {LINKS.map((link, i) => (
+              (() => {
+                const isMailto = link.href.startsWith('mailto:')
+                return (
               <motion.a
                 key={link.label}
                 href={link.href}
                 data-hover
-                target="_blank" rel="noopener noreferrer"
+                target={isMailto ? undefined : '_blank'}
+                rel={isMailto ? undefined : 'noopener noreferrer'}
                 initial={{ opacity: 0, x: -12 }}
                 animate={{ opacity: visible ? 1 : 0, x: visible ? 0 : -12 }}
                 transition={{ delay: 0.6 + i * 0.08 }}
@@ -206,6 +210,8 @@ export default function Contact({ visible, sounds }) {
                 {link.label}
                 <span style={{ marginLeft: 'auto', fontSize: 14, opacity: 0.4 }}>→</span>
               </motion.a>
+                )
+              })()
             ))}
           </motion.div>
         </div>
