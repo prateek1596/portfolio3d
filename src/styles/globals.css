@@ -59,3 +59,131 @@ a { cursor: none; }
 
 /* Scrollbar hidden */
 ::-webkit-scrollbar { display: none; }
+
+/* ═══════════════════════════════════════════════════════════ */
+/* MOBILE & TOUCH SUPPORT */
+/* ═══════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    cursor: auto;
+  }
+
+  button, a {
+    cursor: auto;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+  }
+
+  /* Touch-friendly button sizes */
+  button {
+    min-height: 48px;
+    min-width: 48px;
+  }
+
+  /* Prevent zoom on input focus */
+  input, textarea, select {
+    font-size: 16px;
+  }
+
+  /* Better touch targets */
+  .nav-item, [role="button"], input[type="checkbox"], input[type="radio"] {
+    min-width: 48px;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Reduce motion for mobile */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════ */
+/* SMOOTH SCROLL STORYTELLING */
+/* ═══════════════════════════════════════════════════════════ */
+
+html {
+  scroll-behavior: smooth;
+}
+
+[data-scroll-heading] {
+  opacity: 0;
+  transform: translateY(50px);
+}
+
+[data-scroll-content] {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+[data-parallax] {
+  will-change: transform;
+}
+
+/* ═══════════════════════════════════════════════════════════ */
+/* PAGE SPEED & LAZY LOADING */
+/* ═══════════════════════════════════════════════════════════ */
+
+.lazy-image-wrapper {
+  background: linear-gradient(90deg, var(--gold-dim) 25%, rgba(200,169,110,0.08) 50%, var(--gold-dim) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Optimize image rendering */
+img {
+  will-change: opacity;
+  contain: layout style paint;
+}
+
+/* ═══════════════════════════════════════════════════════════ */
+/* ACCESSIBILITY */
+/* ═══════════════════════════════════════════════════════════ */
+
+/* Focus visible for keyboard navigation */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Dark mode forced */
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}
+
