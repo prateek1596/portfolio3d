@@ -84,10 +84,8 @@ function ScrambleChar({ char, delay }) {
         color: 'var(--cyan)',
         WebkitTextStroke: '0px',
         transition: { duration: 0.15 },
-              whileHover={{ scale: 1.06, borderColor: 'var(--panel-border-strong)' }}
+      }}
       style={{ display: 'inline-block', transformOrigin: 'bottom center', cursor: 'default' }}
-                border: '1px solid var(--panel-border)',
-      {display}
     </motion.span>
   )
 }
