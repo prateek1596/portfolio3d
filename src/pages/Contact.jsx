@@ -3,9 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion'
 import MagneticButton from '../components/MagneticButton'
 
 const LINKS = [
-  { label: 'GitHub',   href: 'https://github.com/prateek',   icon: '⌥' },
-  { label: 'LinkedIn', href: 'https://linkedin.com/in/prateek', icon: '⊞' },
-  { label: 'Email',    href: 'mailto:prateek@example.com',   icon: '◎' },
+  { label: 'GitHub',   href: 'https://github.com/prateek1596',   icon: '⌥' },
+  { label: 'LinkedIn', href: 'https://linkedin.com/in/prateek-yadav-b9094127b/', icon: '⊞' },
+  { label: 'Email',    href: 'mailto:prateekyadav1596@gmail.com',   icon: '◎' },
 ]
 
 // EmailJS config — fill in your own IDs after signup at emailjs.com (free)

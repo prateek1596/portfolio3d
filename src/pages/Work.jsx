@@ -14,7 +14,7 @@ const PROJECTS = [
     long: 'Six ML models (LR, RF, SVM, XGBoost, LightGBM, Stacking Ensemble) with SHAP explainability, fairness analysis using Fairlearn, counterfactual exploration via DiCE, Optuna AutoML tuning, Redis caching and PWA support.',
     tech: ['FastAPI', 'XGBoost', 'LightGBM', 'SHAP', 'DiCE', 'Optuna', 'React', 'Redis', 'PostgreSQL'],
     color: 'var(--gold)',
-    liveUrl: '#', githubUrl: '#',
+    liveUrl: 'https://github.com/prateek1596?tab=repositories', githubUrl: 'https://github.com/prateek1596',
     screenshots: [
       { label: 'Dashboard', gradient: makeGradient('#1a1200', '#3d2a00'), icon: '◈', desc: 'Multi-disease prediction dashboard with confidence scores' },
       { label: 'SHAP View', gradient: makeGradient('#002a1a', '#004030'), icon: '◉', desc: 'SHAP waterfall charts explaining each prediction' },
@@ -27,7 +27,7 @@ const PROJECTS = [
     long: 'React Native + Expo mobile app with a FastAPI scraper backend featuring a Git-based extension system. Background update checker with Expo push notifications. Rate limiting with exponential backoff per domain.',
     tech: ['React Native', 'Expo', 'FastAPI', 'Git Extensions', 'Push Notifications', 'Redis'],
     color: 'var(--cyan)',
-    liveUrl: '#', githubUrl: '#',
+    liveUrl: 'https://github.com/prateek1596?tab=repositories', githubUrl: 'https://github.com/prateek1596',
     screenshots: [
       { label: 'Library', gradient: makeGradient('#001a1a', '#003040'), icon: '⊞', desc: 'Personal manga library with reading progress' },
       { label: 'Reader', gradient: makeGradient('#000d1a', '#001a30'), icon: '▣', desc: 'Full-screen chapter reader with offline caching' },
@@ -40,7 +40,7 @@ const PROJECTS = [
     long: 'Full-stack React frontend with role-based access control (Admin, Coordinator, Responder), real-time inventory tracking, CRUD-heavy modals, and a polished design system using Rajdhani + DM Sans fonts.',
     tech: ['React', 'Vite', 'TailwindCSS', 'RBAC', 'SQLite', 'REST API'],
     color: 'var(--red)',
-    liveUrl: '#', githubUrl: '#',
+    liveUrl: 'https://github.com/prateek1596?tab=repositories', githubUrl: 'https://github.com/prateek1596',
     screenshots: [
       { label: 'Overview', gradient: makeGradient('#1a0005', '#30000a'), icon: '◆', desc: 'Real-time resource allocation map' },
       { label: 'Admin Panel', gradient: makeGradient('#0d001a', '#1a0030'), icon: '◇', desc: 'Role-based admin dashboard' },
@@ -53,7 +53,7 @@ const PROJECTS = [
     long: 'CSV analysis tool reusing the MedPredict preprocessing pipeline. Auto-fix/clean CSV functionality, quality reports with PDF export, and a PWA wrapper for offline use.',
     tech: ['Python', 'FastAPI', 'React', 'Vite', 'PWA', 'PDF Export'],
     color: 'var(--gold)',
-    liveUrl: '#', githubUrl: '#',
+    liveUrl: 'https://github.com/prateek1596?tab=repositories', githubUrl: 'https://github.com/prateek1596',
     screenshots: [
       { label: 'Upload', gradient: makeGradient('#001a0d', '#003020'), icon: '↑', desc: 'Drag-and-drop CSV upload interface' },
       { label: 'Report', gradient: makeGradient('#1a1000', '#302000'), icon: '≡', desc: 'Quality report with visualizations' },
@@ -65,7 +65,7 @@ const PROJECTS = [
     long: 'A VS Code extension featuring a Pokémon sprite that follows cursor movement and reacts to editor events via speech bubbles and animated ribbons. Multiple architectural iterations exploring WebView API deeply.',
     tech: ['TypeScript', 'WebView API', 'VS Code Extension API', 'Animation'],
     color: 'var(--cyan)',
-    liveUrl: '#', githubUrl: '#',
+    liveUrl: 'https://github.com/prateek1596?tab=repositories', githubUrl: 'https://github.com/prateek1596',
     screenshots: [
       { label: 'Extension', gradient: makeGradient('#000d1a', '#001a30'), icon: '♦', desc: 'Pokémon sprite companion in VS Code' },
     ],
