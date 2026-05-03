@@ -46,7 +46,7 @@ const THEMES = {
     panelBorder: 'rgba(55,62,86,0.2)',
     panelBorderStrong: 'rgba(55,62,86,0.34)',
     panelShadow: '0 18px 55px rgba(35,31,24,0.1)',
-    grid: 'rgba(55,62,86,0.85)',
+    grid: '#373e56',
     gridSoft: 'rgba(55,62,86,0.04)',
     line: 'rgba(55,62,86,0.2)',
     lineSoft: 'rgba(55,62,86,0.1)',

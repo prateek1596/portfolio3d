@@ -29,7 +29,7 @@ function getSceneTheme(isDark) {
 
   return !isDark
     ? {
-        grid: 'rgba(55,62,86,0.85)',
+        grid: '#373e56',
         gridOpacity: 0.034,
         gridDivisions: 20,
         fogColor: '#ece6da',
