@@ -106,7 +106,7 @@ function WorkItem({ project, index, visible, onOpen, sounds }) {
         display: 'grid', gridTemplateColumns: '52px 1fr 100px 28px',
         alignItems: 'center', gap: 20,
         padding: `20px 0 20px ${hovered ? 14 : 0}px`,
-        borderBottom: '1px solid rgba(242,236,224,0.06)',
+        borderBottom: '1px solid var(--rule-soft)',
         cursor: 'pointer', position: 'relative',
         transition: 'padding-left 0.3s ease',
       }}
@@ -114,15 +114,15 @@ function WorkItem({ project, index, visible, onOpen, sounds }) {
       <motion.div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 2, background: project.color, originY: 0.5 }}
         animate={{ scaleY: hovered ? 1 : 0 }} transition={{ duration: 0.22 }} />
 
-      <span style={{ fontFamily: 'var(--font-display)', fontSize: 30, color: hovered ? project.color : 'rgba(200,169,110,0.22)', transition: 'color 0.3s', lineHeight: 1 }}>
+      <span style={{ fontFamily: 'var(--font-display)', fontSize: 30, color: hovered ? project.color : 'var(--text-ghost)', transition: 'color 0.3s', lineHeight: 1 }}>
         {project.num}
       </span>
 
       <div>
-        <div style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(17px,2.2vw,24px)', color: hovered ? 'var(--white)' : 'rgba(242,236,224,0.82)', transition: 'all 0.3s' }}>
+        <div style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(17px,2.2vw,24px)', color: hovered ? 'var(--text)' : 'var(--text-soft)', transition: 'all 0.3s' }}>
           {title}
         </div>
-        <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(242,236,224,0.35)', marginTop: 4 }}>
+        <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--text-faint)', marginTop: 4 }}>
           {project.desc}
         </div>
         <AnimatePresence>
@@ -138,11 +138,11 @@ function WorkItem({ project, index, visible, onOpen, sounds }) {
         </AnimatePresence>
       </div>
 
-      <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.2em', color: 'rgba(242,236,224,0.25)', textTransform: 'uppercase', textAlign: 'right' }}>
+      <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.2em', color: 'var(--text-ghost)', textTransform: 'uppercase', textAlign: 'right' }}>
         {project.year}
       </div>
 
-      <motion.div animate={{ x: hovered ? 5 : 0 }} style={{ fontSize: 20, color: hovered ? project.color : 'rgba(242,236,224,0.12)', transition: 'color 0.3s' }}>→</motion.div>
+      <motion.div animate={{ x: hovered ? 5 : 0 }} style={{ fontSize: 20, color: hovered ? project.color : 'var(--text-ghost)', transition: 'color 0.3s' }}>→</motion.div>
     </motion.div>
   )
 }
@@ -170,10 +170,10 @@ function ScreenshotGallery({ screenshots, color }) {
         }}
       >
         {/* Animated grid lines */}
-        <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+        <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(var(--grid-line-soft) 1px, transparent 1px), linear-gradient(90deg, var(--grid-line-soft) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
         <div style={{ fontSize: 36, position: 'relative' }}>{screenshots[active].icon}</div>
         <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.3em', textTransform: 'uppercase', color, position: 'relative' }}>{screenshots[active].label}</div>
-        <div style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: 12, color: 'rgba(242,236,224,0.45)', position: 'relative', textAlign: 'center', maxWidth: '80%' }}>{screenshots[active].desc}</div>
+        <div style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: 12, color: 'var(--text-faint)', position: 'relative', textAlign: 'center', maxWidth: '80%' }}>{screenshots[active].desc}</div>
       </motion.div>
 
       {/* Thumbnails */}
@@ -187,7 +187,7 @@ function ScreenshotGallery({ screenshots, color }) {
             style={{
               flex: 1, height: 52,
               background: s.gradient,
-              border: `1px solid ${i === active ? color : 'rgba(242,236,224,0.08)'}`,
+              border: `1px solid ${i === active ? color : 'var(--panel-border)'}`,
               cursor: 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               fontSize: 14, transition: 'border-color 0.2s',
@@ -207,6 +207,7 @@ function Modal({ project, onClose, sounds }) {
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
       onClick={() => { onClose(); sounds?.click() }}
       style={{ position: 'fixed', inset: 0, zIndex: 2000, background: 'rgba(4,4,10,0.88)', backdropFilter: 'blur(14px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4vw', overflowY: 'auto' }}
+      style={{ position: 'fixed', inset: 0, zIndex: 2000, background: 'var(--glass-bg-strong)', backdropFilter: 'blur(14px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4vw', overflowY: 'auto' }}
     >
       <motion.div
         initial={{ scale: 0.88, y: 40, opacity: 0 }}
@@ -214,11 +215,11 @@ function Modal({ project, onClose, sounds }) {
         exit={{ scale: 0.92, y: 20, opacity: 0 }}
         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
         onClick={e => e.stopPropagation()}
-        style={{ width: '100%', maxWidth: 660, background: 'rgba(8,8,16,0.98)', border: `1px solid ${project.color}22`, padding: '44px 48px', position: 'relative' }}
+        style={{ width: '100%', maxWidth: 660, background: 'var(--panel-bg-elevated)', border: `1px solid ${project.color}22`, padding: '44px 48px', position: 'relative' }}
       >
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: project.color }} />
         <button onClick={() => { onClose(); sounds?.click() }} data-hover
-          style={{ position: 'absolute', top: 20, right: 24, background: 'none', border: 'none', color: 'rgba(242,236,224,0.4)', fontSize: 22, cursor: 'pointer' }}>×</button>
+          style={{ position: 'absolute', top: 20, right: 24, background: 'none', border: 'none', color: 'var(--text-faint)', fontSize: 22, cursor: 'pointer' }}>×</button>
 
         <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.4em', textTransform: 'uppercase', color: project.color, marginBottom: 10 }}>
           {project.num} · {project.year}
@@ -235,17 +236,17 @@ function Modal({ project, onClose, sounds }) {
         {/* Screenshot gallery */}
         <ScreenshotGallery screenshots={project.screenshots} color={project.color} />
 
-        <p style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: 16, lineHeight: 1.75, color: 'rgba(242,236,224,0.62)', marginBottom: 24 }}>
+        <p style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: 16, lineHeight: 1.75, color: 'var(--text-muted)', marginBottom: 24 }}>
           {project.long}
         </p>
 
-        <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(242,236,224,0.3)', marginBottom: 12 }}>
+        <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--text-faint)', marginBottom: 12 }}>
           Tech Stack
         </div>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 32 }}>
           {project.tech.map(t => (
             <motion.span key={t} whileHover={{ borderColor: project.color, color: project.color, scale: 1.04 }}
-              style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase', border: `1px solid ${project.color}44`, color: 'rgba(242,236,224,0.55)', padding: '5px 12px', cursor: 'default', transition: 'all 0.2s' }}>
+              style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase', border: `1px solid ${project.color}44`, color: 'var(--text-muted)', padding: '5px 12px', cursor: 'default', transition: 'all 0.2s' }}>
               {t}
             </motion.span>
           ))}
@@ -257,7 +258,7 @@ function Modal({ project, onClose, sounds }) {
             Live Demo →
           </MagneticButton>
           <MagneticButton onClick={() => { sounds?.click(); window.open(project.githubUrl, '_blank') }} sounds={sounds}
-            style={{ flex: 1, justifyContent: 'center', borderColor: 'rgba(242,236,224,0.2)', color: 'rgba(242,236,224,0.5)' }}>
+            style={{ flex: 1, justifyContent: 'center', borderColor: 'var(--panel-border)', color: 'var(--text-muted)' }}>
             GitHub ↗
           </MagneticButton>
         </div>
@@ -281,7 +282,7 @@ export default function Work({ visible, sounds }) {
             style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase', color: 'var(--red)', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 12 }}
           >
             Selected Work
-            <span style={{ color: 'rgba(242,236,224,0.2)', fontSize: 9 }}>— hover to preview · click to expand</span>
+            <span style={{ color: 'var(--text-ghost)', fontSize: 9 }}>— hover to preview · click to expand</span>
           </motion.div>
 
           {PROJECTS.map((p, i) => (

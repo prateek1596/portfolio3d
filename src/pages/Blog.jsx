@@ -105,7 +105,7 @@ function PostCard({ post, index, visible, onOpen, sounds }) {
       onClick={() => { onOpen(post); sounds?.click() }}
       data-hover
       style={{
-        padding: '24px 0', borderBottom: '1px solid rgba(242,236,224,0.06)',
+        padding: '24px 0', borderBottom: '1px solid var(--rule-soft)',
         cursor: 'pointer', position: 'relative',
         paddingLeft: hovered ? 16 : 0, transition: 'padding-left 0.3s',
       }}
@@ -116,24 +116,24 @@ function PostCard({ post, index, visible, onOpen, sounds }) {
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16 }}>
         <div style={{ flex: 1 }}>
           <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 10 }}>
-            <span style={{ fontFamily: 'var(--font-display)', fontSize: 20, color: 'rgba(200,169,110,0.3)' }}>{post.num}</span>
+            <span style={{ fontFamily: 'var(--font-display)', fontSize: 20, color: 'var(--text-ghost)' }}>{post.num}</span>
             {post.tags.map(t => (
-              <span key={t} style={{ fontFamily: 'var(--font-mono)', fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(200,169,110,0.2)', color: 'var(--gold)', padding: '2px 7px' }}>{t}</span>
+              <span key={t} style={{ fontFamily: 'var(--font-mono)', fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid var(--panel-border)', color: 'var(--gold)', padding: '2px 7px' }}>{t}</span>
             ))}
           </div>
 
-          <GlitchText style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(17px, 2vw, 22px)', color: hovered ? 'var(--white)' : 'rgba(242,236,224,0.82)', transition: 'color 0.3s', display: 'block' }} sounds={sounds}>
+          <GlitchText style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(17px, 2vw, 22px)', color: hovered ? 'var(--text)' : 'var(--text-soft)', transition: 'color 0.3s', display: 'block' }} sounds={sounds}>
             {post.title}
           </GlitchText>
 
-          <p style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'rgba(242,236,224,0.38)', marginTop: 8, lineHeight: 1.6 }}>
+          <p style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-faint)', marginTop: 8, lineHeight: 1.6 }}>
             {post.excerpt}
           </p>
         </div>
         <div style={{ textAlign: 'right', flexShrink: 0 }}>
-          <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.2em', color: 'rgba(242,236,224,0.3)', textTransform: 'uppercase' }}>{post.date}</div>
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.2em', color: 'var(--text-faint)', textTransform: 'uppercase' }}>{post.date}</div>
           <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: 'var(--cyan)', marginTop: 4 }}>{post.readTime} read</div>
-          <motion.div animate={{ x: hovered ? 4 : 0 }} style={{ fontSize: 18, color: hovered ? 'var(--gold)' : 'rgba(242,236,224,0.15)', marginTop: 8, transition: 'color 0.2s' }}>→</motion.div>
+          <motion.div animate={{ x: hovered ? 4 : 0 }} style={{ fontSize: 18, color: hovered ? 'var(--gold)' : 'var(--text-ghost)', marginTop: 8, transition: 'color 0.2s' }}>→</motion.div>
         </div>
       </div>
     </motion.div>
@@ -146,29 +146,29 @@ function PostModal({ post, onClose, sounds }) {
     <motion.div
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
       onClick={onClose}
-      style={{ position: 'fixed', inset: 0, zIndex: 2000, background: 'rgba(4,4,10,0.9)', backdropFilter: 'blur(16px)', display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: '5vh 5vw', overflowY: 'auto' }}
+      style={{ position: 'fixed', inset: 0, zIndex: 2000, background: 'var(--glass-bg-strong)', backdropFilter: 'blur(16px)', display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: '5vh 5vw', overflowY: 'auto' }}
     >
       <motion.div
         initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 30, opacity: 0 }}
         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
         onClick={e => e.stopPropagation()}
-        style={{ width: '100%', maxWidth: 680, background: 'rgba(8,8,16,0.98)', border: '1px solid rgba(200,169,110,0.15)', padding: '48px 52px', position: 'relative', marginBottom: 40 }}
+        style={{ width: '100%', maxWidth: 680, background: 'var(--panel-bg-elevated)', border: '1px solid var(--panel-border)', padding: '48px 52px', position: 'relative', marginBottom: 40 }}
       >
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'var(--gold)' }} />
-        <button onClick={() => { onClose(); sounds?.click() }} data-hover style={{ position: 'absolute', top: 20, right: 24, background: 'none', border: 'none', color: 'rgba(242,236,224,0.4)', fontSize: 22, cursor: 'pointer' }}>×</button>
+        <button onClick={() => { onClose(); sounds?.click() }} data-hover style={{ position: 'absolute', top: 20, right: 24, background: 'none', border: 'none', color: 'var(--text-faint)', fontSize: 22, cursor: 'pointer' }}>×</button>
 
         <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.4em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: 8 }}>{post.date} · {post.readTime} read</div>
         <div style={{ display: 'flex', gap: 6, marginBottom: 20, flexWrap: 'wrap' }}>
           {post.tags.map(t => <span key={t} style={{ fontFamily: 'var(--font-mono)', fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(200,169,110,0.2)', color: 'var(--gold)', padding: '2px 8px' }}>{t}</span>)}
         </div>
         <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 5vw, 46px)', lineHeight: 1, marginBottom: 28 }}>{post.title}</h2>
-        <div style={{ height: 1, background: 'rgba(200,169,110,0.1)', marginBottom: 28 }} />
+        <div style={{ height: 1, background: 'var(--rule-soft)', marginBottom: 28 }} />
 
         {paragraphs.map((p, i) => {
           if (p.startsWith('**') && p.endsWith('**')) {
             return <h3 key={i} style={{ fontFamily: 'var(--font-sans)', fontSize: 15, fontWeight: 700, color: 'var(--gold)', marginBottom: 10, marginTop: i > 0 ? 24 : 0, letterSpacing: '0.05em' }}>{p.replace(/\*\*/g, '')}</h3>
           }
-          return <p key={i} style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: 16, lineHeight: 1.8, color: 'rgba(242,236,224,0.65)', marginBottom: 16 }}>{p.replace(/\*\*/g, '')}</p>
+          return <p key={i} style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: 16, lineHeight: 1.8, color: 'var(--text-muted)', marginBottom: 16 }}>{p.replace(/\*\*/g, '')}</p>
         })}
       </motion.div>
     </motion.div>
@@ -190,7 +190,7 @@ export default function Blog({ visible, sounds }) {
             style={{ marginBottom: 8 }}
           >
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase', color: 'var(--red)' }}>Writing</span>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.15em', color: 'rgba(242,236,224,0.2)', marginLeft: 16 }}>— thoughts on building things</span>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.15em', color: 'var(--text-ghost)', marginLeft: 16 }}>— thoughts on building things</span>
           </motion.div>
           <motion.div
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 20 }} transition={{ delay: 0.12, duration: 0.6 }}

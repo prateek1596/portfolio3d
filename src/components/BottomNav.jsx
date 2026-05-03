@@ -14,8 +14,8 @@ export default function BottomNav({ active, setActive, sounds }) {
       position: 'fixed', bottom: 0, left: 0, right: 0,
       height: 'var(--nav-h)',
       display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2,
-      borderTop: '1px solid rgba(200,169,110,0.12)',
-      background: 'rgba(4,4,10,0.88)', backdropFilter: 'blur(24px)',
+      borderTop: '1px solid var(--panel-border)',
+      background: 'var(--glass-bg-strong)', backdropFilter: 'blur(24px)',
       zIndex: 500,
     }}>
       {tabs.map((tab) => {
@@ -31,7 +31,7 @@ export default function BottomNav({ active, setActive, sounds }) {
               display: 'flex', flexDirection: 'column', alignItems: 'center',
               gap: 5, padding: '10px 28px', border: 'none',
               background: 'none',
-              color: isActive ? 'var(--gold)' : 'rgba(242,236,224,0.3)',
+              color: isActive ? 'var(--gold)' : 'var(--text-faint)',
               fontFamily: 'var(--font-mono)', letterSpacing: '0.25em',
               fontSize: 9, textTransform: 'uppercase',
               transition: 'color 0.3s', overflow: 'hidden',

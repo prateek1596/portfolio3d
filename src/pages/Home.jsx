@@ -116,12 +116,12 @@ function ResumeButton({ visible }) {
       style={{
         display: 'inline-flex', alignItems: 'center', gap: 14,
         marginTop: 30, textDecoration: 'none', position: 'relative', overflow: 'hidden',
-        border: '1px solid rgba(0,232,255,0.45)',
-        background: 'rgba(0,232,255,0.04)',
+        border: '1px solid var(--panel-border)',
+        background: 'var(--glass-bg)',
         padding: '13px 30px',
         fontFamily: 'var(--font-mono)', fontSize: 10,
         letterSpacing: '0.3em', textTransform: 'uppercase',
-        color: downloading ? 'var(--black)' : 'var(--cyan)',
+        color: downloading ? 'var(--text)' : 'var(--cyan)',
         transition: 'color 0.3s',
       }}
     >
@@ -142,7 +142,7 @@ function ResumeButton({ visible }) {
       <motion.span
         animate={{ y: downloading ? [0, 4, 0] : 0 }}
         transition={{ duration: 0.6, repeat: downloading ? Infinity : 0 }}
-        style={{ fontSize: 15, position: 'relative' }}
+        style={{ fontSize: 15, position: 'relative', color: 'var(--text)' }}
       >
         {downloading ? '↓' : '↓'}
       </motion.span>
@@ -158,7 +158,7 @@ function ResumeButton({ visible }) {
           transition={{ duration: 0.8, repeat: Infinity }}
           style={{
             width: 5, height: 5, borderRadius: '50%',
-            background: 'var(--black)', position: 'relative',
+            background: 'var(--text)', position: 'relative',
           }}
         />
       )}
@@ -199,8 +199,8 @@ export default function Home({ visible }) {
         transform: 'translateY(-50%)',
         fontFamily: 'var(--font-display)',
         fontSize: 'clamp(120px, 22vw, 260px)',
-        color: 'transparent',
-        WebkitTextStroke: '1px rgba(200,169,110,0.05)',
+          color: 'transparent',
+          WebkitTextStroke: '1px var(--text-ghost)',
         userSelect: 'none', pointerEvents: 'none', lineHeight: 1,
       }}>
         PT
@@ -254,7 +254,7 @@ export default function Home({ visible }) {
           style={{
             fontFamily: 'var(--font-serif)', fontStyle: 'italic',
             fontSize: 'clamp(17px, 2.4vw, 28px)',
-            color: 'rgba(242,236,224,0.6)', marginTop: 16,
+            color: 'var(--text-muted)', marginTop: 16,
           }}
         >
           Crafting{' '}

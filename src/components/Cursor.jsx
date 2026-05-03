@@ -52,7 +52,7 @@ export default function Cursor() {
         position: 'fixed', width: dotSize, height: dotSize,
         background: 'var(--cyan)', borderRadius: '50%',
         transform: 'translate(-50%,-50%)', pointerEvents: 'none',
-        zIndex: 9999, mixBlendMode: 'difference',
+        zIndex: 9999, mixBlendMode: 'var(--cursor-mix)',
         transition: 'width 0.2s, height 0.2s',
       }} />
       <div ref={ringRef} style={{

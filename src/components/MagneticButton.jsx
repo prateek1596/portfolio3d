@@ -1,8 +1,10 @@
 import { motion } from 'framer-motion'
 import { useMagnetic } from '../hooks/useMagnetic'
+import { useState } from 'react'
 
 export default function MagneticButton({ children, style = {}, onClick, strength = 0.4, sounds, ...props }) {
   const { ref, sx, sy, onMove, onLeave } = useMagnetic(strength)
+  const [hovered, setHovered] = useState(false)
 
   return (
     <motion.div
@@ -15,6 +17,8 @@ export default function MagneticButton({ children, style = {}, onClick, strength
       <motion.button
         onClick={() => { sounds?.click(); onClick?.() }}
         onMouseEnter={() => sounds?.hover()}
+        onHoverStart={() => setHovered(true)}
+        onHoverEnd={() => setHovered(false)}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         style={{
@@ -39,7 +43,7 @@ export default function MagneticButton({ children, style = {}, onClick, strength
           whileHover={{ scaleX: 1 }}
           transition={{ duration: 0.3 }}
         />
-        <span style={{ position: 'relative', mixBlendMode: 'difference', color: 'var(--white)' }}>
+        <span style={{ position: 'relative', color: hovered ? 'var(--bg)' : 'var(--gold)' }}>
           {children}
         </span>
       </motion.button>

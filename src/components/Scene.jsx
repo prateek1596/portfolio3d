@@ -3,10 +3,62 @@ import HeroMesh from './HeroMesh'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { Float, MeshDistortMaterial, Sphere, MeshWobbleMaterial, Torus } from '@react-three/drei'
 import * as THREE from 'three'
+import { useTheme } from '../hooks/useTheme'
+
+function getSceneTheme(isDark) {
+  if (typeof window === 'undefined') {
+    return {
+      grid: '#c8a96e',
+      gridOpacity: 0.08,
+      particle: '#00e8ff',
+      particleOpacity: 0.55,
+      gold: '#c8a96e',
+      goldOpacity: 0.3,
+      cyanOpacity: 0.1,
+      redOpacity: 0.18,
+      ambient: 0.2,
+      mainLight: 0.6,
+      accentLight: 0.35,
+      redLight: 0.2,
+    }
+  }
+
+  return !isDark
+    ? {
+        grid: 'rgba(60,67,96,0.9)',
+        gridOpacity: 0.08,
+        particle: '#0ea5c8',
+        particleOpacity: 0.42,
+        gold: '#8f774e',
+        goldOpacity: 0.2,
+        cyanOpacity: 0.12,
+        redOpacity: 0.12,
+        ambient: 0.38,
+        mainLight: 0.9,
+        accentLight: 0.5,
+        redLight: 0.28,
+      }
+    : {
+        grid: '#c8a96e',
+        gridOpacity: 0.08,
+        particle: '#00e8ff',
+        particleOpacity: 0.55,
+        gold: '#c8a96e',
+        goldOpacity: 0.3,
+        cyanOpacity: 0.1,
+        redOpacity: 0.18,
+        ambient: 0.2,
+        mainLight: 0.6,
+        accentLight: 0.35,
+        redLight: 0.2,
+      }
+}
 
 /* ─── Perspective grid that slowly tilts ─── */
 function Grid() {
   const group = useRef()
+  const { isDark } = useTheme()
+  const sceneTheme = getSceneTheme(isDark)
   useFrame((_, dt) => { if (group.current) group.current.rotation.x += dt * 0.005 })
   const lines = useMemo(() => {
     const pts = []
@@ -27,7 +79,7 @@ function Grid() {
         ])
         return (
           <line key={i} geometry={geo}>
-            <lineBasicMaterial color="#c8a96e" transparent opacity={i % 4 === 0 ? 0.1 : 0.04} />
+            <lineBasicMaterial color={sceneTheme.grid} transparent opacity={i % 4 === 0 ? sceneTheme.gridOpacity : sceneTheme.gridOpacity * 0.55} />
           </line>
         )
       })}
@@ -38,6 +90,8 @@ function Grid() {
 /* ─── Floating particles ─── */
 function Particles() {
   const mesh = useRef()
+  const { isDark } = useTheme()
+  const sceneTheme = getSceneTheme(isDark)
   const COUNT = 220
   const { pos, sp } = useMemo(() => {
     const pos = new Float32Array(COUNT * 3)
@@ -66,7 +120,7 @@ function Particles() {
       <bufferGeometry>
         <bufferAttribute attach="attributes-position" count={COUNT} array={pos} itemSize={3} />
       </bufferGeometry>
-      <pointsMaterial size={0.032} color="#00e8ff" transparent opacity={0.55} sizeAttenuation />
+      <pointsMaterial size={0.032} color={sceneTheme.particle} transparent opacity={sceneTheme.particleOpacity} sizeAttenuation />
     </points>
   )
 }
@@ -74,6 +128,8 @@ function Particles() {
 /* ─── Wireframe torus ─── */
 function WireTorus() {
   const m = useRef()
+  const { isDark } = useTheme()
+  const sceneTheme = getSceneTheme(isDark)
   useFrame(({ clock }) => {
     if (!m.current) return
     const t = clock.elapsedTime
@@ -84,7 +140,7 @@ function WireTorus() {
   return (
     <mesh ref={m} position={[5.5, 0.5, -7]}>
       <torusGeometry args={[1.5, 0.025, 16, 140]} />
-      <meshBasicMaterial color="#c8a96e" transparent opacity={0.3} wireframe />
+      <meshBasicMaterial color={sceneTheme.gold} transparent opacity={sceneTheme.goldOpacity} wireframe />
     </mesh>
   )
 }
@@ -92,6 +148,8 @@ function WireTorus() {
 /* ─── Icosahedron wireframe ─── */
 function WireIcosa() {
   const m = useRef()
+  const { isDark } = useTheme()
+  const sceneTheme = getSceneTheme(isDark)
   useFrame(({ clock }) => {
     if (!m.current) return
     const t = clock.elapsedTime
@@ -102,7 +160,7 @@ function WireIcosa() {
   return (
     <mesh ref={m} position={[-6, 0.5, -5]}>
       <icosahedronGeometry args={[1.15, 0]} />
-      <meshBasicMaterial color="#00e8ff" transparent opacity={0.1} wireframe />
+      <meshBasicMaterial color={sceneTheme.particle} transparent opacity={sceneTheme.cyanOpacity} wireframe />
     </mesh>
   )
 }
@@ -110,6 +168,8 @@ function WireIcosa() {
 /* ─── Octahedron wireframe (red accent) ─── */
 function WireOcta() {
   const m = useRef()
+  const { isDark } = useTheme()
+  const sceneTheme = getSceneTheme(isDark)
   useFrame(({ clock }) => {
     if (!m.current) return
     const t = clock.elapsedTime
@@ -120,7 +180,7 @@ function WireOcta() {
   return (
     <mesh ref={m} position={[3.8, -2.2, -4]}>
       <octahedronGeometry args={[0.75, 0]} />
-      <meshBasicMaterial color="#ff2d55" transparent opacity={0.18} wireframe />
+      <meshBasicMaterial color="#ff2d55" transparent opacity={sceneTheme.redOpacity} wireframe />
     </mesh>
   )
 }
@@ -128,6 +188,8 @@ function WireOcta() {
 /* ─── Distorted glowing orb ─── */
 function GlowOrb() {
   const m = useRef()
+  const { isDark } = useTheme()
+  const sceneTheme = getSceneTheme(isDark)
   useFrame(({ clock }) => {
     if (m.current?.material) {
       m.current.material.distort = 0.28 + Math.sin(clock.elapsedTime * 0.48) * 0.14
@@ -136,7 +198,7 @@ function GlowOrb() {
   return (
     <Float speed={1.4} rotationIntensity={0.25} floatIntensity={0.7}>
       <Sphere ref={m} args={[0.95, 64, 64]} position={[-4.5, 2.2, -6.5]}>
-        <MeshDistortMaterial color="#c8a96e" transparent opacity={0.13} distort={0.3} speed={2} />
+        <MeshDistortMaterial color={sceneTheme.gold} transparent opacity={sceneTheme.goldOpacity * 0.45} distort={0.3} speed={2} />
       </Sphere>
     </Float>
   )
@@ -145,6 +207,8 @@ function GlowOrb() {
 /* ─── Second orb (cyan) ─── */
 function CyanOrb() {
   const m = useRef()
+  const { isDark } = useTheme()
+  const sceneTheme = getSceneTheme(isDark)
   useFrame(({ clock }) => {
     if (m.current?.material) {
       m.current.material.factor = 0.4 + Math.sin(clock.elapsedTime * 0.6) * 0.2
@@ -153,7 +217,7 @@ function CyanOrb() {
   return (
     <Float speed={1.1} rotationIntensity={0.4} floatIntensity={0.9}>
       <Sphere ref={m} args={[0.55, 32, 32]} position={[6, -1.5, -5]}>
-        <MeshWobbleMaterial color="#00e8ff" transparent opacity={0.1} factor={0.4} speed={2} />
+        <MeshWobbleMaterial color={sceneTheme.particle} transparent opacity={sceneTheme.cyanOpacity} factor={0.4} speed={2} />
       </Sphere>
     </Float>
   )
@@ -162,6 +226,8 @@ function CyanOrb() {
 /* ─── Ring stack ─── */
 function RingStack() {
   const group = useRef()
+  const { isDark } = useTheme()
+  const sceneTheme = getSceneTheme(isDark)
   useFrame(({ clock }) => {
     if (!group.current) return
     const t = clock.elapsedTime
@@ -174,7 +240,7 @@ function RingStack() {
       {[1.8, 1.4, 1.0].map((r, i) => (
         <mesh key={i} rotation={[Math.PI / 2 + i * 0.3, 0, i * 0.5]}>
           <torusGeometry args={[r, 0.018, 12, 80]} />
-          <meshBasicMaterial color="#c8a96e" transparent opacity={0.15 - i * 0.03} />
+          <meshBasicMaterial color={sceneTheme.gold} transparent opacity={sceneTheme.goldOpacity * (0.5 - i * 0.1)} />
         </mesh>
       ))}
     </group>
@@ -207,6 +273,8 @@ function CameraRig() {
 }
 
 export default function Scene() {
+  const { isDark } = useTheme()
+  const sceneTheme = getSceneTheme(isDark)
   return (
     <div style={{ position: 'fixed', inset: 0, zIndex: 0 }}>
       <Canvas
@@ -216,10 +284,10 @@ export default function Scene() {
         dpr={[1, 1.5]}
       >
         <CameraRig />
-        <ambientLight intensity={0.2} />
-        <pointLight position={[10, 10, 10]} intensity={0.6} color="#c8a96e" />
-        <pointLight position={[-10, -5, 5]} intensity={0.35} color="#00e8ff" />
-        <pointLight position={[0, 8, -8]} intensity={0.2} color="#ff2d55" />
+        <ambientLight intensity={sceneTheme.ambient} />
+        <pointLight position={[10, 10, 10]} intensity={sceneTheme.mainLight} color={sceneTheme.gold} />
+        <pointLight position={[-10, -5, 5]} intensity={sceneTheme.accentLight} color={sceneTheme.particle} />
+        <pointLight position={[0, 8, -8]} intensity={sceneTheme.redLight} color="#ff2d55" />
         <Grid />
         <Particles />
         <WireTorus />

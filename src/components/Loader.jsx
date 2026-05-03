@@ -35,7 +35,7 @@ export default function Loader({ onDone }) {
           transition={{ duration: 0.6, ease: 'easeInOut' }}
           style={{
             position: 'fixed', inset: 0, zIndex: 9000,
-            background: 'var(--black)',
+            background: 'var(--bg)',
             display: 'flex', flexDirection: 'column',
             alignItems: 'center', justifyContent: 'center',
             overflow: 'hidden',
@@ -63,7 +63,7 @@ export default function Loader({ onDone }) {
               initial={{ opacity: 0, scale: 0.85 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: i * 0.08, duration: 0.4 }}
-              style={{ position: 'absolute', width: 32, height: 32, borderColor: 'rgba(200,169,110,0.45)', ...s }}
+              style={{ position: 'absolute', width: 32, height: 32, borderColor: 'var(--panel-border)', ...s }}
             />
           ))}
 
@@ -74,7 +74,7 @@ export default function Loader({ onDone }) {
             fontSize: 'clamp(120px, 22vw, 220px)',
             lineHeight: 1, letterSpacing: '-0.04em',
             color: 'transparent',
-            WebkitTextStroke: '1px rgba(200,169,110,0.08)',
+            WebkitTextStroke: '1px var(--text-ghost)',
             userSelect: 'none',
           }}>
             {String(count).padStart(2, '0')}
@@ -85,7 +85,7 @@ export default function Loader({ onDone }) {
             fontFamily: 'var(--font-display)',
             fontSize: 'clamp(120px, 22vw, 220px)',
             lineHeight: 1, letterSpacing: '-0.04em',
-            color: 'var(--white)',
+            color: 'var(--text)',
             userSelect: 'none', position: 'relative',
           }}>
             {String(count).padStart(2, '0')}
@@ -109,7 +109,7 @@ export default function Loader({ onDone }) {
           {/* Progress track */}
           <div style={{
             position: 'absolute', bottom: 60, left: '10%', right: '10%',
-            height: 1, background: 'rgba(200,169,110,0.1)',
+            height: 1, background: 'var(--rule-soft)',
           }}>
             <div style={{
               height: '100%', background: 'var(--gold)',
@@ -121,7 +121,7 @@ export default function Loader({ onDone }) {
             position: 'absolute', bottom: 36, left: '10%',
             fontFamily: 'var(--font-mono)', fontSize: 9,
             letterSpacing: '0.35em', textTransform: 'uppercase',
-            color: 'rgba(200,169,110,0.35)',
+            color: 'var(--text-faint)',
           }}>
             Prateek · Portfolio · 2025
           </div>

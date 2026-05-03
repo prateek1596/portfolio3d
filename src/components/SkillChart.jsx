@@ -65,14 +65,14 @@ function RadarChart({ visible }) {
           }).join(' ')
           return (
             <polygon key={li} points={pts}
-              fill="none" stroke="rgba(200,169,110,0.12)" strokeWidth={1} />
+              fill="none" stroke="var(--panel-border)" strokeWidth={1} />
           )
         })}
         {/* Spokes */}
         {RADAR_SKILLS.map((_, i) => {
           const angle = (i / N) * 360
           const [x, y] = polarToXY(angle, maxR, cx, cy)
-          return <line key={i} x1={cx} y1={cy} x2={x} y2={y} stroke="rgba(200,169,110,0.1)" strokeWidth={1} />
+          return <line key={i} x1={cx} y1={cy} x2={x} y2={y} stroke="var(--rule-soft)" strokeWidth={1} />
         })}
         {/* Data polygon */}
         <motion.polygon
@@ -96,7 +96,7 @@ function RadarChart({ visible }) {
           return (
             <text key={i} x={x} y={y}
               textAnchor="middle" dominantBaseline="middle"
-              fill="rgba(242,236,224,0.45)"
+              fill="var(--text-faint)"
               fontSize={8} fontFamily="var(--font-mono)"
               style={{ letterSpacing: '0.1em', textTransform: 'uppercase' }}
             >
@@ -135,10 +135,10 @@ function SkillBar({ label, pct, color, visible, index }) {
       transition={{ delay: 0.2 + index * 0.07 }}
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
-        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(242,236,224,0.55)' }}>{label}</span>
+        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>{label}</span>
         <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color }}>{Math.round(width)}%</span>
       </div>
-      <div style={{ height: 2, background: 'rgba(242,236,224,0.07)', position: 'relative' }}>
+      <div style={{ height: 2, background: 'var(--rule-soft)', position: 'relative' }}>
         <div style={{
           position: 'absolute', left: 0, top: 0, bottom: 0,
           width: width + '%', background: color,

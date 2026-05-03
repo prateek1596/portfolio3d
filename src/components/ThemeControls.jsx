@@ -25,8 +25,8 @@ export default function ThemeControls({ sounds }) {
         whileTap={{ scale: 0.94 }}
         style={{
           width: 42, height: 42, borderRadius: '50%',
-          border: '1px solid rgba(200,169,110,0.35)',
-          background: 'rgba(4,4,10,0.85)', backdropFilter: 'blur(12px)',
+          border: '1px solid var(--panel-border)',
+          background: 'var(--glass-bg)', backdropFilter: 'blur(12px)',
           color: 'var(--gold)', fontSize: 16,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           cursor: 'pointer',
@@ -43,23 +43,24 @@ export default function ThemeControls({ sounds }) {
             exit={{ opacity: 0, scale: 0.85, y: -10 }}
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
             style={{
-              background: 'rgba(4,4,10,0.92)', backdropFilter: 'blur(20px)',
-              border: '1px solid rgba(200,169,110,0.15)',
+              background: 'var(--glass-bg-strong)', backdropFilter: 'blur(20px)',
+              border: '1px solid var(--panel-border)',
               padding: '20px 20px', minWidth: 180,
+              boxShadow: 'var(--panel-shadow)',
             }}
           >
             {/* Dark / Light */}
             <div style={{ marginBottom: 16 }}>
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.35em', textTransform: 'uppercase', color: 'rgba(242,236,224,0.35)', marginBottom: 8 }}>Theme</div>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.35em', textTransform: 'uppercase', color: 'var(--text-faint)', marginBottom: 8 }}>Theme</div>
               <motion.button
                 data-hover
                 onClick={() => { setIsDark(d => !d); sounds?.click() }}
                 whileHover={{ scale: 1.03 }}
                 style={{
                   width: '100%', padding: '8px 12px',
-                  background: isDark ? 'rgba(200,169,110,0.1)' : 'rgba(242,236,224,0.1)',
-                  border: '1px solid rgba(200,169,110,0.25)',
-                  color: 'var(--gold)', fontFamily: 'var(--font-mono)',
+                  background: isDark ? 'rgba(200,169,110,0.1)' : 'rgba(0,232,255,0.08)',
+                  border: '1px solid var(--panel-border)',
+                  color: 'var(--text)', fontFamily: 'var(--font-mono)',
                   fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase',
                   cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8,
                 }}
@@ -71,7 +72,7 @@ export default function ThemeControls({ sounds }) {
 
             {/* Accent picker */}
             <div style={{ marginBottom: 16 }}>
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.35em', textTransform: 'uppercase', color: 'rgba(242,236,224,0.35)', marginBottom: 8 }}>Accent</div>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.35em', textTransform: 'uppercase', color: 'var(--text-faint)', marginBottom: 8 }}>Accent</div>
               <div style={{ display: 'flex', gap: 8 }}>
                 {Object.entries(ACCENTS).map(([key, val]) => (
                   <motion.button
@@ -83,7 +84,7 @@ export default function ThemeControls({ sounds }) {
                     style={{
                       width: 28, height: 28, borderRadius: '50%',
                       background: val.primary,
-                      border: accent === key ? `2px solid var(--white)` : '2px solid transparent',
+                      border: accent === key ? '2px solid var(--text)' : '2px solid transparent',
                       cursor: 'pointer', flexShrink: 0,
                     }}
                     title={val.label}
@@ -94,7 +95,7 @@ export default function ThemeControls({ sounds }) {
 
             {/* Sound toggle */}
             <div>
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.35em', textTransform: 'uppercase', color: 'rgba(242,236,224,0.35)', marginBottom: 8 }}>Sound</div>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.35em', textTransform: 'uppercase', color: 'var(--text-faint)', marginBottom: 8 }}>Sound</div>
               <motion.button
                 data-hover
                 onClick={() => {
@@ -106,9 +107,9 @@ export default function ThemeControls({ sounds }) {
                 whileHover={{ scale: 1.03 }}
                 style={{
                   width: '100%', padding: '8px 12px',
-                  background: soundOn ? 'rgba(0,232,255,0.08)' : 'rgba(242,236,224,0.04)',
-                  border: `1px solid ${soundOn ? 'rgba(0,232,255,0.3)' : 'rgba(242,236,224,0.1)'}`,
-                  color: soundOn ? 'var(--cyan)' : 'rgba(242,236,224,0.3)',
+                  background: soundOn ? 'rgba(0,232,255,0.08)' : 'rgba(23,22,31,0.04)',
+                  border: `1px solid ${soundOn ? 'rgba(0,232,255,0.3)' : 'var(--panel-border)'}`,
+                  color: soundOn ? 'var(--cyan)' : 'var(--text-faint)',
                   fontFamily: 'var(--font-mono)', fontSize: 10,
                   letterSpacing: '0.2em', textTransform: 'uppercase',
                   cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8,

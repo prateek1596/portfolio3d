@@ -33,7 +33,7 @@ function InputField({ label, name, type = 'text', multiline = false, value, onCh
         animate={{
           y: focused || value ? -20 : 0,
           fontSize: focused || value ? '9px' : '11px',
-          color: focused ? 'var(--cyan)' : 'rgba(242,236,224,0.35)',
+          color: focused ? 'var(--cyan)' : 'var(--text-faint)',
           letterSpacing: focused || value ? '0.3em' : '0.15em',
         }}
         transition={{ duration: 0.2 }}
@@ -58,8 +58,8 @@ function InputField({ label, name, type = 'text', multiline = false, value, onCh
           width: '100%',
           background: 'transparent',
           border: 'none',
-          borderBottom: `1px solid ${error ? 'var(--red)' : focused ? 'var(--cyan)' : 'rgba(242,236,224,0.15)'}`,
-          color: 'var(--white)',
+          borderBottom: `1px solid ${error ? 'var(--red)' : focused ? 'var(--cyan)' : 'var(--rule-soft)'}`,
+          color: 'var(--text)',
           fontFamily: 'var(--font-serif)',
           fontSize: 15,
           padding: '10px 0 8px',
@@ -162,7 +162,7 @@ export default function Contact({ visible, sounds }) {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 16 }}
             transition={{ delay: 0.35 }}
-            style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: 16, lineHeight: 1.7, color: 'rgba(242,236,224,0.55)', maxWidth: 340, marginBottom: 36 }}
+            style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: 16, lineHeight: 1.7, color: 'var(--text-muted)', maxWidth: 340, marginBottom: 36 }}
           >
             Open to full-time roles, freelance projects, and interesting collaborations.
             Based in Chennai — available remotely worldwide.
@@ -173,7 +173,7 @@ export default function Contact({ visible, sounds }) {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: visible ? 1 : 0, scale: visible ? 1 : 0.9 }}
             transition={{ delay: 0.45 }}
-            style={{ display: 'inline-flex', alignItems: 'center', gap: 9, border: '1px solid rgba(0,232,255,0.3)', padding: '9px 18px', marginBottom: 36, fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.28em', textTransform: 'uppercase', color: 'var(--cyan)' }}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 9, border: '1px solid var(--panel-border)', padding: '9px 18px', marginBottom: 36, fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.28em', textTransform: 'uppercase', color: 'var(--cyan)' }}
           >
             <span style={{ width: 7, height: 7, background: 'var(--cyan)', borderRadius: '50%', animation: 'blinkDot 1.2s infinite', display: 'inline-block' }} />
             Available for work
@@ -197,7 +197,7 @@ export default function Contact({ visible, sounds }) {
                 transition={{ delay: 0.6 + i * 0.08 }}
                 whileHover={{ x: 6, color: 'var(--cyan)' }}
                 onMouseEnter={() => sounds?.hover()}
-                style={{ display: 'flex', alignItems: 'center', gap: 14, fontFamily: 'var(--font-mono)', fontSize: 11, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(242,236,224,0.45)', textDecoration: 'none', transition: 'color 0.25s' }}
+                style={{ display: 'flex', alignItems: 'center', gap: 14, fontFamily: 'var(--font-mono)', fontSize: 11, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'var(--text-muted)', textDecoration: 'none', transition: 'color 0.25s' }}
               >
                 <span style={{ fontSize: 16 }}>{link.icon}</span>
                 {link.label}
@@ -212,9 +212,9 @@ export default function Contact({ visible, sounds }) {
           initial={{ opacity: 0, x: 30 }}
           animate={{ opacity: visible ? 1 : 0, x: visible ? 0 : 30 }}
           transition={{ delay: 0.3, duration: 0.6 }}
-          style={{ borderLeft: '1px solid rgba(200,169,110,0.1)', paddingLeft: 60 }}
+          style={{ borderLeft: '1px solid var(--rule-soft)', paddingLeft: 60 }}
         >
-          <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.4em', textTransform: 'uppercase', color: 'rgba(242,236,224,0.3)', marginBottom: 28 }}>
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.4em', textTransform: 'uppercase', color: 'var(--text-faint)', marginBottom: 28 }}>
             Send a message
           </div>
 
@@ -234,12 +234,12 @@ export default function Contact({ visible, sounds }) {
                   ✦
                 </motion.div>
                 <div style={{ fontFamily: 'var(--font-display)', fontSize: 36, color: 'var(--gold)', marginBottom: 12 }}>Message sent!</div>
-                <p style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', color: 'rgba(242,236,224,0.55)', fontSize: 15 }}>
+                <p style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', color: 'var(--text-muted)', fontSize: 15 }}>
                   I'll get back to you within 24 hours.
                 </p>
                 <motion.button
                   data-hover onClick={() => setStatus('idle')} whileHover={{ scale: 1.04 }}
-                  style={{ marginTop: 28, background: 'none', border: '1px solid rgba(200,169,110,0.3)', color: 'var(--gold)', fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.25em', textTransform: 'uppercase', padding: '10px 22px', cursor: 'pointer' }}
+                  style={{ marginTop: 28, background: 'none', border: '1px solid var(--panel-border)', color: 'var(--gold)', fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.25em', textTransform: 'uppercase', padding: '10px 22px', cursor: 'pointer' }}
                 >
                   Send another →
                 </motion.button>
