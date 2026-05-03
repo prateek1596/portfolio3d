@@ -2,6 +2,7 @@ import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Float } from '@react-three/drei'
 import * as THREE from 'three'
+import { useDragControls } from '../hooks/useDragControls'
 
 // DNA double helix made from spheres
 function DNAHelix() {
@@ -85,9 +86,19 @@ function OrbitRings() {
 }
 
 export default function HeroMesh() {
+  const groupRef = useRef()
+  const rotation = useDragControls()
+
+  useFrame(() => {
+    if (groupRef.current && rotation.current) {
+      groupRef.current.rotation.x += (rotation.current.x - groupRef.current.rotation.x) * 0.1
+      groupRef.current.rotation.y += (rotation.current.y - groupRef.current.rotation.y) * 0.1
+    }
+  })
+
   return (
     <Float speed={1.2} rotationIntensity={0.15} floatIntensity={0.4}>
-      <group position={[4.5, 0.5, -3]} scale={0.9}>
+      <group ref={groupRef} position={[4.5, 0.5, -3]} scale={0.9}>
         <DNAHelix />
         <OrbitRings />
         <ambientLight intensity={0.5} />
