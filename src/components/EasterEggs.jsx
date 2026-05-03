@@ -6,6 +6,8 @@ export default function EasterEggs() {
   const [activeEasterEgg, setActiveEasterEgg] = useState(null)
 
   useEffect(() => {
+    let timerRef = null
+
     const handleEasterEgg = (e) => {
       const eggName = e.detail.name
       setActiveEasterEgg(eggName)
@@ -19,16 +21,22 @@ export default function EasterEggs() {
         document.body.classList.add('easter-egg-secret')
       }
 
-      // Remove notification after 2 seconds
-      const timer = setTimeout(() => {
-        setActiveEasterEgg(null)
-      }, 2000)
+      // Clear existing timer if any
+      if (timerRef) clearTimeout(timerRef)
 
-      return () => clearTimeout(timer)
+      // Remove notification after 2 seconds
+      timerRef = setTimeout(() => {
+        setActiveEasterEgg(null)
+        // Remove all easter egg classes
+        document.body.classList.remove('easter-egg-matrix', 'easter-egg-rainbow', 'easter-egg-secret')
+      }, 2000)
     }
 
     window.addEventListener('easterEggTriggered', handleEasterEgg)
-    return () => window.removeEventListener('easterEggTriggered', handleEasterEgg)
+    return () => {
+      window.removeEventListener('easterEggTriggered', handleEasterEgg)
+      if (timerRef) clearTimeout(timerRef)
+    }
   }, [])
 
   const getEasterEggMessage = (name) => {
