@@ -10,6 +10,10 @@ function getSceneTheme(isDark) {
     return {
       grid: '#c8a96e',
       gridOpacity: 0.08,
+      gridDivisions: 28,
+      fogColor: '#04040a',
+      fogDensity: 0.018,
+      particleCount: 220,
       particle: '#00e8ff',
       particleOpacity: 0.55,
       gold: '#c8a96e',
@@ -26,21 +30,29 @@ function getSceneTheme(isDark) {
   return !isDark
     ? {
         grid: 'rgba(55,62,86,0.85)',
-        gridOpacity: 0.045,
+        gridOpacity: 0.034,
+        gridDivisions: 20,
+        fogColor: '#ece6da',
+        fogDensity: 0.032,
+        particleCount: 120,
         particle: '#0ea5c8',
-        particleOpacity: 0.58,
+        particleOpacity: 0.72,
         gold: '#8f774e',
-        goldOpacity: 0.32,
-        cyanOpacity: 0.2,
-        redOpacity: 0.18,
-        ambient: 0.3,
-        mainLight: 0.78,
-        accentLight: 0.56,
-        redLight: 0.34,
+        goldOpacity: 0.42,
+        cyanOpacity: 0.24,
+        redOpacity: 0.22,
+        ambient: 0.4,
+        mainLight: 0.88,
+        accentLight: 0.62,
+        redLight: 0.42,
       }
     : {
         grid: '#c8a96e',
         gridOpacity: 0.08,
+        gridDivisions: 28,
+        fogColor: '#04040a',
+        fogDensity: 0.018,
+        particleCount: 220,
         particle: '#00e8ff',
         particleOpacity: 0.55,
         gold: '#c8a96e',
@@ -62,7 +74,7 @@ function Grid() {
   useFrame((_, dt) => { if (group.current) group.current.rotation.x += dt * 0.005 })
   const lines = useMemo(() => {
     const pts = []
-    const size = 55, div = 28
+    const size = 55, div = sceneTheme.gridDivisions
     for (let i = -div; i <= div; i++) {
       const v = (i / div) * size
       pts.push([v, 0, -size, v, 0, size])
@@ -92,7 +104,7 @@ function Particles() {
   const mesh = useRef()
   const { isDark } = useTheme()
   const sceneTheme = getSceneTheme(isDark)
-  const COUNT = 220
+  const COUNT = sceneTheme.particleCount
   const { pos, sp } = useMemo(() => {
     const pos = new Float32Array(COUNT * 3)
     const sp = new Float32Array(COUNT)
@@ -283,6 +295,7 @@ export default function Scene() {
         style={{ background: 'transparent' }}
         dpr={[1, 1.5]}
       >
+        <fog attach="fog" args={[sceneTheme.fogColor, 12, 24]} />
         <CameraRig />
         <ambientLight intensity={sceneTheme.ambient} />
         <pointLight position={[10, 10, 10]} intensity={sceneTheme.mainLight} color={sceneTheme.gold} />

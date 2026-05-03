@@ -20,6 +20,8 @@
   --rule-soft: rgba(200,169,110,0.06);
   --glass-bg: rgba(4,4,10,0.78);
   --glass-bg-strong: rgba(4,4,10,0.88);
+  --page-gradient: linear-gradient(180deg, #04040a 0%, #070711 100%);
+  --grain-opacity: 0.035;
   --gold: #c8a96e;
   --gold-dim: rgba(200,169,110,0.15);
   --cyan: #00e8ff;
@@ -33,7 +35,7 @@
 
 html, body, #root {
   width: 100%; height: 100%;
-  background: var(--bg);
+  background: var(--page-gradient);
   color: var(--text);
   font-family: var(--font-mono);
   overflow: hidden;
@@ -47,7 +49,7 @@ body::after {
   content: '';
   position: fixed; inset: 0;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
-  opacity: 0.035;
+  opacity: var(--grain-opacity);
   pointer-events: none;
   z-index: 9997;
 }

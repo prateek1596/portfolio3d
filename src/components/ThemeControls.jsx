@@ -58,8 +58,8 @@ export default function ThemeControls({ sounds }) {
                 whileHover={{ scale: 1.03 }}
                 style={{
                   width: '100%', padding: '8px 12px',
-                  background: isDark ? 'rgba(200,169,110,0.1)' : 'rgba(0,232,255,0.08)',
-                  border: '1px solid var(--panel-border)',
+                  background: isDark ? 'rgba(200,169,110,0.1)' : 'rgba(0,232,255,0.06)',
+                  border: '1px solid var(--panel-border-strong)',
                   color: 'var(--text)', fontFamily: 'var(--font-mono)',
                   fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase',
                   cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8,
@@ -108,7 +108,7 @@ export default function ThemeControls({ sounds }) {
                 style={{
                   width: '100%', padding: '8px 12px',
                   background: soundOn ? 'rgba(0,232,255,0.08)' : 'rgba(23,22,31,0.04)',
-                  border: `1px solid ${soundOn ? 'rgba(0,232,255,0.3)' : 'var(--panel-border)'}`,
+                  border: `1px solid ${soundOn ? 'rgba(0,232,255,0.28)' : 'var(--panel-border-strong)'}`,
                   color: soundOn ? 'var(--cyan)' : 'var(--text-faint)',
                   fontFamily: 'var(--font-mono)', fontSize: 10,
                   letterSpacing: '0.2em', textTransform: 'uppercase',

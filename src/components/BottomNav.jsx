@@ -43,7 +43,7 @@ export default function BottomNav({ active, setActive, sounds }) {
               transition={{ duration: 0.3, ease: 'easeOut' }}
             />
             <motion.div
-              style={{ position: 'absolute', inset: 0, background: 'var(--panel-bg)' }}
+              style={{ position: 'absolute', inset: 0, background: isActive ? 'rgba(200,169,110,0.1)' : 'transparent' }}
               animate={{ opacity: isActive ? 1 : 0 }}
               transition={{ duration: 0.3 }}
             />

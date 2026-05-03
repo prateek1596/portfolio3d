@@ -1,6 +1,8 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 
 const ThemeContext = createContext(null)
+const THEME_STORAGE_KEY = 'portfolio3d:isDark'
+const ACCENT_STORAGE_KEY = 'portfolio3d:accent'
 
 const ACCENTS = {
   gold:  { primary: '#c8a96e', label: 'Gold'  },
@@ -57,8 +59,15 @@ const THEMES = {
 }
 
 export function ThemeProvider({ children }) {
-  const [isDark, setIsDark] = useState(true)
-  const [accent, setAccent] = useState('gold')
+  const [isDark, setIsDark] = useState(() => {
+    if (typeof window === 'undefined') return true
+    const stored = window.localStorage.getItem(THEME_STORAGE_KEY)
+    return stored === null ? true : stored === 'true'
+  })
+  const [accent, setAccent] = useState(() => {
+    if (typeof window === 'undefined') return 'gold'
+    return window.localStorage.getItem(ACCENT_STORAGE_KEY) || 'gold'
+  })
 
   useEffect(() => {
     const root = document.documentElement
@@ -87,9 +96,15 @@ export function ThemeProvider({ children }) {
     root.style.setProperty('--orb-color', theme.orb)
     root.style.setProperty('--orb-color-soft', theme.orbSoft)
     root.style.setProperty('--cursor-mix', theme.cursorMix)
+    root.style.setProperty('--page-gradient', isDark
+      ? 'radial-gradient(circle at top left, rgba(200,169,110,0.08), transparent 34%), radial-gradient(circle at 78% 18%, rgba(0,232,255,0.06), transparent 22%), linear-gradient(180deg, #04040a 0%, #070711 100%)'
+      : 'radial-gradient(circle at top left, rgba(55,62,86,0.18), transparent 30%), radial-gradient(circle at 78% 18%, rgba(0,140,180,0.09), transparent 20%), linear-gradient(180deg, #f3ecdf 0%, #e9e1d4 100%)')
+    root.style.setProperty('--grain-opacity', isDark ? '0.035' : '0.02')
     root.style.setProperty('--black', theme.bg)
     root.style.setProperty('--white', theme.text)
     root.dataset.theme = isDark ? 'dark' : 'light'
+    window.localStorage.setItem(THEME_STORAGE_KEY, String(isDark))
+    window.localStorage.setItem(ACCENT_STORAGE_KEY, accent)
   }, [isDark, accent])
 
   return (

@@ -23,7 +23,7 @@ export default function MagneticButton({ children, style = {}, onClick, strength
         whileTap={{ scale: 0.95 }}
         style={{
           cursor: 'pointer', background: 'none',
-          border: '1px solid var(--gold)',
+          border: '1px solid var(--panel-border-strong)',
           color: 'var(--gold)',
           fontFamily: 'var(--font-mono)',
           fontSize: 10, letterSpacing: '0.3em',

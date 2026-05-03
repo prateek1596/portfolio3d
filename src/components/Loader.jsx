@@ -35,7 +35,7 @@ export default function Loader({ onDone }) {
           transition={{ duration: 0.6, ease: 'easeInOut' }}
           style={{
             position: 'fixed', inset: 0, zIndex: 9000,
-            background: 'var(--bg)',
+            background: 'var(--page-gradient)',
             display: 'flex', flexDirection: 'column',
             alignItems: 'center', justifyContent: 'center',
             overflow: 'hidden',
@@ -48,7 +48,7 @@ export default function Loader({ onDone }) {
             style={{
               position: 'absolute', left: 0, right: 0, height: 1,
               background: 'linear-gradient(90deg, transparent, var(--cyan), transparent)',
-              opacity: 0.25, pointerEvents: 'none',
+              opacity: 0.16, pointerEvents: 'none',
             }}
           />
 
@@ -63,7 +63,7 @@ export default function Loader({ onDone }) {
               initial={{ opacity: 0, scale: 0.85 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: i * 0.08, duration: 0.4 }}
-              style={{ position: 'absolute', width: 32, height: 32, borderColor: 'var(--panel-border)', ...s }}
+              style={{ position: 'absolute', width: 32, height: 32, borderColor: 'var(--panel-border)', opacity: 0.75, ...s }}
             />
           ))}
 
@@ -74,7 +74,7 @@ export default function Loader({ onDone }) {
             fontSize: 'clamp(120px, 22vw, 220px)',
             lineHeight: 1, letterSpacing: '-0.04em',
             color: 'transparent',
-            WebkitTextStroke: '1px var(--text-ghost)',
+            WebkitTextStroke: '1px var(--text-faint)',
             userSelect: 'none',
           }}>
             {String(count).padStart(2, '0')}
