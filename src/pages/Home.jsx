@@ -96,15 +96,14 @@ function ScrambleChar({ char, delay }) {
 function ResumeButton({ visible }) {
   const [downloading, setDownloading] = useState(false)
 
-  const handleClick = (e) => {
-    // If no real PDF, prevent default and show a pulse
+  const handleClick = () => {
     setDownloading(true)
     setTimeout(() => setDownloading(false), 1800)
   }
 
   return (
     <motion.a
-      href="/resume.pdf"
+      href="/Resume%20-%20Prateek.pdf"
       download="Prateek_Resume.pdf"
       onClick={handleClick}
       data-hover
