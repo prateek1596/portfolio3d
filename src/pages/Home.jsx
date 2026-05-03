@@ -86,6 +86,8 @@ function ScrambleChar({ char, delay }) {
         transition: { duration: 0.15 },
       }}
       style={{ display: 'inline-block', transformOrigin: 'bottom center', cursor: 'default' }}
+    >
+      {display}
     </motion.span>
   )
 }

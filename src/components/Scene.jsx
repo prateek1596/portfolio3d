@@ -25,18 +25,18 @@ function getSceneTheme(isDark) {
 
   return !isDark
     ? {
-        grid: 'rgba(60,67,96,0.9)',
-        gridOpacity: 0.08,
+        grid: 'rgba(55,62,86,0.85)',
+        gridOpacity: 0.045,
         particle: '#0ea5c8',
-        particleOpacity: 0.42,
+        particleOpacity: 0.58,
         gold: '#8f774e',
-        goldOpacity: 0.2,
-        cyanOpacity: 0.12,
-        redOpacity: 0.12,
-        ambient: 0.38,
-        mainLight: 0.9,
-        accentLight: 0.5,
-        redLight: 0.28,
+        goldOpacity: 0.32,
+        cyanOpacity: 0.2,
+        redOpacity: 0.18,
+        ambient: 0.3,
+        mainLight: 0.78,
+        accentLight: 0.56,
+        redLight: 0.34,
       }
     : {
         grid: '#c8a96e',
