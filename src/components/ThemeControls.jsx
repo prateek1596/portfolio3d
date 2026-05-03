@@ -29,7 +29,7 @@ export default function ThemeControls({ sounds }) {
           background: 'var(--glass-bg)', backdropFilter: 'blur(12px)',
           color: 'var(--gold)', fontSize: 16,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          cursor: 'pointer',
+          cursor: 'none',
         }}
       >
         ⚙
@@ -62,7 +62,7 @@ export default function ThemeControls({ sounds }) {
                   border: '1px solid var(--panel-border-strong)',
                   color: 'var(--text)', fontFamily: 'var(--font-mono)',
                   fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase',
-                  cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8,
+                  cursor: 'none', display: 'flex', alignItems: 'center', gap: 8,
                 }}
               >
                 <span>{isDark ? '◐' : '◑'}</span>
@@ -85,7 +85,7 @@ export default function ThemeControls({ sounds }) {
                       width: 28, height: 28, borderRadius: '50%',
                       background: val.primary,
                       border: accent === key ? '2px solid var(--text)' : '2px solid transparent',
-                      cursor: 'pointer', flexShrink: 0,
+                      cursor: 'none', flexShrink: 0,
                     }}
                     title={val.label}
                   />
@@ -112,7 +112,7 @@ export default function ThemeControls({ sounds }) {
                   color: soundOn ? 'var(--cyan)' : 'var(--text-faint)',
                   fontFamily: 'var(--font-mono)', fontSize: 10,
                   letterSpacing: '0.2em', textTransform: 'uppercase',
-                  cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8,
+                  cursor: 'none', display: 'flex', alignItems: 'center', gap: 8,
                 }}
               >
                 <span>{soundOn ? '♪' : '♩'}</span>

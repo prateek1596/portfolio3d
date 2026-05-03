@@ -281,7 +281,7 @@ export default function Home({ visible }) {
               whileHover={{ scale: 1.06, borderColor: 'rgba(200,169,110,0.7)' }}
               style={{
                 border: '1px solid rgba(200,169,110,0.28)',
-                padding: '7px 18px', cursor: 'pointer',
+                padding: '7px 18px', cursor: 'none',
                 fontFamily: 'var(--font-mono)', fontSize: 10,
                 letterSpacing: '0.2em', textTransform: 'uppercase',
                 color: 'var(--gold)', transition: 'border-color 0.2s',

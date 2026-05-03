@@ -106,7 +106,7 @@ function PostCard({ post, index, visible, onOpen, sounds }) {
       data-hover
       style={{
         padding: '24px 0', borderBottom: '1px solid var(--rule-soft)',
-        cursor: 'pointer', position: 'relative',
+        cursor: 'none', position: 'relative',
         paddingLeft: hovered ? 16 : 0, transition: 'padding-left 0.3s',
       }}
     >
@@ -155,7 +155,7 @@ function PostModal({ post, onClose, sounds }) {
         style={{ width: '100%', maxWidth: 680, background: 'var(--panel-bg-elevated)', border: '1px solid var(--panel-border)', padding: '48px 52px', position: 'relative', marginBottom: 40 }}
       >
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'var(--gold)' }} />
-        <button onClick={() => { onClose(); sounds?.click() }} data-hover style={{ position: 'absolute', top: 20, right: 24, background: 'none', border: 'none', color: 'var(--text-faint)', fontSize: 22, cursor: 'pointer' }}>×</button>
+        <button onClick={() => { onClose(); sounds?.click() }} data-hover style={{ position: 'absolute', top: 20, right: 24, background: 'none', border: 'none', color: 'var(--text-faint)', fontSize: 22, cursor: 'none' }}>×</button>
 
         <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.4em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: 8 }}>{post.date} · {post.readTime} read</div>
         <div style={{ display: 'flex', gap: 6, marginBottom: 20, flexWrap: 'wrap' }}>

@@ -197,7 +197,7 @@ export default function Contact({ visible, sounds }) {
                 transition={{ delay: 0.6 + i * 0.08 }}
                 whileHover={{ x: 6, color: 'var(--cyan)' }}
                 onMouseEnter={() => sounds?.hover()}
-                style={{ display: 'flex', alignItems: 'center', gap: 14, fontFamily: 'var(--font-mono)', fontSize: 11, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'var(--text-muted)', textDecoration: 'none', transition: 'color 0.25s' }}
+                style={{ display: 'flex', alignItems: 'center', gap: 14, fontFamily: 'var(--font-mono)', fontSize: 11, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'var(--text-muted)', textDecoration: 'none', transition: 'color 0.25s', cursor: 'none' }}
               >
                 <span style={{ fontSize: 16 }}>{link.icon}</span>
                 {link.label}
@@ -239,7 +239,7 @@ export default function Contact({ visible, sounds }) {
                 </p>
                 <motion.button
                   data-hover onClick={() => setStatus('idle')} whileHover={{ scale: 1.04 }}
-                  style={{ marginTop: 28, background: 'none', border: '1px solid var(--panel-border)', color: 'var(--gold)', fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.25em', textTransform: 'uppercase', padding: '10px 22px', cursor: 'pointer' }}
+                  style={{ marginTop: 28, background: 'none', border: '1px solid var(--panel-border)', color: 'var(--gold)', fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.25em', textTransform: 'uppercase', padding: '10px 22px', cursor: 'none' }}
                 >
                   Send another →
                 </motion.button>

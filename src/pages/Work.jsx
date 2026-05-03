@@ -107,7 +107,7 @@ function WorkItem({ project, index, visible, onOpen, sounds }) {
         alignItems: 'center', gap: 20,
         padding: `20px 0 20px ${hovered ? 14 : 0}px`,
         borderBottom: '1px solid var(--rule-soft)',
-        cursor: 'pointer', position: 'relative',
+        cursor: 'none', position: 'relative',
         transition: 'padding-left 0.3s ease',
       }}
     >
@@ -188,7 +188,7 @@ function ScreenshotGallery({ screenshots, color }) {
               flex: 1, height: 52,
               background: s.gradient,
               border: `1px solid ${i === active ? color : 'var(--panel-border)'}`,
-              cursor: 'pointer',
+              cursor: 'none',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               fontSize: 14, transition: 'border-color 0.2s',
             }}
@@ -218,7 +218,7 @@ function Modal({ project, onClose, sounds }) {
       >
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: project.color }} />
         <button onClick={() => { onClose(); sounds?.click() }} data-hover
-          style={{ position: 'absolute', top: 20, right: 24, background: 'none', border: 'none', color: 'var(--text-faint)', fontSize: 22, cursor: 'pointer' }}>×</button>
+          style={{ position: 'absolute', top: 20, right: 24, background: 'none', border: 'none', color: 'var(--text-faint)', fontSize: 22, cursor: 'none' }}>×</button>
 
         <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.4em', textTransform: 'uppercase', color: project.color, marginBottom: 10 }}>
           {project.num} · {project.year}
