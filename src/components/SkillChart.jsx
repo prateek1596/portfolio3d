@@ -77,7 +77,7 @@ function RadarChart({ visible }) {
         {/* Data polygon */}
         <motion.polygon
           points={polyline}
-          fill="rgba(200,169,110,0.12)"
+          fill="var(--gold-dim)"
           stroke="var(--gold)"
           strokeWidth={1.5}
           initial={{ opacity: 0 }}

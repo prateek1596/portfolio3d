@@ -206,7 +206,6 @@ function Modal({ project, onClose, sounds }) {
     <motion.div
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
       onClick={() => { onClose(); sounds?.click() }}
-      style={{ position: 'fixed', inset: 0, zIndex: 2000, background: 'rgba(4,4,10,0.88)', backdropFilter: 'blur(14px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4vw', overflowY: 'auto' }}
       style={{ position: 'fixed', inset: 0, zIndex: 2000, background: 'var(--glass-bg-strong)', backdropFilter: 'blur(14px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4vw', overflowY: 'auto' }}
     >
       <motion.div

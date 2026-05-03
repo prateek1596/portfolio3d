@@ -159,7 +159,7 @@ function PostModal({ post, onClose, sounds }) {
 
         <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.4em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: 8 }}>{post.date} · {post.readTime} read</div>
         <div style={{ display: 'flex', gap: 6, marginBottom: 20, flexWrap: 'wrap' }}>
-          {post.tags.map(t => <span key={t} style={{ fontFamily: 'var(--font-mono)', fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(200,169,110,0.2)', color: 'var(--gold)', padding: '2px 8px' }}>{t}</span>)}
+          {post.tags.map(t => <span key={t} style={{ fontFamily: 'var(--font-mono)', fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid var(--panel-border)', color: 'var(--gold)', padding: '2px 8px' }}>{t}</span>)}
         </div>
         <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 5vw, 46px)', lineHeight: 1, marginBottom: 28 }}>{post.title}</h2>
         <div style={{ height: 1, background: 'var(--rule-soft)', marginBottom: 28 }} />

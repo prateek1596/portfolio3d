@@ -265,7 +265,7 @@ export default function Contact({ visible, sounds }) {
                     width: '100%',
                     padding: '14px 28px',
                     justifyContent: 'center',
-                    background: status === 'sending' ? 'rgba(200,169,110,0.1)' : 'none',
+                    background: status === 'sending' ? 'var(--panel-bg)' : 'none',
                   }}
                 >
                   {status === 'sending' ? '◌ Sending...' : 'Send Message →'}
