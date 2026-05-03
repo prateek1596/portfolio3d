@@ -11,6 +11,14 @@ const ACCENTS = {
   green: { primary: '#39ff14', label: 'Neon'  },
 }
 
+const FALLBACK_THEME = {
+  isDark: true,
+  setIsDark: () => {},
+  accent: 'gold',
+  setAccent: () => {},
+  ACCENTS,
+}
+
 const THEMES = {
   dark: {
     bg: '#04040a',
@@ -114,4 +122,4 @@ export function ThemeProvider({ children }) {
   )
 }
 
-export const useTheme = () => useContext(ThemeContext)
+export const useTheme = () => useContext(ThemeContext) ?? FALLBACK_THEME
