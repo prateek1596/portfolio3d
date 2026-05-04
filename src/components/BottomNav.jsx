@@ -10,15 +10,12 @@ const tabs = [
 ]
 
 export default function BottomNav({ active, setActive, sounds }) {
-  const collapseTimer = useRef(null)
-  const [isExpanded, setIsExpanded] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     const updateMode = () => {
       const mobile = window.matchMedia('(max-width: 768px)').matches || window.matchMedia('(pointer: coarse)').matches
       setIsMobile(mobile)
-      setIsExpanded(mobile)
     }
 
     updateMode()
@@ -26,43 +23,16 @@ export default function BottomNav({ active, setActive, sounds }) {
     return () => window.removeEventListener('resize', updateMode)
   }, [])
 
-  useEffect(() => {
-    if (isMobile) {
-      setIsExpanded(true)
-    }
-  }, [isMobile])
-
-  const handleExpand = () => {
-    if (isMobile) return
-    if (collapseTimer.current) clearTimeout(collapseTimer.current)
-    setIsExpanded(true)
-  }
-
-  const handleCollapse = () => {
-    if (isMobile) return
-    if (collapseTimer.current) clearTimeout(collapseTimer.current)
-    collapseTimer.current = setTimeout(() => setIsExpanded(false), 200)
-  }
-
   const navWidth = useMemo(() => {
     if (isMobile) return 'min(760px, calc(100vw - 16px))'
-    return isExpanded ? 'min(760px, calc(100vw - 24px))' : 44
-  }, [isExpanded, isMobile])
+    return 'min(760px, calc(100vw - 24px))'
+  }, [isMobile])
 
   return (
     <motion.nav
-      onMouseEnter={handleExpand}
-      onMouseLeave={handleCollapse}
-      onFocusCapture={handleExpand}
-      onBlurCapture={(event) => {
-        if (isMobile) return
-        if (!event.currentTarget.contains(event.relatedTarget)) {
-          handleCollapse()
-        }
-      }}
       animate={{
         width: navWidth,
-        height: isMobile ? 'calc(var(--nav-h) - 12px)' : isExpanded ? 'calc(var(--nav-h) - 12px)' : 44,
+        height: isMobile ? 'calc(var(--nav-h) - 12px)' : 'calc(var(--nav-h) - 12px)',
         opacity: 1,
       }}
       transition={{
@@ -89,30 +59,11 @@ export default function BottomNav({ active, setActive, sounds }) {
         willChange: 'transform, width, height',
       }}
     >
-      {!isExpanded && !isMobile ? (
-        <motion.button
-          data-hover
-          aria-label="Open navigation"
-          onClick={handleExpand}
-          onMouseEnter={() => sounds?.hover()}
-          style={{
-            width: 14,
-            height: 14,
-            border: '1px solid rgba(200,169,110,0.4)',
-            borderRadius: '50%',
-            background: 'radial-gradient(circle at 35% 35%, rgba(200,169,110,0.6), rgba(200,169,110,0.2))',
-            boxShadow: '0 0 12px rgba(200,169,110,0.25)',
-            padding: 0,
-            cursor: 'pointer',
-            transition: 'all 0.2s ease',
-          }}
-        />
-      ) : (
-        tabs.map((tab) => {
-          const isActive = active === tab.id
-          return (
-            <button
-              key={tab.id}
+      {tabs.map((tab) => {
+        const isActive = active === tab.id
+        return (
+          <button
+            key={tab.id}
               data-hover
               onClick={() => { sounds?.whoosh(); setActive(tab.id) }}
               onMouseEnter={() => sounds?.hover()}
@@ -175,8 +126,7 @@ export default function BottomNav({ active, setActive, sounds }) {
               </motion.span>
             </button>
           )
-        })
-      )}
+        })}
     </motion.nav>
   )
 }
