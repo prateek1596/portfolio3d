@@ -31,10 +31,6 @@ export default function CommandPalette({ isOpen, onClose, onNavigate, onAction }
     }
   }, [isOpen])
 
-  useEffect(() => {
-    setSelectedIndex(0)
-  }, [search])
-
   const handleSelect = (cmd) => {
     if (['home', 'work', 'about', 'blog', 'contact'].includes(cmd.id)) {
       onNavigate(cmd.id)
@@ -82,7 +78,10 @@ export default function CommandPalette({ isOpen, onClose, onNavigate, onAction }
                 type="text"
                 placeholder="Search commands... (Try ⌘K)"
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => {
+                  setSearch(e.target.value)
+                  setSelectedIndex(0)
+                }}
                 onKeyDown={handleKeyDown}
                 className="command-palette-input"
               />
