@@ -41,12 +41,12 @@ export default function BottomNav({ active, setActive, sounds }) {
   const handleCollapse = () => {
     if (isMobile) return
     if (collapseTimer.current) clearTimeout(collapseTimer.current)
-    collapseTimer.current = setTimeout(() => setIsExpanded(false), 240)
+    collapseTimer.current = setTimeout(() => setIsExpanded(false), 200)
   }
 
   const navWidth = useMemo(() => {
     if (isMobile) return 'min(760px, calc(100vw - 16px))'
-    return isExpanded ? 'min(760px, calc(100vw - 24px))' : 24
+    return isExpanded ? 'min(760px, calc(100vw - 24px))' : 44
   }, [isExpanded, isMobile])
 
   return (
@@ -62,15 +62,13 @@ export default function BottomNav({ active, setActive, sounds }) {
       }}
       animate={{
         width: navWidth,
-        height: isMobile ? 'calc(var(--nav-h) - 12px)' : isExpanded ? 'calc(var(--nav-h) - 12px)' : 24,
-        scale: isExpanded || isMobile ? 1 : 1,
+        height: isMobile ? 'calc(var(--nav-h) - 12px)' : isExpanded ? 'calc(var(--nav-h) - 12px)' : 44,
         opacity: 1,
       }}
       transition={{
         type: 'spring',
-        stiffness: 360,
-        damping: 30,
-        mass: 0.8,
+        stiffness: 320,
+        damping: 25,
       }}
       style={{
         position: 'fixed',
@@ -97,16 +95,16 @@ export default function BottomNav({ active, setActive, sounds }) {
           aria-label="Open navigation"
           onClick={handleExpand}
           onMouseEnter={() => sounds?.hover()}
-          animate={{ scale: [1, 1.08, 1] }}
-          transition={{ duration: 1.4, repeat: Infinity, repeatDelay: 0.8 }}
           style={{
-            width: 10,
-            height: 10,
-            border: 'none',
+            width: 14,
+            height: 14,
+            border: '1px solid rgba(200,169,110,0.4)',
             borderRadius: '50%',
-            background: 'radial-gradient(circle at 35% 35%, rgba(255,255,255,0.95), var(--gold) 45%, rgba(200,169,110,0.35) 72%, rgba(200,169,110,0.12) 100%)',
-            boxShadow: '0 0 0 1px rgba(200,169,110,0.18), 0 0 16px rgba(200,169,110,0.2)',
+            background: 'radial-gradient(circle at 35% 35%, rgba(200,169,110,0.6), rgba(200,169,110,0.2))',
+            boxShadow: '0 0 12px rgba(200,169,110,0.25)',
             padding: 0,
+            cursor: 'pointer',
+            transition: 'all 0.2s ease',
           }}
         />
       ) : (
@@ -160,8 +158,8 @@ export default function BottomNav({ active, setActive, sounds }) {
               />
               <motion.span
                 style={{ fontSize: 17, lineHeight: 1, position: 'relative' }}
-                animate={{ y: isActive ? -2 : 0, scale: isActive ? 1.03 : 1 }}
-                transition={{ duration: 0.28, ease: 'easeOut' }}
+                animate={{ scale: isActive ? 1.05 : 1 }}
+                transition={{ duration: 0.2 }}
               >
                 {tab.glyph}
               </motion.span>
@@ -169,10 +167,9 @@ export default function BottomNav({ active, setActive, sounds }) {
                 style={{ position: 'relative', whiteSpace: 'nowrap' }}
                 animate={{
                   opacity: 1,
-                  y: 0,
                   maxHeight: 18,
                 }}
-                transition={{ duration: 0.28, ease: 'easeOut' }}
+                transition={{ duration: 0.2 }}
               >
                 {tab.label}
               </motion.span>
