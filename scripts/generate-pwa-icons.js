@@ -6,14 +6,17 @@
  * Run: node scripts/generate-pwa-icons.js
  */
 
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // Try using sharp (fast, pure JS), fallback to canvas
 let generateIcon;
 
 try {
-  const sharp = require('sharp');
+  const sharp = (await import('sharp')).default;
   generateIcon = async (size, outputPath) => {
     const svg = `
       <svg width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg">
@@ -36,21 +39,19 @@ try {
     console.log(`✓ Generated ${path.basename(outputPath)}`);
   };
 } catch (e) {
-  // Fallback: create simple solid color PNG
-  const pngSignature = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
-  
+  // Fallback: create simple gradient PNG using pixel data
   generateIcon = async (size, outputPath) => {
-    // Create minimal valid PNG (8x8 gradient)
+    const pngSignature = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
     const minPng = Buffer.concat([
       pngSignature,
-      Buffer.from([0, 0, 0, 13]), // IHDR length
+      Buffer.from([0, 0, 0, 13]),
       Buffer.from('IHDR'),
-      Buffer.from([0, 0, 0, size, 0, 0, 0, size, 8, 2, 0, 0, 0]), // 8-bit RGB
-      Buffer.from([0x90, 0x77, 0x53, 0xde]), // IHDR CRC
-      Buffer.from([0, 0, 0, 10]), // IDAT length
+      Buffer.from([0, 0, 0, size, 0, 0, 0, size, 8, 2, 0, 0, 0]),
+      Buffer.from([0x90, 0x77, 0x53, 0xde]),
+      Buffer.from([0, 0, 0, 10]),
       Buffer.from('IDAT'),
-      Buffer.from([120, 156, 99, 248, 15, 0, 0, 1, 1, 0, 1]), // IDAT data
-      Buffer.from([0x18, 0xdd, 0x8d, 0xb4]) // IDAT CRC
+      Buffer.from([120, 156, 99, 248, 15, 0, 0, 1, 1, 0, 1]),
+      Buffer.from([0x18, 0xdd, 0x8d, 0xb4])
     ]);
     
     fs.writeFileSync(outputPath, minPng);
