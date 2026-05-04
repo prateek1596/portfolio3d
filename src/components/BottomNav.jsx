@@ -11,11 +11,17 @@ const tabs = [
 export default function BottomNav({ active, setActive, sounds }) {
   return (
     <nav style={{
-      position: 'fixed', bottom: 0, left: 0, right: 0,
-      height: 'var(--nav-h)',
-      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2,
-      borderTop: '1px solid var(--panel-border)',
-      background: 'var(--glass-bg-strong)', backdropFilter: 'blur(24px)',
+      position: 'fixed', left: '50%', bottom: 14,
+      transform: 'translateX(-50%)',
+      width: 'min(760px, calc(100vw - 24px))',
+      height: 'calc(var(--nav-h) - 12px)',
+      display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 0,
+      border: '1px solid var(--panel-border)',
+      borderRadius: 9999,
+      background: 'linear-gradient(180deg, rgba(8,8,16,0.92), rgba(4,4,10,0.96))',
+      backdropFilter: 'blur(24px)',
+      boxShadow: '0 12px 40px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.04)',
+      overflow: 'hidden',
       zIndex: 500,
     }}>
       {tabs.map((tab) => {
@@ -29,12 +35,19 @@ export default function BottomNav({ active, setActive, sounds }) {
             style={{
               position: 'relative',
               display: 'flex', flexDirection: 'column', alignItems: 'center',
-              gap: 5, padding: '10px 28px', border: 'none',
+              justifyContent: 'center',
+              flex: '1 1 0',
+              minWidth: 0,
+              height: '100%',
+              gap: 4,
+              padding: '8px 10px',
+              border: 'none',
+              borderLeft: tab.id === 'home' ? 'none' : '1px solid rgba(200,169,110,0.08)',
               background: 'none',
               color: isActive ? 'var(--gold)' : 'var(--text-faint)',
               fontFamily: 'var(--font-mono)', letterSpacing: '0.25em',
               fontSize: 9, textTransform: 'uppercase',
-              transition: 'color 0.3s', overflow: 'hidden',
+                transition: 'color 0.3s, background 0.3s', overflow: 'hidden',
             }}
           >
             <motion.div
