@@ -6,106 +6,128 @@ import * as THREE from 'three'
 
 const LOADING_WORDS = ['INITIALIZING', 'LOADING ASSETS', 'BUILDING WORLD', 'ALMOST THERE']
 
-function SkeletonBone({ start, end, radius = 0.08, color = '#c8a96e', opacity = 0.9 }) {
-  const meshRef = useRef()
-  const startVec = useMemo(() => new THREE.Vector3(...start), [start])
-  const endVec = useMemo(() => new THREE.Vector3(...end), [end])
+function InfinityRing({ radius, depth, segments, hueOffset }) {
+  const ring = useRef()
 
-  useEffect(() => {
-    if (!meshRef.current) return
-    const direction = new THREE.Vector3().subVectors(endVec, startVec)
-    const length = direction.length()
-    const mid = new THREE.Vector3().addVectors(startVec, endVec).multiplyScalar(0.5)
-    meshRef.current.position.copy(mid)
-    meshRef.current.quaternion.setFromUnitVectors(
-      new THREE.Vector3(0, 1, 0),
-      direction.normalize()
-    )
-    meshRef.current.scale.set(1, length, 1)
-  }, [endVec, startVec])
+  const lights = useMemo(() => {
+    const items = []
+    for (let index = 0; index < segments; index++) {
+      const angle = (index / segments) * Math.PI * 2
+      const pulse = (Math.sin(index * 0.55 + depth * 1.4) + 1) * 0.5
+      items.push({
+        position: [Math.cos(angle) * radius, Math.sin(angle) * radius, depth],
+        rotation: [0, 0, angle + Math.PI / 2],
+        color: new THREE.Color().setHSL((index / segments + hueOffset) % 1, 0.95, 0.62 + pulse * 0.12).getStyle(),
+        scale: 0.7 + pulse * 0.55,
+        opacity: 0.4 + pulse * 0.5,
+      })
+    }
+    return items
+  }, [depth, hueOffset, radius, segments])
+
+  useFrame(({ clock }) => {
+    if (!ring.current) return
+    const t = clock.elapsedTime
+    ring.current.rotation.z = Math.sin(t * 0.18 + depth * 0.5) * 0.08
+    ring.current.rotation.x = Math.sin(t * 0.22 + depth * 0.25) * 0.08
+    ring.current.position.z = depth + Math.sin(t * 0.65 + depth) * 0.12
+  })
 
   return (
-    <mesh ref={meshRef}>
-      <cylinderGeometry args={[radius, radius, 1, 8]} />
-      <meshStandardMaterial color={color} transparent opacity={opacity} roughness={0.35} metalness={0.2} />
-    </mesh>
+    <group ref={ring}>
+      {lights.map((light, index) => (
+        <mesh key={index} position={light.position} rotation={light.rotation} scale={[light.scale, 0.08, 0.08]}>
+          <boxGeometry args={[1, 1, 1]} />
+          <meshStandardMaterial
+            color={light.color}
+            emissive={light.color}
+            emissiveIntensity={1.8}
+            transparent
+            opacity={light.opacity}
+            roughness={0.2}
+            metalness={0.1}
+          />
+        </mesh>
+      ))}
+    </group>
   )
 }
 
-function SkeletonFigure() {
-  const group = useRef()
+function InfinityTunnel() {
+  const tunnel = useRef()
 
   useFrame(({ clock }) => {
-    if (!group.current) return
+    if (!tunnel.current) return
     const t = clock.elapsedTime
-    group.current.rotation.y = t * 0.45
-    group.current.rotation.z = Math.sin(t * 0.65) * 0.06
+    tunnel.current.rotation.z = Math.sin(t * 0.2) * 0.08
+    tunnel.current.rotation.y = t * 0.1
   })
 
-  const bones = useMemo(() => ([
-    { start: [0, 1.95, 0], end: [0, 1.25, 0], radius: 0.16 },
-    { start: [0, 1.25, 0], end: [0, 0.4, 0], radius: 0.12 },
-    { start: [0, 1.75, 0], end: [-0.65, 1.2, 0], radius: 0.08 },
-    { start: [0, 1.75, 0], end: [0.65, 1.2, 0], radius: 0.08 },
-    { start: [-0.65, 1.2, 0], end: [-1.15, 0.45, 0], radius: 0.07 },
-    { start: [0.65, 1.2, 0], end: [1.15, 0.45, 0], radius: 0.07 },
-    { start: [0, 0.4, 0], end: [-0.5, -0.55, 0], radius: 0.09 },
-    { start: [0, 0.4, 0], end: [0.5, -0.55, 0], radius: 0.09 },
-    { start: [-0.5, -0.55, 0], end: [-0.5, -1.65, 0], radius: 0.08 },
-    { start: [0.5, -0.55, 0], end: [0.5, -1.65, 0], radius: 0.08 },
-  ]), [])
+  const rings = useMemo(() => {
+    const items = []
+    for (let index = 0; index < 14; index++) {
+      const depth = -index * 0.65
+      const radius = 2.35 - index * 0.08
+      const hueOffset = index * 0.055
+      items.push({ depth, radius, hueOffset, segments: 84 - index * 2 })
+    }
+    return items
+  }, [])
 
   return (
-    <group ref={group} position={[0, -0.15, 0]}>
-      <mesh position={[0, 2.2, 0]}>
-        <sphereGeometry args={[0.34, 22, 18]} />
-        <meshStandardMaterial color="#e8d7b5" transparent opacity={0.95} roughness={0.3} metalness={0.08} />
+    <group ref={tunnel} position={[0, 0, 0]}>
+      <mesh position={[0, 0, 0.8]}>
+        <torusGeometry args={[1.25, 0.1, 20, 120]} />
+        <meshStandardMaterial color="#100f16" emissive="#000000" roughness={0.45} metalness={0.1} />
       </mesh>
-      <mesh position={[0, 1.55, 0]}>
-        <sphereGeometry args={[0.24, 16, 16]} />
-        <meshStandardMaterial color="#f4ecd8" transparent opacity={0.9} roughness={0.28} metalness={0.1} />
-      </mesh>
-      {bones.map((bone, index) => (
-        <SkeletonBone key={index} {...bone} />
+
+      {rings.map((ring, index) => (
+        <InfinityRing key={index} {...ring} />
       ))}
-      <mesh position={[0, 0.25, 0]}>
-        <sphereGeometry args={[0.3, 18, 16]} />
-        <meshStandardMaterial color="#c8a96e" transparent opacity={0.85} roughness={0.25} metalness={0.12} />
+
+      <mesh position={[0, 0, -9.5]}>
+        <circleGeometry args={[1.7, 72]} />
+        <meshBasicMaterial color="#09090d" transparent opacity={0.95} />
       </mesh>
-      <mesh position={[-0.5, -1.72, 0]} rotation={[0, 0, 0.2]}>
-        <sphereGeometry args={[0.16, 14, 12]} />
-        <meshStandardMaterial color="#c8a96e" transparent opacity={0.9} roughness={0.25} metalness={0.12} />
-      </mesh>
-      <mesh position={[0.5, -1.72, 0]} rotation={[0, 0, -0.2]}>
-        <sphereGeometry args={[0.16, 14, 12]} />
-        <meshStandardMaterial color="#c8a96e" transparent opacity={0.9} roughness={0.25} metalness={0.12} />
+
+      <mesh position={[0, 0, -9.2]}>
+        <ringGeometry args={[1.55, 2.05, 96]} />
+        <meshBasicMaterial color="#ff4fd8" transparent opacity={0.12} side={THREE.DoubleSide} />
       </mesh>
     </group>
   )
 }
 
-function SkeletonLoaderScene() {
+function InfinityLoaderScene() {
   return (
-    <div style={{ position: 'relative', width: 'min(62vw, 520px)', maxWidth: '100%', height: 'min(48vh, 420px)' }}>
+    <div style={{ position: 'relative', width: 'min(66vw, 560px)', maxWidth: '100%', height: 'min(50vh, 440px)' }}>
       <Canvas
-        camera={{ position: [0, 0.2, 7.5], fov: 34 }}
+        camera={{ position: [0, 0, 8.5], fov: 32 }}
         dpr={[1, 1.5]}
         gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
         style={{ background: 'transparent' }}
       >
-        <ambientLight intensity={0.4} />
-        <pointLight position={[4, 5, 7]} intensity={1.6} color="#c8a96e" />
-        <pointLight position={[-4, -2, 4]} intensity={0.7} color="#00e8ff" />
-        <Float speed={1.2} rotationIntensity={0.45} floatIntensity={0.4}>
-          <SkeletonFigure />
+        <ambientLight intensity={0.22} />
+        <pointLight position={[3, 3, 6]} intensity={2.3} color="#ffffff" />
+        <pointLight position={[-3, -2, 4]} intensity={1.3} color="#ff4fd8" />
+        <pointLight position={[0, 0, 8]} intensity={1.1} color="#5effc8" />
+        <Float speed={0.7} rotationIntensity={0.2} floatIntensity={0.15}>
+          <InfinityTunnel />
         </Float>
       </Canvas>
 
       <div style={{
-        position: 'absolute', inset: 'auto 14% 14% 14%',
-        height: 1,
-        background: 'linear-gradient(90deg, transparent, rgba(200,169,110,0.85), transparent)',
-        boxShadow: '0 0 18px rgba(200,169,110,0.2)',
+        position: 'absolute', inset: '10% 16%',
+        borderRadius: '50%',
+        background: 'radial-gradient(circle at center, rgba(8,8,12,0.9) 0 22%, rgba(10,10,18,0.75) 40%, rgba(255,79,216,0.08) 58%, transparent 73%)',
+        filter: 'blur(2px)',
+        pointerEvents: 'none',
+      }} />
+
+      <div style={{
+        position: 'absolute', left: '15%', right: '15%', bottom: '12%', height: 1,
+        background: 'linear-gradient(90deg, transparent, rgba(255,79,216,0.7), rgba(94,255,200,0.8), transparent)',
+        boxShadow: '0 0 20px rgba(255,79,216,0.18), 0 0 26px rgba(94,255,200,0.16)',
       }} />
     </div>
   )
@@ -189,13 +211,13 @@ export default function Loader({ onDone }) {
               transition={{ duration: 0.35, ease: 'easeOut' }}
               style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16, position: 'relative' }}
             >
-              <SkeletonLoaderScene />
+              <InfinityLoaderScene />
               <div style={{
                 fontFamily: 'var(--font-mono)', fontSize: 9,
                 letterSpacing: '0.35em', textTransform: 'uppercase',
                 color: 'var(--text-faint)', textAlign: 'center',
               }}>
-                Building the 3D scene
+                Infinity light tunnel
               </div>
             </motion.div>
           ) : (
