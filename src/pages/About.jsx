@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
 import SkillChart from '../components/SkillChart'
+import GitHubStats from '../components/GitHubStats'
 
 function CountUp({ target, visible, suffix = '' }) {
   const [val, setVal] = useState(0)
@@ -136,6 +137,15 @@ export default function About({ visible, sounds }) {
               <div style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: 15, color: 'var(--gold)' }}>{val}</div>
             </div>
           ))}
+        </motion.div>
+
+        {/* GitHub Stats */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 20 }}
+          transition={{ delay: 1.1 }}
+        >
+          <GitHubStats username="prateek1596" />
         </motion.div>
 
       </div>
