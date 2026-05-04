@@ -13,7 +13,6 @@ export default function BottomNav({ active, setActive, sounds }) {
   const collapseTimer = useRef(null)
   const [isExpanded, setIsExpanded] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
-  const [pointerShift, setPointerShift] = useState({ x: 0, y: 0 })
 
   useEffect(() => {
     const updateMode = () => {
@@ -47,7 +46,7 @@ export default function BottomNav({ active, setActive, sounds }) {
 
   const navWidth = useMemo(() => {
     if (isMobile) return 'min(760px, calc(100vw - 16px))'
-    return isExpanded ? 'min(760px, calc(100vw - 24px))' : 'clamp(260px, 64vw, 340px)'
+    return isExpanded ? 'min(760px, calc(100vw - 24px))' : '56px'
   }, [isExpanded, isMobile])
 
   return (
@@ -60,13 +59,6 @@ export default function BottomNav({ active, setActive, sounds }) {
         if (!event.currentTarget.contains(event.relatedTarget)) {
           handleCollapse()
         }
-      }}
-      onMouseMove={(event) => {
-        if (!isExpanded || isMobile) return
-        const rect = event.currentTarget.getBoundingClientRect()
-        const x = ((event.clientX - rect.left) / rect.width - 0.5) * 10
-        const y = ((event.clientY - rect.top) / rect.height - 0.5) * 4
-        setPointerShift({ x, y })
       }}
       animate={{
         width: navWidth,
@@ -82,7 +74,7 @@ export default function BottomNav({ active, setActive, sounds }) {
       }}
       style={{
         position: 'fixed', left: '50%', bottom: isMobile ? 8 : 14,
-        transform: `translateX(-50%) translate3d(${pointerShift.x}px, ${pointerShift.y}px, 0)`,
+        transform: 'translateX(-50%)',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 0,
         border: '1px solid rgba(200,169,110,0.26)',
         borderRadius: 9999,
@@ -106,13 +98,13 @@ export default function BottomNav({ active, setActive, sounds }) {
               position: 'relative',
               display: 'flex', flexDirection: 'column', alignItems: 'center',
               justifyContent: 'center',
-              flex: '1 1 0',
+              flex: isExpanded || isMobile ? '1 1 0' : '0 0 56px',
               minWidth: 0,
               height: '100%',
               gap: 3,
-              padding: isExpanded || isMobile ? '8px 10px' : '10px 6px',
+              padding: isExpanded || isMobile ? '8px 10px' : '0',
               border: 'none',
-              borderLeft: tab.id === 'home' ? 'none' : '1px solid rgba(200,169,110,0.08)',
+              borderLeft: isExpanded || isMobile ? (tab.id === 'home' ? 'none' : '1px solid rgba(200,169,110,0.08)') : 'none',
               background: 'none',
               color: isActive ? 'var(--gold)' : 'var(--text-faint)',
               fontFamily: 'var(--font-mono)', letterSpacing: '0.25em',
@@ -124,8 +116,8 @@ export default function BottomNav({ active, setActive, sounds }) {
             <motion.div
               style={{
                 position: 'absolute',
-                inset: '6px 10px auto 10px',
-                height: 34,
+                inset: isExpanded || isMobile ? '6px 10px auto 10px' : '6px',
+                height: isExpanded || isMobile ? 34 : 42,
                 borderRadius: 9999,
                 background: isActive ? 'linear-gradient(180deg, rgba(200,169,110,0.18), rgba(200,169,110,0.08))' : 'transparent',
                 boxShadow: isActive ? '0 0 18px rgba(200,169,110,0.22), inset 0 1px 0 rgba(255,255,255,0.06)' : 'none',
@@ -140,7 +132,7 @@ export default function BottomNav({ active, setActive, sounds }) {
             />
             <motion.span
               style={{ fontSize: 17, lineHeight: 1, position: 'relative' }}
-              animate={{ y: isActive ? -2 : isExpanded || isMobile ? 0 : 0, scale: isActive ? 1.03 : 1 }}
+              animate={{ y: isActive ? -2 : 0, scale: isActive ? 1.03 : 1 }}
               transition={{ duration: 0.28, ease: 'easeOut' }}
             >
               {tab.glyph}
