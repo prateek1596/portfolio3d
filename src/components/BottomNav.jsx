@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 
 const tabs = [
@@ -47,7 +47,7 @@ export default function BottomNav({ active, setActive, sounds }) {
         transform: 'translateX(-50%)',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: isExpanded || isMobile ? 'space-between' : 'center',
+        justifyContent: 'space-between',
         gap: 0,
         border: '1px solid rgba(200,169,110,0.26)',
         borderRadius: 9999,
