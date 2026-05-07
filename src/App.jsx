@@ -134,12 +134,12 @@ function Inner() {
         width: '100%',
         height: 'calc(100vh - var(--nav-h))',
       }}>
-        <Home visible={active === 'home'} sounds={sounds} navigate={navigate} />
         <Suspense fallback={<SectionFallback />}>
-          <Work visible={active === 'work'} sounds={sounds} />
-          <About visible={active === 'about'} sounds={sounds} />
-          <Blog visible={active === 'blog'} sounds={sounds} />
-          <Contact visible={active === 'contact'} sounds={sounds} />
+          {active === 'home' && <Home visible sounds={sounds} navigate={navigate} />}
+          {active === 'work' && <Work visible sounds={sounds} />}
+          {active === 'about' && <About visible sounds={sounds} />}
+          {active === 'blog' && <Blog visible sounds={sounds} />}
+          {active === 'contact' && <Contact visible sounds={sounds} />}
         </Suspense>
       </div>
 
