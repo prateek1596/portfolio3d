@@ -1,11 +1,10 @@
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, lazy, Suspense } from 'react'
 import './styles/globals.css'
 import { ThemeProvider } from './hooks/useTheme'
 import { useSounds } from './hooks/useSounds'
 import { useCommandPalette } from './hooks/useCommandPalette'
 import { useEasterEggs } from './hooks/useEasterEggs'
 import Cursor from './components/Cursor'
-import Scene from './components/Scene'
 import BottomNav from './components/BottomNav'
 import Loader from './components/Loader'
 import PageTransition from './components/PageTransition'
@@ -13,11 +12,29 @@ import ThemeControls from './components/ThemeControls'
 import CommandPalette from './components/CommandPalette'
 import EasterEggs from './components/EasterEggs'
 import Home from './pages/Home'
-import Work from './pages/Work'
-import About from './pages/About'
-import Blog from './pages/Blog'
-import Contact from './pages/Contact'
 import { injectStructuredData, updateMetaTags, getPageMetaTags } from './utils/seo'
+
+const Scene = lazy(() => import('./components/Scene'))
+const Work = lazy(() => import('./pages/Work'))
+const About = lazy(() => import('./pages/About'))
+const Blog = lazy(() => import('./pages/Blog'))
+const Contact = lazy(() => import('./pages/Contact'))
+
+function SectionFallback() {
+  return (
+    <div style={{
+      position: 'absolute', inset: 0,
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      color: 'var(--text-faint)',
+      fontFamily: 'var(--font-mono)',
+      fontSize: 10,
+      letterSpacing: '0.35em',
+      textTransform: 'uppercase',
+    }}>
+      Loading section...
+    </div>
+  )
+}
 
 function Inner() {
   const [active, setActive] = useState('home')
@@ -92,7 +109,9 @@ function Inner() {
     <>
       {!loaded && <Loader onDone={() => setLoaded(true)} />}
 
-      <Scene />
+      <Suspense fallback={null}>
+        <Scene />
+      </Suspense>
       <PageTransition pageKey={transKey} />
 
       {/* Top-right settings panel */}
@@ -115,11 +134,13 @@ function Inner() {
         width: '100%',
         height: 'calc(100vh - var(--nav-h))',
       }}>
-        <Home    visible={active === 'home'}    sounds={sounds} navigate={navigate} />
-        <Work    visible={active === 'work'}    sounds={sounds} />
-        <About   visible={active === 'about'}   sounds={sounds} />
-        <Blog    visible={active === 'blog'}    sounds={sounds} />
-        <Contact visible={active === 'contact'} sounds={sounds} />
+        <Home visible={active === 'home'} sounds={sounds} navigate={navigate} />
+        <Suspense fallback={<SectionFallback />}>
+          <Work visible={active === 'work'} sounds={sounds} />
+          <About visible={active === 'about'} sounds={sounds} />
+          <Blog visible={active === 'blog'} sounds={sounds} />
+          <Contact visible={active === 'contact'} sounds={sounds} />
+        </Suspense>
       </div>
 
       <BottomNav active={active} setActive={navigate} sounds={sounds} />
