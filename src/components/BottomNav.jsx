@@ -9,7 +9,7 @@ const tabs = [
   { id: 'contact', label: 'CONTACT', glyph: '◎' },
 ]
 
-export default function BottomNav({ active, setActive, sounds }) {
+export default function BottomNav({ active, setActive, sounds, onPrefetch }) {
   const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
@@ -69,7 +69,9 @@ export default function BottomNav({ active, setActive, sounds }) {
               title={tab.label}
               data-hover
               onClick={() => { sounds?.whoosh(); setActive(tab.id) }}
+              onFocus={() => onPrefetch?.(tab.id)}
               onMouseEnter={() => sounds?.hover()}
+              onPointerEnter={() => onPrefetch?.(tab.id)}
               style={{
                 position: 'relative',
                 display: 'flex',

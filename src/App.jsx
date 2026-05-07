@@ -14,11 +14,17 @@ import EasterEggs from './components/EasterEggs'
 import Home from './pages/Home'
 import { injectStructuredData, updateMetaTags, getPageMetaTags } from './utils/seo'
 
-const Scene = lazy(() => import('./components/Scene'))
-const Work = lazy(() => import('./pages/Work'))
-const About = lazy(() => import('./pages/About'))
-const Blog = lazy(() => import('./pages/Blog'))
-const Contact = lazy(() => import('./pages/Contact'))
+const loadScene = () => import('./components/Scene')
+const loadWork = () => import('./pages/Work')
+const loadAbout = () => import('./pages/About')
+const loadBlog = () => import('./pages/Blog')
+const loadContact = () => import('./pages/Contact')
+
+const Scene = lazy(loadScene)
+const Work = lazy(loadWork)
+const About = lazy(loadAbout)
+const Blog = lazy(loadBlog)
+const Contact = lazy(loadContact)
 
 function SectionFallback() {
   return (
@@ -50,6 +56,30 @@ function Inner() {
   useEffect(() => {
     injectStructuredData()
     updateMetaTags(getPageMetaTags('home'))
+  }, [])
+
+  useEffect(() => {
+    const idle = window.requestIdleCallback?.(() => {
+      loadScene()
+      loadWork()
+      loadAbout()
+      loadBlog()
+      loadContact()
+    })
+
+    if (!idle) {
+      const timeout = window.setTimeout(() => {
+        loadScene()
+        loadWork()
+        loadAbout()
+        loadBlog()
+        loadContact()
+      }, 1200)
+
+      return () => window.clearTimeout(timeout)
+    }
+
+    return () => window.cancelIdleCallback?.(idle)
   }, [])
 
   // Update SEO when page changes
@@ -144,6 +174,24 @@ function Inner() {
       </div>
 
       <BottomNav active={active} setActive={navigate} sounds={sounds} />
+      <BottomNav active={active} setActive={navigate} sounds={sounds} onPrefetch={(page) => {
+        switch (page) {
+          case 'work':
+            loadWork()
+            break
+          case 'about':
+            loadAbout()
+            break
+          case 'blog':
+            loadBlog()
+            break
+          case 'contact':
+            loadContact()
+            break
+          default:
+            break
+        }
+      }} />
       <Cursor />
     </>
   )
