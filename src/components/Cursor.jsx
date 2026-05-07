@@ -4,11 +4,19 @@ export default function Cursor() {
   const dotRef = useRef(null)
   const ringRef = useRef(null)
   const [hovered, setHovered] = useState(false)
+  const [reduceMotion] = useState(() => {
+    if (typeof window === 'undefined') return false
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  })
   const mouse = useRef({ x: 0, y: 0 })
   const ring = useRef({ x: 0, y: 0 })
   const raf = useRef(null)
 
   useEffect(() => {
+    if (reduceMotion) {
+      return undefined
+    }
+
     const onMove = (e) => {
       mouse.current = { x: e.clientX, y: e.clientY }
       if (dotRef.current) {
@@ -41,6 +49,10 @@ export default function Cursor() {
       cancelAnimationFrame(raf.current)
     }
   }, [])
+
+  if (reduceMotion) {
+    return null
+  }
 
   const dotSize = hovered ? 6 : 10
   const ringSize = hovered ? 56 : 38

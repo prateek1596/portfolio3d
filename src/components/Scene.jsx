@@ -3,6 +3,7 @@ import HeroMesh from './HeroMesh'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { Float, MeshDistortMaterial, Sphere, MeshWobbleMaterial, Torus } from '@react-three/drei'
 import * as THREE from 'three'
+import { useReducedMotion } from 'framer-motion'
 import { useTheme } from '../hooks/useTheme'
 
 function getSceneTheme(isDark) {
@@ -286,7 +287,41 @@ function CameraRig() {
 
 export default function Scene() {
   const { isDark } = useTheme()
+  const reduceMotion = useReducedMotion()
   const sceneTheme = getSceneTheme(isDark)
+
+  if (reduceMotion) {
+    return (
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: 0,
+          background: `radial-gradient(circle at 20% 20%, ${sceneTheme.gold}18, transparent 28%), radial-gradient(circle at 80% 75%, ${sceneTheme.particle}12, transparent 26%), linear-gradient(180deg, ${sceneTheme.fogColor} 0%, ${sceneTheme.fogColor} 100%)`,
+          pointerEvents: 'none',
+        }}
+      >
+        <div style={{
+          position: 'absolute',
+          inset: 'auto 12% 12%',
+          height: 1,
+          background: 'linear-gradient(90deg, transparent, var(--gold), transparent)',
+          opacity: 0.25,
+        }} />
+        <div style={{
+          position: 'absolute',
+          inset: '18% 16% auto auto',
+          width: 220,
+          height: 220,
+          borderRadius: '50%',
+          border: '1px solid rgba(200,169,110,0.1)',
+          filter: 'blur(1px)',
+        }} />
+      </div>
+    )
+  }
+
   return (
     <div style={{ position: 'fixed', inset: 0, zIndex: 0 }}>
       <Canvas

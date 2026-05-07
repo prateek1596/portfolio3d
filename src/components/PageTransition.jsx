@@ -1,6 +1,13 @@
 import { AnimatePresence, motion } from 'framer-motion'
+import { useReducedMotion } from 'framer-motion'
 
 export default function PageTransition({ pageKey }) {
+  const reduceMotion = useReducedMotion()
+
+  if (reduceMotion) {
+    return null
+  }
+
   return (
     <AnimatePresence mode="wait">
       <motion.div
