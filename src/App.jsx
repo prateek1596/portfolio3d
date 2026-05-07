@@ -173,7 +173,6 @@ function Inner() {
         </Suspense>
       </div>
 
-      <BottomNav active={active} setActive={navigate} sounds={sounds} />
       <BottomNav active={active} setActive={navigate} sounds={sounds} onPrefetch={(page) => {
         switch (page) {
           case 'work':
