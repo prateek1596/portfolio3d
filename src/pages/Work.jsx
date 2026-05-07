@@ -12,6 +12,7 @@ const PROJECTS = [
     num: '01', title: 'ADMRI', year: '2024',
     desc: 'Advanced Data & ML Research Initiative',
     long: 'Comprehensive platform for data analysis and machine learning research with advanced visualization, model training, and deployment capabilities.',
+    impact: 'Unified research workflows into one interface so experiments, analysis, and deployment could stay in sync.',
     tech: ['Python', 'FastAPI', 'React', 'TensorFlow', 'PostgreSQL'],
     color: 'var(--gold)',
     liveUrl: 'https://github.com/prateek1596?tab=repositories', githubUrl: 'https://github.com/prateek1596',
@@ -25,6 +26,7 @@ const PROJECTS = [
     num: '02', title: 'MedPredict', year: '2024',
     desc: 'Multi-disease ML prediction system',
     long: 'Six ML models (LR, RF, SVM, XGBoost, LightGBM, Stacking Ensemble) with SHAP explainability, fairness analysis using Fairlearn, counterfactual exploration via DiCE, Optuna AutoML tuning, Redis caching and PWA support.',
+    impact: 'Turned a collection of models into one explainable product with faster predictions and fairness checks built in.',
     tech: ['FastAPI', 'XGBoost', 'LightGBM', 'SHAP', 'DiCE', 'Optuna', 'React', 'Redis', 'PostgreSQL'],
     color: 'var(--cyan)',
     liveUrl: 'https://github.com/prateek1596?tab=repositories', githubUrl: 'https://github.com/prateek1596',
@@ -38,6 +40,7 @@ const PROJECTS = [
     num: '03', title: 'DQC', year: '2024',
     desc: 'Dataset Quality Checker',
     long: 'CSV analysis tool with auto-clean pipeline functionality. Auto-fix/clean CSV data, generate quality reports with PDF export, and PWA support for offline use.',
+    impact: 'Shortened the path from messy CSV uploads to a clean, exportable quality report.',
     tech: ['Python', 'FastAPI', 'React', 'Vite', 'PWA', 'PDF Export'],
     color: 'var(--red)',
     liveUrl: 'https://github.com/prateek1596?tab=repositories', githubUrl: 'https://github.com/prateek1596',
@@ -51,6 +54,7 @@ const PROJECTS = [
     num: '04', title: 'ClinicSight', year: '2024',
     desc: 'Healthcare clinic management system',
     long: 'Full-stack healthcare management platform with patient records, appointment scheduling, billing, and analytics. Built with modern tech stack and HIPAA compliance considerations.',
+    impact: 'Brought patient records, appointments, billing, and analytics into one clinic workflow.',
     tech: ['React', 'Node.js', 'PostgreSQL', 'TailwindCSS', 'REST API', 'Authentication'],
     color: 'var(--gold)',
     liveUrl: 'https://github.com/prateek1596?tab=repositories', githubUrl: 'https://github.com/prateek1596',
@@ -64,6 +68,7 @@ const PROJECTS = [
     num: '05', title: 'ManhwaVault', year: '2024',
     desc: 'Mobile content scraper with notifications',
     long: 'React Native + Expo mobile app with FastAPI backend featuring a Git-based extension system. Background update checker with Expo push notifications and exponential backoff rate limiting.',
+    impact: 'Made content tracking resilient by isolating sources behind Git-based extensions and background checks.',
     tech: ['React Native', 'Expo', 'FastAPI', 'Git Extensions', 'Push Notifications', 'Redis'],
     color: 'var(--cyan)',
     liveUrl: 'https://github.com/prateek1596?tab=repositories', githubUrl: 'https://github.com/prateek1596',
@@ -238,6 +243,20 @@ function Modal({ project, onClose, sounds }) {
         {/* Screenshot gallery */}
         <ScreenshotGallery screenshots={project.screenshots} color={project.color} />
 
+        <div style={{
+          marginBottom: 24,
+          padding: '14px 16px',
+          border: '1px solid var(--panel-border)',
+          background: 'rgba(255,255,255,0.02)',
+        }}>
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: 8, letterSpacing: '0.28em', textTransform: 'uppercase', color: 'var(--text-faint)', marginBottom: 8 }}>
+            Outcome
+          </div>
+          <div style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: 15, lineHeight: 1.7, color: 'var(--text-muted)' }}>
+            {project.impact}
+          </div>
+        </div>
+
         <p style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: 16, lineHeight: 1.75, color: 'var(--text-muted)', marginBottom: 24 }}>
           {project.long}
         </p>
@@ -254,7 +273,7 @@ function Modal({ project, onClose, sounds }) {
           ))}
         </div>
 
-        <div style={{ display: 'flex', gap: 12 }}>
+        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
           <MagneticButton onClick={() => { sounds?.click(); window.open(project.liveUrl, '_blank') }} sounds={sounds}
             style={{ flex: 1, justifyContent: 'center', borderColor: project.color, color: project.color }}>
             Live Demo →
@@ -271,6 +290,7 @@ function Modal({ project, onClose, sounds }) {
 
 export default function Work({ visible, sounds }) {
   const [modal, setModal] = useState(null)
+  const totalProjects = PROJECTS.length
 
   return (
     <>
@@ -281,10 +301,50 @@ export default function Work({ visible, sounds }) {
         <div style={{ width: '100%', maxWidth: 720 }}>
           <motion.div
             initial={{ opacity: 0, y: 12 }} animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 12 }} transition={{ delay: 0.05 }}
-            style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase', color: 'var(--red)', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 12 }}
+            style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase', color: 'var(--red)', marginBottom: 18, display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}
           >
             Selected Work
             <span style={{ color: 'var(--text-ghost)', fontSize: 9 }}>— hover to preview · click to expand</span>
+            <span style={{ color: 'var(--gold)', fontSize: 9, border: '1px solid var(--panel-border)', padding: '5px 8px' }}>{totalProjects} projects</span>
+          </motion.div>
+
+          <motion.p
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 14 }}
+            transition={{ delay: 0.1, duration: 0.5 }}
+            style={{
+              maxWidth: 560,
+              marginBottom: 24,
+              fontFamily: 'var(--font-serif)',
+              fontStyle: 'italic',
+              fontSize: 16,
+              lineHeight: 1.7,
+              color: 'var(--text-muted)',
+            }}
+          >
+            A selection of shipped work spanning ML systems, product interfaces, mobile apps, and developer tools. The goal is simple: show what the project solved, not just what it used.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 12 }}
+            transition={{ delay: 0.14, duration: 0.45 }}
+            style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginBottom: 26 }}
+          >
+            {['Product Thinking', 'ML Systems', 'Mobile UX', 'Developer Tools'].map((chip) => (
+              <span key={chip} style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: 8,
+                letterSpacing: '0.22em',
+                textTransform: 'uppercase',
+                padding: '6px 10px',
+                border: '1px solid var(--panel-border)',
+                color: 'var(--text-muted)',
+                background: 'rgba(255,255,255,0.02)',
+              }}>
+                {chip}
+              </span>
+            ))}
           </motion.div>
 
           {PROJECTS.map((p, i) => (
