@@ -115,7 +115,7 @@ function Inner() {
         width: '100%',
         height: 'calc(100vh - var(--nav-h))',
       }}>
-        <Home    visible={active === 'home'}    sounds={sounds} />
+        <Home    visible={active === 'home'}    sounds={sounds} navigate={navigate} />
         <Work    visible={active === 'work'}    sounds={sounds} />
         <About   visible={active === 'about'}   sounds={sounds} />
         <Blog    visible={active === 'blog'}    sounds={sounds} />

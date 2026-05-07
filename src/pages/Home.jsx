@@ -165,7 +165,7 @@ function ResumeButton({ visible }) {
   )
 }
 
-export default function Home({ visible }) {
+export default function Home({ visible, sounds, navigate }) {
   const cardRef = useRef(null)
   const rx = useMotionValue(0), ry = useMotionValue(0)
   const sx = useSpring(rx, { stiffness: 80, damping: 20 })
@@ -180,6 +180,31 @@ export default function Home({ visible }) {
     ry.set(((e.clientY - r.top) / r.height - 0.5) * 12)
   }
   const onLeave = () => { rx.set(0); ry.set(0) }
+
+  const ctaStyle = {
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 10,
+    minHeight: 48,
+    padding: '0 20px',
+    borderRadius: 9999,
+    border: '1px solid var(--panel-border-strong)',
+    background: 'linear-gradient(180deg, rgba(200,169,110,0.14), rgba(200,169,110,0.05))',
+    color: 'var(--text)',
+    fontFamily: 'var(--font-mono)',
+    fontSize: 10,
+    letterSpacing: '0.26em',
+    textTransform: 'uppercase',
+    textDecoration: 'none',
+    cursor: 'none',
+  }
+
+  const ghostCtaStyle = {
+    ...ctaStyle,
+    background: 'rgba(255,255,255,0.02)',
+    color: 'var(--gold)',
+  }
 
   return (
     <motion.div
@@ -289,6 +314,34 @@ export default function Home({ visible }) {
               {tag}
             </motion.div>
           ))}
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 18 }}
+          transition={{ delay: 0.82, duration: 0.5 }}
+          style={{ display: 'flex', gap: 12, marginTop: 30, flexWrap: 'wrap' }}
+        >
+          <motion.button
+            data-hover
+            onClick={() => { sounds?.click(); navigate?.('work') }}
+            whileHover={{ y: -2, scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            style={ctaStyle}
+          >
+            View Work
+            <span aria-hidden="true">→</span>
+          </motion.button>
+
+          <motion.button
+            data-hover
+            onClick={() => { sounds?.click(); navigate?.('contact') }}
+            whileHover={{ y: -2, scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            style={ghostCtaStyle}
+          >
+            Contact Me
+          </motion.button>
         </motion.div>
 
         {/* Resume CTA */}
