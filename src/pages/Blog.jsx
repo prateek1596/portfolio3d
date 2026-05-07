@@ -93,6 +93,8 @@ Real-time features beyond basic WebSockets need something like Supabase or a pro
   },
 ]
 
+const FEATURED_TOPICS = ['ML Explainability', 'Scraping Systems', 'Developer Tools', 'Stack Design']
+
 function PostCard({ post, index, visible, onOpen, sounds }) {
   const [hovered, setHovered] = useState(false)
   return (
@@ -105,9 +107,11 @@ function PostCard({ post, index, visible, onOpen, sounds }) {
       onClick={() => { onOpen(post); sounds?.click() }}
       data-hover
       style={{
-        padding: '24px 0', borderBottom: '1px solid var(--rule-soft)',
+        padding: '22px 18px 22px 0', borderBottom: '1px solid var(--rule-soft)',
         cursor: 'none', position: 'relative',
-        paddingLeft: hovered ? 16 : 0, transition: 'padding-left 0.3s',
+        paddingLeft: hovered ? 16 : 0, transition: 'padding-left 0.3s, background 0.25s ease',
+        background: hovered ? 'linear-gradient(90deg, rgba(200,169,110,0.04), transparent 80%)' : 'transparent',
+        borderRadius: 14,
       }}
     >
       <motion.div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 2, background: 'var(--gold)', originY: 0.5 }}
@@ -129,6 +133,15 @@ function PostCard({ post, index, visible, onOpen, sounds }) {
           <p style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-faint)', marginTop: 8, lineHeight: 1.6 }}>
             {post.excerpt}
           </p>
+
+          <div style={{ display: 'flex', gap: 8, marginTop: 14, flexWrap: 'wrap' }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid var(--panel-border)', color: 'var(--text-faint)', padding: '3px 8px' }}>
+              Open article
+            </span>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid var(--panel-border)', color: hovered ? 'var(--gold)' : 'var(--text-faint)', padding: '3px 8px' }}>
+              {post.tags.join(' · ')}
+            </span>
+          </div>
         </div>
         <div style={{ textAlign: 'right', flexShrink: 0 }}>
           <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.2em', color: 'var(--text-faint)', textTransform: 'uppercase' }}>{post.date}</div>
@@ -142,6 +155,7 @@ function PostCard({ post, index, visible, onOpen, sounds }) {
 
 function PostModal({ post, onClose, sounds }) {
   const paragraphs = post.body.split('\n\n')
+  const takeaway = post.excerpt.split(' — ')[0] || post.excerpt
   return (
     <motion.div
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
@@ -164,6 +178,20 @@ function PostModal({ post, onClose, sounds }) {
         <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 5vw, 46px)', lineHeight: 1, marginBottom: 28 }}>{post.title}</h2>
         <div style={{ height: 1, background: 'var(--rule-soft)', marginBottom: 28 }} />
 
+        <div style={{
+          marginBottom: 24,
+          padding: '14px 16px',
+          border: '1px solid var(--panel-border)',
+          background: 'rgba(255,255,255,0.02)',
+        }}>
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: 8, letterSpacing: '0.28em', textTransform: 'uppercase', color: 'var(--text-faint)', marginBottom: 8 }}>
+            Why it matters
+          </div>
+          <div style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: 15, lineHeight: 1.7, color: 'var(--text-muted)' }}>
+            {takeaway}
+          </div>
+        </div>
+
         {paragraphs.map((p, i) => {
           if (p.startsWith('**') && p.endsWith('**')) {
             return <h3 key={i} style={{ fontFamily: 'var(--font-sans)', fontSize: 15, fontWeight: 700, color: 'var(--gold)', marginBottom: 10, marginTop: i > 0 ? 24 : 0, letterSpacing: '0.05em' }}>{p.replace(/\*\*/g, '')}</h3>
@@ -177,6 +205,7 @@ function PostModal({ post, onClose, sounds }) {
 
 export default function Blog({ visible, sounds }) {
   const [modal, setModal] = useState(null)
+  const totalPosts = POSTS.length
 
   return (
     <>
@@ -187,10 +216,13 @@ export default function Blog({ visible, sounds }) {
         <div style={{ width: '100%', maxWidth: 720, paddingBottom: 40 }}>
           <motion.div
             initial={{ opacity: 0, y: 12 }} animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 12 }} transition={{ delay: 0.05 }}
-            style={{ marginBottom: 8 }}
+            style={{ marginBottom: 8, display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center' }}
           >
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase', color: 'var(--red)' }}>Writing</span>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.15em', color: 'var(--text-ghost)', marginLeft: 16 }}>— thoughts on building things</span>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.15em', color: 'var(--text-ghost)' }}>— thoughts on building things</span>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--gold)', border: '1px solid var(--panel-border)', padding: '6px 10px' }}>
+              {totalPosts} posts
+            </span>
           </motion.div>
           <motion.div
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 20 }} transition={{ delay: 0.12, duration: 0.6 }}
@@ -199,6 +231,46 @@ export default function Blog({ visible, sounds }) {
             <div>NOTES FROM</div>
             <div style={{ WebkitTextStroke: '1.5px var(--gold)', color: 'transparent' }}>THE BUILD.</div>
           </motion.div>
+
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 16 }}
+            transition={{ delay: 0.18, duration: 0.5 }}
+            style={{
+              maxWidth: 560,
+              fontFamily: 'var(--font-serif)',
+              fontStyle: 'italic',
+              fontSize: 16,
+              lineHeight: 1.7,
+              color: 'var(--text-muted)',
+              marginBottom: 26,
+            }}
+          >
+            Short essays about the engineering choices behind shipping real products: what worked, what broke, and what I’d build differently next time.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 12 }}
+            transition={{ delay: 0.24, duration: 0.45 }}
+            style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginBottom: 34 }}
+          >
+            {FEATURED_TOPICS.map((topic) => (
+              <span key={topic} style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: 8,
+                letterSpacing: '0.22em',
+                textTransform: 'uppercase',
+                padding: '6px 10px',
+                border: '1px solid var(--panel-border)',
+                color: 'var(--text-muted)',
+                background: 'rgba(255,255,255,0.02)',
+              }}>
+                {topic}
+              </span>
+            ))}
+          </motion.div>
+
           {POSTS.map((p, i) => (
             <PostCard key={p.id} post={p} index={i} visible={visible} onOpen={setModal} sounds={sounds} />
           ))}
