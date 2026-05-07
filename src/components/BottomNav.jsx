@@ -64,6 +64,9 @@ export default function BottomNav({ active, setActive, sounds }) {
         return (
           <button
             key={tab.id}
+              aria-label={tab.label}
+              aria-current={isActive ? 'page' : undefined}
+              title={tab.label}
               data-hover
               onClick={() => { sounds?.whoosh(); setActive(tab.id) }}
               onMouseEnter={() => sounds?.hover()}
@@ -75,9 +78,10 @@ export default function BottomNav({ active, setActive, sounds }) {
                 justifyContent: 'center',
                 flex: '1 1 0',
                 minWidth: 0,
+                minHeight: 48,
                 height: '100%',
                 gap: 3,
-                padding: '8px 10px',
+                padding: '10px 10px 8px',
                 border: 'none',
                 borderLeft: tab.id === 'home' ? 'none' : '1px solid rgba(200,169,110,0.08)',
                 background: 'none',
@@ -115,7 +119,7 @@ export default function BottomNav({ active, setActive, sounds }) {
                 {tab.glyph}
               </motion.span>
               <motion.span
-                style={{ position: 'relative', whiteSpace: 'nowrap' }}
+                style={{ position: 'relative', whiteSpace: 'nowrap', fontSize: isMobile ? 8 : 9 }}
                 animate={{
                   opacity: 1,
                   maxHeight: 18,

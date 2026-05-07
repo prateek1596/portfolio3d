@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import MagneticButton from '../components/MagneticButton'
 
@@ -93,6 +93,7 @@ export default function Contact({ visible, sounds }) {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
   const [errors, setErrors] = useState({})
   const [status, setStatus] = useState('idle') // idle | sending | success | error
+  const [copied, setCopied] = useState(false)
 
   const validate = () => {
     const e = {}
@@ -123,6 +124,17 @@ export default function Contact({ visible, sounds }) {
     }
   }
 
+  const handleCopyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(EMAIL_ADDRESS)
+      setCopied(true)
+      sounds?.click()
+      window.setTimeout(() => setCopied(false), 1800)
+    } catch {
+      setCopied(false)
+    }
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -135,8 +147,8 @@ export default function Contact({ visible, sounds }) {
     >
       <div style={{
         minHeight: '100%',
-        display: 'grid', gridTemplateColumns: '1fr 1fr',
-        gap: 0, maxWidth: 1100, margin: '0 auto',
+        display: 'grid', gridTemplateColumns: 'minmax(0, 1.02fr) minmax(0, 0.98fr)',
+        gap: 0, columnGap: 0, maxWidth: 1100, margin: '0 auto',
         padding: '48px 8vw',
       }}>
 
@@ -182,6 +194,67 @@ export default function Contact({ visible, sounds }) {
             Available for work
           </motion.div>
 
+          {/* Quick contact actions */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 10 }}
+            transition={{ delay: 0.5 }}
+            style={{ display: 'grid', gap: 10, gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', maxWidth: 420, marginBottom: 36 }}
+          >
+            <motion.button
+              data-hover
+              onClick={handleCopyEmail}
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12,
+                border: '1px solid var(--panel-border)',
+                background: 'rgba(255,255,255,0.02)',
+                padding: '13px 16px',
+                color: copied ? 'var(--cyan)' : 'var(--text)',
+                fontFamily: 'var(--font-mono)', fontSize: 10,
+                letterSpacing: '0.22em', textTransform: 'uppercase',
+                textAlign: 'left',
+              }}
+            >
+              <span>{copied ? 'Copied' : 'Copy email'}</span>
+              <span aria-hidden="true">◎</span>
+            </motion.button>
+
+            <motion.a
+              href={MAILTO_HREF}
+              data-hover
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12,
+                border: '1px solid var(--panel-border-strong)',
+                background: 'linear-gradient(180deg, rgba(200,169,110,0.12), rgba(200,169,110,0.04))',
+                padding: '13px 16px',
+                color: 'var(--gold)',
+                fontFamily: 'var(--font-mono)', fontSize: 10,
+                letterSpacing: '0.22em', textTransform: 'uppercase',
+                textDecoration: 'none',
+              }}
+            >
+              <span>Open mail</span>
+              <span aria-hidden="true">→</span>
+            </motion.a>
+
+            <div style={{
+              gridColumn: '1 / -1',
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12,
+              border: '1px solid var(--panel-border)',
+              padding: '13px 16px',
+              fontFamily: 'var(--font-mono)', fontSize: 10,
+              letterSpacing: '0.18em', textTransform: 'uppercase',
+              color: 'var(--text-faint)',
+            }}>
+              <span>Based in Chennai</span>
+              <span style={{ color: 'var(--text-soft)' }}>Remote worldwide</span>
+            </div>
+          </motion.div>
+
           {/* Social links */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -204,7 +277,7 @@ export default function Contact({ visible, sounds }) {
                 transition={{ delay: 0.6 + i * 0.08 }}
                 whileHover={{ x: 6, color: 'var(--cyan)' }}
                 onMouseEnter={() => sounds?.hover()}
-                style={{ display: 'flex', alignItems: 'center', gap: 14, fontFamily: 'var(--font-mono)', fontSize: 11, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'var(--text-muted)', textDecoration: 'none', transition: 'color 0.25s', cursor: 'none' }}
+                style={{ display: 'flex', alignItems: 'center', gap: 14, fontFamily: 'var(--font-mono)', fontSize: 11, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'var(--text-muted)', textDecoration: 'none', transition: 'color 0.25s', cursor: 'none', minHeight: 48 }}
               >
                 <span style={{ fontSize: 16 }}>{link.icon}</span>
                 {link.label}
@@ -221,7 +294,7 @@ export default function Contact({ visible, sounds }) {
           initial={{ opacity: 0, x: 30 }}
           animate={{ opacity: visible ? 1 : 0, x: visible ? 0 : 30 }}
           transition={{ delay: 0.3, duration: 0.6 }}
-          style={{ borderLeft: '1px solid var(--rule-soft)', paddingLeft: 60 }}
+            style={{ borderLeft: '1px solid var(--rule-soft)', paddingLeft: 60, minWidth: 0 }}
         >
           <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.4em', textTransform: 'uppercase', color: 'var(--text-faint)', marginBottom: 28 }}>
             Send a message
@@ -279,6 +352,9 @@ export default function Contact({ visible, sounds }) {
                 >
                   {status === 'sending' ? '◌ Sending...' : 'Send Message →'}
                 </MagneticButton>
+                <div aria-live="polite" style={{ minHeight: 18, marginTop: 10, fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.12em', color: 'var(--text-faint)' }}>
+                  {copied ? 'Email copied to clipboard.' : ''}
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
@@ -289,6 +365,11 @@ export default function Contact({ visible, sounds }) {
         @keyframes blinkDot { 0%,100%{opacity:1} 50%{opacity:.15} }
         input::placeholder, textarea::placeholder { color: transparent }
         input, textarea { cursor: text; }
+        @media (max-width: 900px) {
+          .contact-layout {
+            grid-template-columns: 1fr !important;
+          }
+        }
       `}</style>
     </motion.div>
   )
