@@ -33,6 +33,21 @@ const TIMELINE = [
   { year: '2022', event: 'Started full-stack journey' },
 ]
 
+const FOCUS_AREAS = [
+  {
+    title: 'End-to-end product builds',
+    body: 'From idea to deployed system: frontend, backend, data model, and delivery details tuned together.',
+  },
+  {
+    title: 'ML features with useful UX',
+    body: 'Models are most valuable when the interface explains outcomes clearly and makes action obvious.',
+  },
+  {
+    title: 'Motion with restraint',
+    body: 'Interactive polish matters, but only when it helps people understand, navigate, or trust the product.',
+  },
+]
+
 export default function About({ visible, sounds }) {
   const containerRef = useRef(null)
   const { scrollYProgress } = useScroll({ container: containerRef })
@@ -63,6 +78,41 @@ export default function About({ visible, sounds }) {
           </div>
         </motion.div>
 
+        {/* Positioning strip */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 16 }}
+          transition={{ delay: 0.22, duration: 0.55 }}
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: 10,
+            alignItems: 'center',
+            marginBottom: 26,
+          }}
+        >
+          <span style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: 9,
+            letterSpacing: '0.35em',
+            textTransform: 'uppercase',
+            color: 'var(--gold)',
+            border: '1px solid var(--panel-border)',
+            padding: '8px 12px',
+            background: 'rgba(255,255,255,0.02)',
+          }}>
+            Builder · Chennai · Remote
+          </span>
+          <span style={{
+            fontFamily: 'var(--font-serif)',
+            fontStyle: 'italic',
+            fontSize: 16,
+            color: 'var(--text-muted)',
+          }}>
+            I focus on products that feel fast, clear, and worth returning to.
+          </span>
+        </motion.div>
+
         {/* Bio */}
         <motion.p
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 20 }}
@@ -74,6 +124,57 @@ export default function About({ visible, sounds }) {
           I build end-to-end systems — ML pipelines, mobile apps, browser extensions —
           whatever the problem needs. I ship clean, fast, and with intention.
         </motion.p>
+
+        {/* Focus areas */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 20 }}
+          transition={{ delay: 0.4, duration: 0.55 }}
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
+            gap: 14,
+            marginBottom: 38,
+          }}
+        >
+          {FOCUS_AREAS.map((item) => (
+            <div key={item.title} style={{
+              border: '1px solid var(--panel-border)',
+              background: 'linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01))',
+              padding: '18px 18px 20px',
+              minHeight: 156,
+            }}>
+              <div style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: 9,
+                letterSpacing: '0.32em',
+                textTransform: 'uppercase',
+                color: 'var(--cyan)',
+                marginBottom: 10,
+              }}>
+                Focus
+              </div>
+              <div style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: 24,
+                color: 'var(--text)',
+                lineHeight: 0.95,
+                marginBottom: 12,
+              }}>
+                {item.title}
+              </div>
+              <div style={{
+                fontFamily: 'var(--font-serif)',
+                fontStyle: 'italic',
+                fontSize: 14,
+                lineHeight: 1.65,
+                color: 'var(--text-muted)',
+              }}>
+                {item.body}
+              </div>
+            </div>
+          ))}
+        </motion.div>
 
         {/* Stats */}
         <motion.div
@@ -98,6 +199,56 @@ export default function About({ visible, sounds }) {
         >
           <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.4em', textTransform: 'uppercase', color: 'var(--red)', marginBottom: 4 }}>Skills</div>
           <SkillChart visible={visible} />
+        </motion.div>
+
+        {/* CTA strip */}
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 18 }}
+          transition={{ delay: 0.62, duration: 0.5 }}
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: 12,
+            marginTop: 32,
+            marginBottom: 30,
+            alignItems: 'center',
+          }}
+        >
+          <motion.a
+            href="mailto:prateekyadav1596@gmail.com?subject=Portfolio%20Conversation"
+            data-hover
+            whileHover={{ y: -2 }}
+            whileTap={{ scale: 0.98 }}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 10,
+              minHeight: 48,
+              padding: '0 18px',
+              border: '1px solid var(--panel-border-strong)',
+              background: 'linear-gradient(180deg, rgba(200,169,110,0.12), rgba(200,169,110,0.04))',
+              color: 'var(--gold)',
+              fontFamily: 'var(--font-mono)',
+              fontSize: 10,
+              letterSpacing: '0.26em',
+              textTransform: 'uppercase',
+              textDecoration: 'none',
+            }}
+          >
+            Start a conversation
+            <span aria-hidden="true">→</span>
+          </motion.a>
+
+          <div style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: 9,
+            letterSpacing: '0.24em',
+            textTransform: 'uppercase',
+            color: 'var(--text-faint)',
+          }}>
+            Best fit: product builds, ML-powered tools, and polished frontend systems.
+          </div>
         </motion.div>
 
         {/* Timeline */}
