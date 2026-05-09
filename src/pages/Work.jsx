@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import GlitchText from '../components/GlitchText'
 import MagneticButton from '../components/MagneticButton'
+import { useScrollStory } from '../hooks/useScrollStory'
 
 // Project screenshots — use real URLs or local imports
 // Placeholder: beautiful gradient preview cards
@@ -103,6 +104,7 @@ function WorkItem({ project, index, visible, onOpen, sounds }) {
 
   return (
     <motion.div
+      data-scroll-content
       initial={{ opacity: 0, x: -28 }}
       animate={{ opacity: visible ? 1 : 0, x: visible ? 0 : -28 }}
       transition={{ delay: 0.08 + index * 0.08, duration: 0.5, ease: 'easeOut' }}
@@ -290,16 +292,19 @@ function Modal({ project, onClose, sounds }) {
 
 export default function Work({ visible, sounds }) {
   const [modal, setModal] = useState(null)
+  const containerRef = useScrollStory()
   const totalProjects = PROJECTS.length
 
   return (
     <>
       <motion.div
+        ref={containerRef}
         initial={{ opacity: 0 }} animate={{ opacity: visible ? 1 : 0 }} transition={{ duration: 0.4 }}
         style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', padding: '0 8vw', pointerEvents: visible ? 'all' : 'none', overflowY: 'auto' }}
       >
         <div style={{ width: '100%', maxWidth: 720 }}>
           <motion.div
+            data-scroll-heading
             initial={{ opacity: 0, y: 12 }} animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 12 }} transition={{ delay: 0.05 }}
             style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase', color: 'var(--red)', marginBottom: 18, display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}
           >
@@ -309,6 +314,7 @@ export default function Work({ visible, sounds }) {
           </motion.div>
 
           <motion.p
+            data-scroll-content
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 14 }}
             transition={{ delay: 0.1, duration: 0.5 }}
@@ -326,6 +332,7 @@ export default function Work({ visible, sounds }) {
           </motion.p>
 
           <motion.div
+            data-scroll-content
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 12 }}
             transition={{ delay: 0.14, duration: 0.45 }}

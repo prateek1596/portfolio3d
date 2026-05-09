@@ -8,8 +8,8 @@ gsap.registerPlugin(ScrollTrigger)
  * useScrollStory - Create smooth scroll storytelling animations
  * Animates elements as they scroll into view with parallax and stagger effects
  */
-export const useScrollStory = () => {
-  const containerRef = useRef(null)
+export const useScrollStory = (externalRef) => {
+  const containerRef = externalRef ?? useRef(null)
 
   useEffect(() => {
     if (!containerRef.current) return
@@ -71,7 +71,11 @@ export const useScrollStory = () => {
     })
 
     return () => {
-      ScrollTrigger.getAll().forEach((t) => t.kill())
+      ScrollTrigger.getAll().forEach((trigger) => {
+        if (trigger.trigger && containerRef.current?.contains(trigger.trigger)) {
+          trigger.kill()
+        }
+      })
     }
   }, [])
 

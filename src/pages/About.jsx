@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
 import SkillChart from '../components/SkillChart'
 import GitHubStats from '../components/GitHubStats'
+import { useScrollStory } from '../hooks/useScrollStory'
 
 function CountUp({ target, visible, suffix = '' }) {
   const [val, setVal] = useState(0)
@@ -50,6 +51,7 @@ const FOCUS_AREAS = [
 
 export default function About({ visible, sounds }) {
   const containerRef = useRef(null)
+  useScrollStory(containerRef)
   const { scrollYProgress } = useScroll({ container: containerRef })
   const rawY = useTransform(scrollYProgress, [0, 1], [0, -50])
   const parallaxY = useSpring(rawY, { stiffness: 60, damping: 20 })
@@ -66,6 +68,7 @@ export default function About({ visible, sounds }) {
 
         {/* Parallax headline */}
         <motion.div
+          data-scroll-heading
           style={{ y: parallaxY }}
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 40 }}
@@ -80,6 +83,7 @@ export default function About({ visible, sounds }) {
 
         {/* Positioning strip */}
         <motion.div
+          data-scroll-content
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 16 }}
           transition={{ delay: 0.22, duration: 0.55 }}
@@ -115,6 +119,7 @@ export default function About({ visible, sounds }) {
 
         {/* Bio */}
         <motion.p
+          data-scroll-content
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 20 }}
           transition={{ delay: 0.3, duration: 0.6 }}
           style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: 'clamp(15px,1.7vw,20px)', lineHeight: 1.75, color: 'var(--text-muted)', maxWidth: 520, marginBottom: 36 }}
@@ -127,6 +132,7 @@ export default function About({ visible, sounds }) {
 
         {/* Focus areas */}
         <motion.div
+          data-scroll-content
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 20 }}
           transition={{ delay: 0.4, duration: 0.55 }}
@@ -178,6 +184,7 @@ export default function About({ visible, sounds }) {
 
         {/* Stats */}
         <motion.div
+          data-scroll-content
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 20 }}
           transition={{ delay: 0.45 }}
           style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 1, marginBottom: 40, border: '1px solid var(--panel-border)', maxWidth: 480 }}
@@ -194,6 +201,7 @@ export default function About({ visible, sounds }) {
 
         {/* Skill Chart — radar + bars */}
         <motion.div
+          data-scroll-content
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 20 }}
           transition={{ delay: 0.55 }}
         >
@@ -203,6 +211,7 @@ export default function About({ visible, sounds }) {
 
         {/* CTA strip */}
         <motion.div
+          data-scroll-content
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 18 }}
           transition={{ delay: 0.62, duration: 0.5 }}
@@ -253,6 +262,7 @@ export default function About({ visible, sounds }) {
 
         {/* Timeline */}
         <motion.div
+          data-scroll-content
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 20 }}
           transition={{ delay: 0.7 }}
           style={{ marginTop: 44, paddingTop: 28, borderTop: '1px solid var(--rule-soft)' }}
@@ -279,6 +289,7 @@ export default function About({ visible, sounds }) {
 
         {/* Vibe footer */}
         <motion.div
+          data-scroll-content
           initial={{ opacity: 0 }} animate={{ opacity: visible ? 1 : 0 }} transition={{ delay: 1.0 }}
           style={{ display: 'flex', gap: 40, flexWrap: 'wrap', marginTop: 24, paddingTop: 28, borderTop: '1px solid var(--rule-soft)' }}
         >
@@ -292,6 +303,7 @@ export default function About({ visible, sounds }) {
 
         {/* GitHub Stats */}
         <motion.div
+          data-scroll-content
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 20 }}
           transition={{ delay: 1.1 }}

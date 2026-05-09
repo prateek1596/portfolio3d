@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import GlitchText from '../components/GlitchText'
+import { useScrollStory } from '../hooks/useScrollStory'
 
 const POSTS = [
   {
@@ -205,16 +206,19 @@ function PostModal({ post, onClose, sounds }) {
 
 export default function Blog({ visible, sounds }) {
   const [modal, setModal] = useState(null)
+  const containerRef = useScrollStory()
   const totalPosts = POSTS.length
 
   return (
     <>
       <motion.div
+        ref={containerRef}
         initial={{ opacity: 0 }} animate={{ opacity: visible ? 1 : 0 }} transition={{ duration: 0.4 }}
         style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'flex-start', padding: '40px 8vw', pointerEvents: visible ? 'all' : 'none', overflowY: 'auto' }}
       >
         <div style={{ width: '100%', maxWidth: 720, paddingBottom: 40 }}>
           <motion.div
+            data-scroll-heading
             initial={{ opacity: 0, y: 12 }} animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 12 }} transition={{ delay: 0.05 }}
             style={{ marginBottom: 8, display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center' }}
           >
@@ -225,6 +229,7 @@ export default function Blog({ visible, sounds }) {
             </span>
           </motion.div>
           <motion.div
+            data-scroll-heading
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 20 }} transition={{ delay: 0.12, duration: 0.6 }}
             style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(40px, 7vw, 72px)', lineHeight: 0.9, marginBottom: 36 }}
           >
@@ -233,6 +238,7 @@ export default function Blog({ visible, sounds }) {
           </motion.div>
 
           <motion.p
+            data-scroll-content
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 16 }}
             transition={{ delay: 0.18, duration: 0.5 }}
@@ -250,6 +256,7 @@ export default function Blog({ visible, sounds }) {
           </motion.p>
 
           <motion.div
+            data-scroll-content
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 12 }}
             transition={{ delay: 0.24, duration: 0.45 }}
