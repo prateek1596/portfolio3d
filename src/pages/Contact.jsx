@@ -4,6 +4,8 @@ import MagneticButton from '../components/MagneticButton'
 
 const EMAIL_ADDRESS = 'prateekyadav1596@gmail.com'
 const MAILTO_HREF = `mailto:${EMAIL_ADDRESS}?subject=${encodeURIComponent('Opportunity / Collaboration')}&body=${encodeURIComponent('Hi Prateek,%0D%0A%0D%0AI came across your portfolio and would like to connect regarding...%0D%0A%0D%0ABest,%0D%0A')}`
+// Gmail web compose link with CC to your address (used for 'Open mail' action)
+const GMAIL_COMPOSE = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(EMAIL_ADDRESS)}&cc=${encodeURIComponent(EMAIL_ADDRESS)}&su=${encodeURIComponent('Opportunity / Collaboration')}&body=${encodeURIComponent('Hi Prateek,%0D%0A%0D%0AI came across your portfolio and would like to connect regarding...%0D%0A%0D%0ABest,%0D%0A')}`
 
 const LINKS = [
   { label: 'GitHub',   href: 'https://github.com/prateek1596',   icon: '⌥' },
@@ -207,66 +209,7 @@ export default function Contact({ visible, sounds }) {
             Available for work
           </motion.div>
 
-          {/* Quick contact actions */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 10 }}
-            transition={{ delay: 0.5 }}
-            style={{ display: 'grid', gap: 10, gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', maxWidth: 420, marginBottom: 36 }}
-          >
-            <motion.button
-              data-hover
-              onClick={handleCopyEmail}
-              whileHover={{ y: -2 }}
-              whileTap={{ scale: 0.98 }}
-              style={{
-                display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12,
-                border: '1px solid var(--panel-border)',
-                background: 'rgba(255,255,255,0.02)',
-                padding: '13px 16px',
-                color: copied ? 'var(--cyan)' : 'var(--text)',
-                fontFamily: 'var(--font-mono)', fontSize: 10,
-                letterSpacing: '0.22em', textTransform: 'uppercase',
-                textAlign: 'left',
-              }}
-            >
-              <span>{copied ? 'Copied' : 'Copy email'}</span>
-              <span aria-hidden="true">◎</span>
-            </motion.button>
-
-            <motion.a
-              href={MAILTO_HREF}
-              data-hover
-              whileHover={{ y: -2 }}
-              whileTap={{ scale: 0.98 }}
-              style={{
-                display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12,
-                border: '1px solid var(--panel-border-strong)',
-                background: 'linear-gradient(180deg, rgba(200,169,110,0.12), rgba(200,169,110,0.04))',
-                padding: '13px 16px',
-                color: 'var(--gold)',
-                fontFamily: 'var(--font-mono)', fontSize: 10,
-                letterSpacing: '0.22em', textTransform: 'uppercase',
-                textDecoration: 'none',
-              }}
-            >
-              <span>Open mail</span>
-              <span aria-hidden="true">→</span>
-            </motion.a>
-
-            <div style={{
-              gridColumn: '1 / -1',
-              display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12,
-              border: '1px solid var(--panel-border)',
-              padding: '13px 16px',
-              fontFamily: 'var(--font-mono)', fontSize: 10,
-              letterSpacing: '0.18em', textTransform: 'uppercase',
-              color: 'var(--text-faint)',
-            }}>
-              <span>Based in Chennai</span>
-              <span style={{ color: 'var(--text-soft)' }}>Remote worldwide</span>
-            </div>
-          </motion.div>
+          {/* Quick contact actions — moved into the right pane below the form (removed from left) */}
 
           {/* Social links */}
           <motion.div
