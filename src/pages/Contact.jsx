@@ -211,38 +211,7 @@ export default function Contact({ visible, sounds }) {
 
           {/* Quick contact actions — moved into the right pane below the form (removed from left) */}
 
-          {/* Social links */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 16 }}
-            transition={{ delay: 0.55 }}
-            style={{ display: 'flex', flexDirection: 'column', gap: 14 }}
-          >
-            {LINKS.map((link, i) => (
-              (() => {
-                const isMailto = link.href.startsWith('mailto:')
-                return (
-              <motion.a
-                key={link.label}
-                href={link.href}
-                data-hover
-                target={isMailto ? undefined : '_blank'}
-                rel={isMailto ? undefined : 'noopener noreferrer'}
-                initial={{ opacity: 0, x: -12 }}
-                animate={{ opacity: visible ? 1 : 0, x: visible ? 0 : -12 }}
-                transition={{ delay: 0.6 + i * 0.08 }}
-                whileHover={{ x: 6, color: 'var(--cyan)' }}
-                onMouseEnter={() => sounds?.hover()}
-                style={{ display: 'flex', alignItems: 'center', gap: 14, fontFamily: 'var(--font-mono)', fontSize: 11, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'var(--text-muted)', textDecoration: 'none', transition: 'color 0.25s', cursor: 'none', minHeight: 48 }}
-              >
-                <span style={{ fontSize: 16 }}>{link.icon}</span>
-                {link.label}
-                <span style={{ marginLeft: 'auto', fontSize: 14, opacity: 0.4 }}>→</span>
-              </motion.a>
-                )
-              })()
-            ))}
-          </motion.div>
+          {/* Social links moved to right pane */}
         </div>
 
         {/* Right — contact form */}
@@ -252,9 +221,6 @@ export default function Contact({ visible, sounds }) {
           transition={{ delay: 0.3, duration: 0.6 }}
             style={{ borderLeft: '1px solid var(--rule-soft)', paddingLeft: 60, minWidth: 0 }}
         >
-          <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.4em', textTransform: 'uppercase', color: 'var(--text-faint)', marginBottom: 28 }}>
-            Send a message
-          </div>
 
           <AnimatePresence mode="wait">
             {status === 'success' ? (
