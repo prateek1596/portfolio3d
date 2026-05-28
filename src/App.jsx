@@ -42,8 +42,20 @@ function SectionFallback() {
   )
 }
 
-function Inner() {
-  const [active, setActive] = useState('home')
+  function Inner() {
+  // Read initial page from URL (?page=work) so PWA/shortcuts open correct section
+  const getInitialPage = () => {
+    try {
+      const params = new URLSearchParams(window.location.search)
+      const p = params.get('page')
+      if (p && ['home', 'work', 'about', 'blog', 'contact'].includes(p)) return p
+    } catch (err) {
+      // ignore
+    }
+    return 'home'
+  }
+
+  const [active, setActive] = useState(getInitialPage)
   const [loaded, setLoaded] = useState(false)
   const [transKey, setTransKey] = useState(0)
   const sounds = useSounds()
@@ -95,6 +107,13 @@ function Inner() {
     if (page === active) return
     setTransKey(k => k + 1)
     setActive(page)
+    try {
+      const url = new URL(window.location.href)
+      url.searchParams.set('page', page)
+      window.history.replaceState({}, '', url.toString())
+    } catch (err) {
+      // ignore in non-browser environments
+    }
   }, [active])
 
   // Listen for quick navigation events (Alt+1..5)
