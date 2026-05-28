@@ -82,7 +82,7 @@ export default function ThemeControls() {
               <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.35em', textTransform: 'uppercase', color: 'var(--text-faint)', marginBottom: 8 }}>Theme</div>
               <motion.button
                 data-hover
-                onClick={() => { setIsDark(d => !d); sounds?.click() }}
+                onClick={() => { setIsDark(d => !d) }}
                 whileHover={{ scale: 1.03 }}
                 style={{
                   width: '100%', padding: '8px 12px',
@@ -109,7 +109,7 @@ export default function ThemeControls() {
                   <motion.button
                     key={key}
                     data-hover
-                    onClick={() => { setAccent(key); sounds?.click() }}
+                    onClick={() => { setAccent(key) }}
                     whileHover={{ scale: 1.2 }}
                     whileTap={{ scale: 0.9 }}
                     style={{
