@@ -49,7 +49,7 @@ const FOCUS_AREAS = [
   },
 ]
 
-export default function About({ visible, sounds }) {
+export default function About({ visible }) {
   const containerRef = useRef(null)
   useScrollStory(containerRef)
   const { scrollYProgress } = useScroll({ container: containerRef })
