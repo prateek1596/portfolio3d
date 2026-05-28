@@ -1,16 +1,35 @@
 import { motion, AnimatePresence } from 'framer-motion'
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useTheme } from '../hooks/useTheme'
 
 export default function ThemeControls({ sounds }) {
   const { isDark, setIsDark, accent, setAccent, ACCENTS } = useTheme()
   const [open, setOpen] = useState(false)
   const [soundOn, setSoundOn] = useState(true)
+  const toggleRef = useRef(null)
+  const panelRef = useRef(null)
 
   const toggle = () => {
     setOpen(o => !o)
     sounds?.click()
   }
+
+  // Focus management: when opening, focus the first control inside the panel
+  useEffect(() => {
+    if (!open) return
+    const el = panelRef.current?.querySelector('button, [href], input, textarea, [tabindex]:not([tabindex="-1"])')
+    if (el) el.focus()
+  }, [open])
+
+  // Close on Escape when panel is open
+  useEffect(() => {
+    if (!open) return
+    const onKey = (e) => {
+      if (e.key === 'Escape') setOpen(false)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [open])
 
   return (
     <div style={{
@@ -21,6 +40,12 @@ export default function ThemeControls({ sounds }) {
       <motion.button
         data-hover
         onClick={toggle}
+        ref={toggleRef}
+        aria-haspopup="dialog"
+        aria-expanded={open}
+        aria-controls="theme-controls-panel"
+        title="Theme settings"
+        type="button"
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.94 }}
         style={{
@@ -48,6 +73,11 @@ export default function ThemeControls({ sounds }) {
               padding: '20px 20px', minWidth: 180,
               boxShadow: 'var(--panel-shadow)',
             }}
+            id="theme-controls-panel"
+            role="dialog"
+            aria-modal="true"
+            ref={panelRef}
+            tabIndex={-1}
           >
             {/* Dark / Light */}
             <div style={{ marginBottom: 16 }}>
@@ -64,6 +94,9 @@ export default function ThemeControls({ sounds }) {
                   fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase',
                   cursor: 'none', display: 'flex', alignItems: 'center', gap: 8,
                 }}
+                type="button"
+                aria-pressed={isDark}
+                aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
               >
                 <span>{isDark ? '◐' : '◑'}</span>
                 <span>{isDark ? 'Dark Mode' : 'Light Mode'}</span>
@@ -88,6 +121,9 @@ export default function ThemeControls({ sounds }) {
                       cursor: 'none', flexShrink: 0,
                     }}
                     title={val.label}
+                    type="button"
+                    aria-label={`Set accent ${val.label}`}
+                    aria-pressed={accent === key}
                   />
                 ))}
               </div>
@@ -114,6 +150,8 @@ export default function ThemeControls({ sounds }) {
                   letterSpacing: '0.2em', textTransform: 'uppercase',
                   cursor: 'none', display: 'flex', alignItems: 'center', gap: 8,
                 }}
+                type="button"
+                aria-pressed={soundOn}
               >
                 <span>{soundOn ? '♪' : '♩'}</span>
                 <span>{soundOn ? 'Sound On' : 'Sound Off'}</span>
