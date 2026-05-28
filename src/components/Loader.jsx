@@ -215,6 +215,19 @@ export default function Loader({ onDone }) {
   const [done, setDone] = useState(false)
   const [showSkeleton, setShowSkeleton] = useState(false)
   const [exitTunnel, setExitTunnel] = useState(false)
+  const [reducedMotion, setReducedMotion] = useState(false)
+
+  useEffect(() => {
+    try {
+      const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+      setReducedMotion(mq.matches)
+      const handler = (e) => setReducedMotion(e.matches)
+      mq.addEventListener?.('change', handler)
+      return () => mq.removeEventListener?.('change', handler)
+    } catch (err) {
+      return undefined
+    }
+  }, [])
 
   useEffect(() => {
     const start = Date.now()
@@ -290,7 +303,13 @@ export default function Loader({ onDone }) {
               transition={{ duration: 0.5, ease: 'easeOut' }}
               style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16, position: 'relative' }}
             >
-              <InfinityLoaderScene />
+              {reducedMotion ? (
+                <div style={{ width: 360, height: 220, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-faint)', fontFamily: 'var(--font-mono)' }}>
+                  Reduced motion: loading...
+                </div>
+              ) : (
+                <InfinityLoaderScene />
+              )}
               <div style={{
                 fontFamily: 'var(--font-mono)', fontSize: 9,
                 letterSpacing: '0.35em', textTransform: 'uppercase',
