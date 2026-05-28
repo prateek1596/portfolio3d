@@ -83,12 +83,11 @@ const PROJECTS = [
 
 const SCRAMBLE = 'アイウエオカキクABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%'
 
-function WorkItem({ project, index, visible, onOpen, sounds }) {
+function WorkItem({ project, index, visible, onOpen }) {
   const [title, setTitle] = useState(project.title)
   const [hovered, setHovered] = useState(false)
 
   const scramble = useCallback(() => {
-    sounds?.glitch()
     const orig = project.title
     let iter = 0
     const iv = setInterval(() => {
@@ -110,7 +109,7 @@ function WorkItem({ project, index, visible, onOpen, sounds }) {
       transition={{ delay: 0.08 + index * 0.08, duration: 0.5, ease: 'easeOut' }}
       onMouseEnter={() => { setHovered(true); scramble() }}
       onMouseLeave={() => setHovered(false)}
-      onClick={() => { onOpen(project); sounds?.whoosh() }}
+      onClick={() => { onOpen(project) }}
       data-hover
       style={{
         display: 'grid', gridTemplateColumns: '52px 1fr 100px 28px',
@@ -211,11 +210,11 @@ function ScreenshotGallery({ screenshots, color }) {
   )
 }
 
-function Modal({ project, onClose, sounds }) {
+function Modal({ project, onClose }) {
   return (
-    <motion.div
-      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      onClick={() => { onClose(); sounds?.click() }}
+      <motion.div
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+        onClick={() => { onClose(); }}
       style={{ position: 'fixed', inset: 0, zIndex: 2000, background: 'var(--glass-bg-strong)', backdropFilter: 'blur(14px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4vw', overflowY: 'auto' }}
     >
       <motion.div
@@ -227,7 +226,7 @@ function Modal({ project, onClose, sounds }) {
         style={{ width: '100%', maxWidth: 660, background: 'var(--panel-bg-elevated)', border: `1px solid ${project.color}22`, padding: '44px 48px', position: 'relative' }}
       >
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: project.color }} />
-        <button onClick={() => { onClose(); sounds?.click() }} data-hover
+        <button onClick={() => { onClose(); }} data-hover
           style={{ position: 'absolute', top: 20, right: 24, background: 'none', border: 'none', color: 'var(--text-faint)', fontSize: 22, cursor: 'none' }}>×</button>
 
         <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.4em', textTransform: 'uppercase', color: project.color, marginBottom: 10 }}>
@@ -236,7 +235,6 @@ function Modal({ project, onClose, sounds }) {
 
         <GlitchText
           as="div"
-          sounds={sounds}
           style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(32px,5vw,52px)', lineHeight: 0.95, marginBottom: 20 }}
         >
           {project.title}
@@ -276,11 +274,11 @@ function Modal({ project, onClose, sounds }) {
         </div>
 
         <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-          <MagneticButton onClick={() => { sounds?.click(); window.open(project.liveUrl, '_blank') }} sounds={sounds}
+          <MagneticButton onClick={() => { window.open(project.liveUrl, '_blank') }}
             style={{ flex: 1, justifyContent: 'center', borderColor: project.color, color: project.color }}>
             Live Demo →
           </MagneticButton>
-          <MagneticButton onClick={() => { sounds?.click(); window.open(project.githubUrl, '_blank') }} sounds={sounds}
+          <MagneticButton onClick={() => { window.open(project.githubUrl, '_blank') }}
             style={{ flex: 1, justifyContent: 'center', borderColor: 'var(--panel-border)', color: 'var(--text-muted)' }}>
             GitHub ↗
           </MagneticButton>
@@ -290,7 +288,7 @@ function Modal({ project, onClose, sounds }) {
   )
 }
 
-export default function Work({ visible, sounds }) {
+export default function Work({ visible }) {
   const [modal, setModal] = useState(null)
   const containerRef = useScrollStory()
   const totalProjects = PROJECTS.length
@@ -355,13 +353,13 @@ export default function Work({ visible, sounds }) {
           </motion.div>
 
           {PROJECTS.map((p, i) => (
-            <WorkItem key={p.num} project={p} index={i} visible={visible} onOpen={setModal} sounds={sounds} />
+            <WorkItem key={p.num} project={p} index={i} visible={visible} onOpen={setModal} />
           ))}
         </div>
       </motion.div>
 
       <AnimatePresence>
-        {modal && <Modal project={modal} onClose={() => setModal(null)} sounds={sounds} />}
+        {modal && <Modal project={modal} onClose={() => setModal(null)} />}
       </AnimatePresence>
     </>
   )
