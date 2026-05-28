@@ -96,16 +96,16 @@ Real-time features beyond basic WebSockets need something like Supabase or a pro
 
 const FEATURED_TOPICS = ['ML Explainability', 'Scraping Systems', 'Developer Tools', 'Stack Design']
 
-function PostCard({ post, index, visible, onOpen, sounds }) {
+function PostCard({ post, index, visible, onOpen }) {
   const [hovered, setHovered] = useState(false)
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 24 }}
       transition={{ delay: 0.08 + index * 0.09, duration: 0.5 }}
-      onMouseEnter={() => { setHovered(true); sounds?.hover() }}
+      onMouseEnter={() => { setHovered(true) }}
       onMouseLeave={() => setHovered(false)}
-      onClick={() => { onOpen(post); sounds?.click() }}
+      onClick={() => { onOpen(post) }}
       data-hover
       style={{
         padding: '22px 18px 22px 0', borderBottom: '1px solid var(--rule-soft)',
@@ -127,7 +127,7 @@ function PostCard({ post, index, visible, onOpen, sounds }) {
             ))}
           </div>
 
-          <GlitchText style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(17px, 2vw, 22px)', color: hovered ? 'var(--text)' : 'var(--text-soft)', transition: 'color 0.3s', display: 'block' }} sounds={sounds}>
+          <GlitchText style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(17px, 2vw, 22px)', color: hovered ? 'var(--text)' : 'var(--text-soft)', transition: 'color 0.3s', display: 'block' }}>
             {post.title}
           </GlitchText>
 
@@ -154,7 +154,7 @@ function PostCard({ post, index, visible, onOpen, sounds }) {
   )
 }
 
-function PostModal({ post, onClose, sounds }) {
+function PostModal({ post, onClose }) {
   const paragraphs = post.body.split('\n\n')
   const takeaway = post.excerpt.split(' — ')[0] || post.excerpt
   return (
@@ -170,7 +170,7 @@ function PostModal({ post, onClose, sounds }) {
         style={{ width: '100%', maxWidth: 680, background: 'var(--panel-bg-elevated)', border: '1px solid var(--panel-border)', padding: '48px 52px', position: 'relative', marginBottom: 40 }}
       >
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'var(--gold)' }} />
-        <button onClick={() => { onClose(); sounds?.click() }} data-hover style={{ position: 'absolute', top: 20, right: 24, background: 'none', border: 'none', color: 'var(--text-faint)', fontSize: 22, cursor: 'none' }}>×</button>
+        <button onClick={() => { onClose(); }} data-hover style={{ position: 'absolute', top: 20, right: 24, background: 'none', border: 'none', color: 'var(--text-faint)', fontSize: 22, cursor: 'none' }}>×</button>
 
         <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.4em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: 8 }}>{post.date} · {post.readTime} read</div>
         <div style={{ display: 'flex', gap: 6, marginBottom: 20, flexWrap: 'wrap' }}>
@@ -204,7 +204,7 @@ function PostModal({ post, onClose, sounds }) {
   )
 }
 
-export default function Blog({ visible, sounds }) {
+export default function Blog({ visible }) {
   const [modal, setModal] = useState(null)
   const containerRef = useScrollStory()
   const totalPosts = POSTS.length
@@ -279,12 +279,12 @@ export default function Blog({ visible, sounds }) {
           </motion.div>
 
           {POSTS.map((p, i) => (
-            <PostCard key={p.id} post={p} index={i} visible={visible} onOpen={setModal} sounds={sounds} />
+            <PostCard key={p.id} post={p} index={i} visible={visible} onOpen={setModal} />
           ))}
         </div>
       </motion.div>
       <AnimatePresence>
-        {modal && <PostModal post={modal} onClose={() => setModal(null)} sounds={sounds} />}
+        {modal && <PostModal post={modal} onClose={() => setModal(null)} />}
       </AnimatePresence>
     </>
   )
