@@ -97,6 +97,16 @@ function Inner() {
     setActive(page)
   }, [active])
 
+  // Listen for quick navigation events (Alt+1..5)
+  useEffect(() => {
+    const handler = (e) => {
+      const dest = e.detail
+      if (dest) navigate(dest)
+    }
+    window.addEventListener('quick:navigate', handler)
+    return () => window.removeEventListener('quick:navigate', handler)
+  }, [navigate])
+
   const handleCommand = useCallback((cmdId) => {
     switch (cmdId) {
       case 'home':

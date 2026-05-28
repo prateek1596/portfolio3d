@@ -18,6 +18,19 @@ export const useCommandPalette = () => {
       if (e.key === 'Escape') {
         setIsOpen(false)
       }
+      // Alt+1..5 quick navigation (dispatches a global event)
+      if (e.altKey) {
+        const mapping = { '1': 'home', '2': 'work', '3': 'about', '4': 'blog', '5': 'contact' }
+        const dest = mapping[e.key]
+        if (dest) {
+          try {
+            window.dispatchEvent(new CustomEvent('quick:navigate', { detail: dest }))
+            e.preventDefault()
+          } catch (err) {
+            // ignore in non-browser environments
+          }
+        }
+      }
     }
 
     window.addEventListener('keydown', handleKeyDown)

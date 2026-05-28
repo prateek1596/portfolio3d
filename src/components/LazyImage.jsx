@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 /**
  * LazyImage - Lazy load images with blur-up effect
  */
-export default function LazyImage({ src, alt, placeholder, className = '' }) {
+export default function LazyImage({ src, alt, placeholder, className = '', srcSet, sizes, loading = 'lazy' }) {
   const [isLoaded, setIsLoaded] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const imgRef = useRef(null)
@@ -52,6 +52,9 @@ export default function LazyImage({ src, alt, placeholder, className = '' }) {
       {isVisible && (
         <motion.img
           src={src}
+          srcSet={srcSet}
+          sizes={sizes}
+          loading={loading}
           alt={alt}
           onLoad={() => setIsLoaded(true)}
           initial={{ opacity: 0 }}
