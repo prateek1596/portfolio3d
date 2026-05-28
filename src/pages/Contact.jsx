@@ -311,6 +311,57 @@ export default function Contact({ visible, sounds }) {
                 <div aria-live="polite" style={{ minHeight: 18, marginTop: 10, fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.12em', color: 'var(--text-faint)' }}>
                   {copied ? 'Email copied to clipboard.' : ''}
                 </div>
+
+                {/* Quick contact actions moved here into right pane */}
+                <div style={{ marginTop: 22, display: 'grid', gap: 10, gridTemplateColumns: 'repeat(2, minmax(0, 1fr))' }}>
+                  <motion.button
+                    data-hover
+                    onClick={handleCopyEmail}
+                    whileHover={{ y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                    style={{
+                      display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12,
+                      border: '1px solid var(--panel-border)',
+                      background: 'rgba(255,255,255,0.02)',
+                      padding: '13px 16px',
+                      color: copied ? 'var(--cyan)' : 'var(--text)',
+                      fontFamily: 'var(--font-mono)', fontSize: 10,
+                      letterSpacing: '0.22em', textTransform: 'uppercase',
+                      textAlign: 'left',
+                    }}
+                  >
+                    <span>{copied ? 'Copied' : 'Copy email'}</span>
+                    <span aria-hidden="true">◎</span>
+                  </motion.button>
+
+                  <motion.a
+                    href={GMAIL_COMPOSE}
+                    data-hover
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                    style={{
+                      display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12,
+                      border: '1px solid var(--panel-border-strong)',
+                      background: 'linear-gradient(180deg, rgba(200,169,110,0.12), rgba(200,169,110,0.04))',
+                      padding: '13px 16px',
+                      color: 'var(--gold)',
+                      fontFamily: 'var(--font-mono)', fontSize: 10,
+                      letterSpacing: '0.22em', textTransform: 'uppercase',
+                      textDecoration: 'none',
+                    }}
+                    onClick={() => sounds?.click()}
+                  >
+                    <span>Open Gmail</span>
+                    <span aria-hidden="true">→</span>
+                  </motion.a>
+
+                  <div style={{ gridColumn: '1 / -1', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, border: '1px solid var(--panel-border)', padding: '13px 16px', fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--text-faint)' }}>
+                    <span>Based in Chennai</span>
+                    <span style={{ color: 'var(--text-soft)' }}>Remote worldwide</span>
+                  </div>
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
