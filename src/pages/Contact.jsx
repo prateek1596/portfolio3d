@@ -126,6 +126,13 @@ export default function Contact({ visible, sounds }) {
       setForm({ name: '', email: '', subject: '', message: '' })
     } catch (err) {
       console.error('Send email failed:', err)
+      // Fallback: if EmailJS is not configured, open user's mail client with prefilled message
+      if (err && String(err.message || '').toLowerCase().includes('emailjs not configured')) {
+        const subject = encodeURIComponent(form.subject || 'Contact from portfolio')
+        const body = encodeURIComponent(`${form.message || ''}\n\n---\nFrom: ${form.name || ''} <${form.email || ''}>`)
+        const mailto = `mailto:${EMAIL_ADDRESS}?subject=${subject}&body=${body}`
+        try { window.open(mailto, '_blank') } catch (openErr) { window.location.href = mailto }
+      }
       setStatus('error')
     }
   }
