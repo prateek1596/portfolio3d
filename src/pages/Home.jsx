@@ -165,7 +165,7 @@ function ResumeButton({ visible }) {
   )
 }
 
-export default function Home({ visible, sounds, navigate }) {
+export default function Home({ visible, navigate }) {
   const cardRef = useRef(null)
   const rx = useMotionValue(0), ry = useMotionValue(0)
   const sx = useSpring(rx, { stiffness: 80, damping: 20 })
@@ -324,7 +324,7 @@ export default function Home({ visible, sounds, navigate }) {
         >
           <motion.button
             data-hover
-            onClick={() => { sounds?.click(); navigate?.('work') }}
+            onClick={() => { navigate?.('work') }}
             whileHover={{ y: -2, scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             style={ctaStyle}
@@ -335,7 +335,7 @@ export default function Home({ visible, sounds, navigate }) {
 
           <motion.button
             data-hover
-            onClick={() => { sounds?.click(); navigate?.('contact') }}
+            onClick={() => { navigate?.('contact') }}
             whileHover={{ y: -2, scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             style={ghostCtaStyle}
