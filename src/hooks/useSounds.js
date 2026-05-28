@@ -26,9 +26,11 @@ function playTone(ctx, freq, type = 'sine', duration = 0.08, gain = 0.12, delay 
 
 export function useSounds() {
   const ctxRef = useRef(null)
-  const enabled = useRef(true)
+  // Start with sounds disabled; ThemeControls can toggle sounds.enabled.current = true
+  const enabled = useRef(false)
 
   const getCtx = useCallback(() => {
+    if (!enabled.current) return null
     if (!ctxRef.current) ctxRef.current = createAudioCtx()
     return ctxRef.current
   }, [])
