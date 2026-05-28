@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect, lazy, Suspense } from 'react'
 import './styles/globals.css'
 import { ThemeProvider } from './hooks/useTheme'
-import { useSounds } from './hooks/useSounds'
+// sounds hook removed — audio disabled project-wide
 import { useCommandPalette } from './hooks/useCommandPalette'
 import { useEasterEggs } from './hooks/useEasterEggs'
 import Cursor from './components/Cursor'
@@ -58,7 +58,6 @@ function SectionFallback() {
   const [active, setActive] = useState(getInitialPage)
   const [loaded, setLoaded] = useState(false)
   const [transKey, setTransKey] = useState(0)
-  const sounds = useSounds()
   const cmdPalette = useCommandPalette()
 
   // Initialize Easter Eggs system
@@ -174,7 +173,7 @@ function SectionFallback() {
       <PageTransition pageKey={transKey} />
 
       {/* Top-right settings panel */}
-      <ThemeControls sounds={sounds} />
+      <ThemeControls />
 
       {/* Command Palette */}
       <CommandPalette
@@ -194,15 +193,15 @@ function SectionFallback() {
         height: 'calc(100vh - var(--nav-h))',
       }}>
         <Suspense fallback={<SectionFallback />}>
-          {active === 'home' && <Home visible sounds={sounds} navigate={navigate} />}
-          {active === 'work' && <Work visible sounds={sounds} />}
-          {active === 'about' && <About visible sounds={sounds} />}
-          {active === 'blog' && <Blog visible sounds={sounds} />}
-          {active === 'contact' && <Contact visible sounds={sounds} />}
+          {active === 'home' && <Home visible navigate={navigate} />}
+          {active === 'work' && <Work visible />}
+          {active === 'about' && <About visible />}
+          {active === 'blog' && <Blog visible />}
+          {active === 'contact' && <Contact visible />}
         </Suspense>
       </div>
 
-      <BottomNav active={active} setActive={navigate} sounds={sounds} onPrefetch={(page) => {
+      <BottomNav active={active} setActive={navigate} onPrefetch={(page) => {
         switch (page) {
           case 'work':
             loadWork()
