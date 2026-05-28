@@ -10,7 +10,7 @@ const GMAIL_COMPOSE = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURI
 const LINKS = [
   { label: 'GitHub',   href: 'https://github.com/prateek1596',   icon: '⌥' },
   { label: 'LinkedIn', href: 'https://linkedin.com/in/prateek-yadav-b9094127b/', icon: '⊞' },
-  { label: 'Email',    href: MAILTO_HREF,   icon: '◎' },
+  { label: 'Email',    href: GMAIL_COMPOSE,   icon: '◎' },
 ]
 
 // EmailJS config — fill in your own IDs after signup at emailjs.com (free)
