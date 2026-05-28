@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 
 const GLITCH_CHARS = '!<>-_\\/[]{}—=+*^?#@$%&アイウカキサシ01'
 
-export default function GlitchText({ children, as = 'div', style = {}, sounds, ...props }) {
+export default function GlitchText({ children, as = 'div', style = {}, ...props }) {
   const [glitching, setGlitching] = useState(false)
   const [offsetX, setOffsetX] = useState(0)
   const [offsetX2, setOffsetX2] = useState(0)
@@ -12,7 +12,6 @@ export default function GlitchText({ children, as = 'div', style = {}, sounds, .
 
   const startGlitch = () => {
     setGlitching(true)
-    sounds?.glitch()
     let ticks = 0
     timerRef.current = setInterval(() => {
       setOffsetX((Math.random() - 0.5) * 6)

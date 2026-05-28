@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 import { useMagnetic } from '../hooks/useMagnetic'
 import { useState } from 'react'
 
-export default function MagneticButton({ children, style = {}, onClick, strength = 0.4, sounds, ...props }) {
+export default function MagneticButton({ children, style = {}, onClick, strength = 0.4, ...props }) {
   const { ref, sx, sy, onMove, onLeave } = useMagnetic(strength)
   const [hovered, setHovered] = useState(false)
 
@@ -15,8 +15,8 @@ export default function MagneticButton({ children, style = {}, onClick, strength
       data-hover
     >
       <motion.button
-        onClick={() => { sounds?.click(); onClick?.() }}
-        onMouseEnter={() => sounds?.hover()}
+        onClick={() => { onClick?.() }}
+        onMouseEnter={() => {}}
         onHoverStart={() => setHovered(true)}
         onHoverEnd={() => setHovered(false)}
         whileHover={{ scale: 1.05 }}

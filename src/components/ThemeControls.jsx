@@ -2,16 +2,14 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useState, useRef, useEffect } from 'react'
 import { useTheme } from '../hooks/useTheme'
 
-export default function ThemeControls({ sounds }) {
+export default function ThemeControls() {
   const { isDark, setIsDark, accent, setAccent, ACCENTS } = useTheme()
   const [open, setOpen] = useState(false)
-  const [soundOn, setSoundOn] = useState(true)
   const toggleRef = useRef(null)
   const panelRef = useRef(null)
 
   const toggle = () => {
     setOpen(o => !o)
-    sounds?.click()
   }
 
   // Focus management: when opening, focus the first control inside the panel
@@ -129,34 +127,7 @@ export default function ThemeControls({ sounds }) {
               </div>
             </div>
 
-            {/* Sound toggle */}
-            <div>
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.35em', textTransform: 'uppercase', color: 'var(--text-faint)', marginBottom: 8 }}>Sound</div>
-              <motion.button
-                data-hover
-                onClick={() => {
-                  const next = !soundOn
-                  setSoundOn(next)
-                  if (sounds) sounds.enabled.current = next
-                  if (next) sounds?.click()
-                }}
-                whileHover={{ scale: 1.03 }}
-                style={{
-                  width: '100%', padding: '8px 12px',
-                  background: soundOn ? 'rgba(0,232,255,0.08)' : 'rgba(23,22,31,0.04)',
-                  border: `1px solid ${soundOn ? 'rgba(0,232,255,0.28)' : 'var(--panel-border-strong)'}`,
-                  color: soundOn ? 'var(--cyan)' : 'var(--text-faint)',
-                  fontFamily: 'var(--font-mono)', fontSize: 10,
-                  letterSpacing: '0.2em', textTransform: 'uppercase',
-                  cursor: 'none', display: 'flex', alignItems: 'center', gap: 8,
-                }}
-                type="button"
-                aria-pressed={soundOn}
-              >
-                <span>{soundOn ? '♪' : '♩'}</span>
-                <span>{soundOn ? 'Sound On' : 'Sound Off'}</span>
-              </motion.button>
-            </div>
+            {/* Sound toggle removed */}
           </motion.div>
         )}
       </AnimatePresence>
