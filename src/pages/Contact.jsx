@@ -328,6 +328,37 @@ export default function Contact({ visible, sounds }) {
                     <span style={{ color: 'var(--text-soft)' }}>Remote worldwide</span>
                   </div>
                 </div>
+
+                {/* Social links moved here (right pane) */}
+                <motion.div
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 16 }}
+                  transition={{ delay: 0.72 }}
+                  style={{ display: 'flex', flexDirection: 'column', gap: 12, marginTop: 18 }}
+                >
+                  {LINKS.map((link, i) => {
+                    const isMailto = link.href.startsWith('mailto:')
+                    return (
+                      <motion.a
+                        key={link.label}
+                        href={link.href}
+                        data-hover
+                        target={isMailto ? undefined : '_blank'}
+                        rel={isMailto ? undefined : 'noopener noreferrer'}
+                        initial={{ opacity: 0, x: -8 }}
+                        animate={{ opacity: visible ? 1 : 0, x: visible ? 0 : -8 }}
+                        transition={{ delay: 0.74 + i * 0.06 }}
+                        whileHover={{ x: 6, color: 'var(--cyan)' }}
+                        onMouseEnter={() => sounds?.hover()}
+                        style={{ display: 'flex', alignItems: 'center', gap: 12, fontFamily: 'var(--font-mono)', fontSize: 11, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'var(--text-muted)', textDecoration: 'none', transition: 'color 0.25s', cursor: 'none', minHeight: 44 }}
+                      >
+                        <span style={{ fontSize: 16 }}>{link.icon}</span>
+                        {link.label}
+                        <span style={{ marginLeft: 'auto', fontSize: 14, opacity: 0.4 }}>→</span>
+                      </motion.a>
+                    )
+                  })}
+                </motion.div>
               </motion.div>
             )}
           </AnimatePresence>
