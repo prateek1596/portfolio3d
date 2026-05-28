@@ -285,7 +285,7 @@ function CameraRig() {
   return null
 }
 
-export default function Scene() {
+export default function Scene({ active }) {
   const { isDark } = useTheme()
   const reduceMotion = useReducedMotion()
   const sceneTheme = getSceneTheme(isDark)
@@ -344,7 +344,8 @@ export default function Scene() {
         <GlowOrb />
         <CyanOrb />
         <RingStack />
-        <HeroMesh />
+        {/* Hide the HeroMesh decorative cluster on the Contact page */}
+        {active !== 'contact' && <HeroMesh />}
       </Canvas>
     </div>
   )

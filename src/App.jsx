@@ -169,7 +169,7 @@ function SectionFallback() {
       {!loaded && <Loader onDone={() => setLoaded(true)} />}
 
       <Suspense fallback={null}>
-        <Scene />
+        <Scene active={active} />
       </Suspense>
       <PageTransition pageKey={transKey} />
 
