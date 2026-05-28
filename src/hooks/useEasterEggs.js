@@ -9,7 +9,9 @@ export const useEasterEggs = () => {
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      keysPressed.current.push(e.key.toLowerCase())
+      const rawKey = (e && (e.key || e.code)) || ''
+      const key = typeof rawKey === 'string' ? rawKey.toLowerCase() : ''
+      keysPressed.current.push(key)
 
       // Keep only last N keys
       if (keysPressed.current.length > 20) {
@@ -20,7 +22,7 @@ export const useEasterEggs = () => {
 
       // Check each Easter egg
       Object.entries(EASTER_EGGS).forEach(([name, keys]) => {
-        const eggSequence = keys.join('').toLowerCase()
+        const eggSequence = (keys.join('') || '').toLowerCase()
         if (keySequence.includes(eggSequence)) {
           if (!easterEggTriggered.current[name]) {
             easterEggTriggered.current[name] = true

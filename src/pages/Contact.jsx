@@ -17,6 +17,11 @@ const EMAILJS_TEMPLATE = 'YOUR_TEMPLATE_ID'
 const EMAILJS_KEY      = 'YOUR_PUBLIC_KEY'
 
 async function sendEmail(data) {
+  // If EmailJS config is not set, surface helpful error
+  if ([EMAILJS_SERVICE, EMAILJS_TEMPLATE, EMAILJS_KEY].some(v => !v || v.startsWith('YOUR_'))) {
+    throw new Error('EmailJS not configured. Set EMAILJS_SERVICE, EMAILJS_TEMPLATE, and EMAILJS_KEY.')
+  }
+
   // Dynamically import emailjs so it's code-split
   const emailjs = await import('@emailjs/browser')
   return emailjs.send(EMAILJS_SERVICE, EMAILJS_TEMPLATE, {
@@ -120,6 +125,7 @@ export default function Contact({ visible, sounds }) {
       sounds?.success()
       setForm({ name: '', email: '', subject: '', message: '' })
     } catch (err) {
+      console.error('Send email failed:', err)
       setStatus('error')
     }
   }
