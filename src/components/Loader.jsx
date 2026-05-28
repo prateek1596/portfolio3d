@@ -232,7 +232,7 @@ export default function Loader({ onDone }) {
         clearTimeout(skeletonDelay)
         setTimeout(() => setExitTunnel(true), 180)
         setTimeout(() => setDone(true), 640)
-        setTimeout(onDone, 820)
+        if (typeof onDone === 'function') setTimeout(onDone, 820)
       }
     }, 16)
     return () => {
