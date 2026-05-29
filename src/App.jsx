@@ -52,6 +52,12 @@ function SectionFallback() {
     } catch (err) {
       // ignore
     }
+    try {
+      const stored = window.sessionStorage.getItem('portfolio3d:page')
+      if (stored && ['home', 'work', 'about', 'blog', 'contact'].includes(stored)) return stored
+    } catch (err) {
+      // ignore
+    }
     return 'home'
   }
 
@@ -106,6 +112,11 @@ function SectionFallback() {
     if (page === active) return
     setTransKey(k => k + 1)
     setActive(page)
+    try {
+      window.sessionStorage.setItem('portfolio3d:page', page)
+    } catch (err) {
+      // ignore
+    }
     try {
       const url = new URL(window.location.href)
       url.searchParams.set('page', page)
