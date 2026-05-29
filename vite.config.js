@@ -23,11 +23,13 @@ export default defineConfig({
     sourcemap: false,
   },
   server: {
+    port: 5173,
     headers: {
       'Cache-Control': 'max-age=0',
     },
     hmr: {
       host: 'localhost',
+      port: 5173,
       protocol: 'ws',
     },
   },
