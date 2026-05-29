@@ -26,5 +26,10 @@ export default defineConfig({
     headers: {
       'Cache-Control': 'max-age=0',
     },
+    hmr: {
+      host: 'localhost',
+      port: 5173,
+      protocol: 'ws',
+    },
   },
 })
