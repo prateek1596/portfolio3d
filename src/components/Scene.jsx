@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/immutability */
 import { useRef, useMemo, useEffect, lazy, Suspense } from 'react'
 const HeroMesh = lazy(() => import('./HeroMesh'))
 const Particles = lazy(() => import('./scene-parts/Particles'))
