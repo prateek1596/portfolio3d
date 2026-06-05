@@ -13,6 +13,7 @@ export default function AnalyticsConsent() {
     }
   })
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (granted) {
       // load Umami script dynamically
@@ -28,12 +29,12 @@ export default function AnalyticsConsent() {
   }, [granted])
 
   const accept = () => {
-    try { localStorage.setItem(STORAGE_KEY, 'true') } catch (e) {}
+    try { localStorage.setItem(STORAGE_KEY, 'true') } catch {}
     setGranted(true)
   }
 
   const decline = () => {
-    try { localStorage.setItem(STORAGE_KEY, 'false') } catch (e) {}
+    try { localStorage.setItem(STORAGE_KEY, 'false') } catch {}
     setGranted(false)
   }
 
