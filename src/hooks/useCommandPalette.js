@@ -26,7 +26,7 @@ export const useCommandPalette = () => {
           try {
             window.dispatchEvent(new CustomEvent('quick:navigate', { detail: dest }))
             e.preventDefault()
-          } catch (err) {
+          } catch {
             // ignore in non-browser environments
           }
         }

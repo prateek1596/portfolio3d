@@ -36,8 +36,8 @@ export default function GitHubStats({ username = 'prateek1596' }) {
 
         setRepos(reposData.filter(r => !r.fork))
         setLoading(false)
-      } catch (err) {
-        setError(err.message)
+      } catch (e) {
+        setError(e?.message || 'Error fetching GitHub data')
         setLoading(false)
       }
     }
