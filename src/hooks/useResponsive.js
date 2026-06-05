@@ -39,23 +39,17 @@ export const useTouchDevice = () => {
 
   useEffect(() => {
     const checkTouch = () => {
-      const hasTouch =
-        () => 'ontouchstart' in window ||
-        () => navigator.maxTouchPoints > 0 ||
-        () => navigator.msMaxTouchPoints > 0
-
-      setIsTouchDevice(hasTouch())
+      const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0
+      setIsTouchDevice(hasTouch)
     }
 
+    const onTouchStart = () => setIsTouchDevice(true)
+
     checkTouch()
-    window.addEventListener('touchstart', () => {
-      setIsTouchDevice(true)
-    })
+    window.addEventListener('touchstart', onTouchStart)
 
     return () => {
-      window.removeEventListener('touchstart', () => {
-        setIsTouchDevice(true)
-      })
+      window.removeEventListener('touchstart', onTouchStart)
     }
   }, [])
 
