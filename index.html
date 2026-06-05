@@ -58,16 +58,17 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     
     <!-- Analytics (optional - add your tracking code here) -->
-    <!-- Plausible privacy-friendly analytics (only if user allows) -->
+    <!-- Umami privacy-friendly analytics (replace UMAMI_SRC and UMAMI_WEBSITE_ID) -->
     <script>
       try {
         const dnt = navigator.doNotTrack || navigator.msDoNotTrack || window.doNotTrack
         if (dnt !== '1') {
           (function () {
             const s = document.createElement('script')
+            s.async = true
             s.defer = true
-            s.setAttribute('data-domain', 'prateek.dev')
-            s.src = 'https://plausible.io/js/plausible.js'
+            s.src = 'https://UMAMI_SRC/umami.js'
+            s.setAttribute('data-website-id', 'UMAMI_WEBSITE_ID')
             document.head.appendChild(s)
           })()
         }

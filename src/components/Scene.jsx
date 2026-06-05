@@ -1,5 +1,5 @@
-import { useRef, useMemo, useEffect } from 'react'
-import HeroMesh from './HeroMesh'
+import { useRef, useMemo, useEffect, lazy, Suspense } from 'react'
+const HeroMesh = lazy(() => import('./HeroMesh'))
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { Float, MeshDistortMaterial, Sphere, MeshWobbleMaterial, Torus } from '@react-three/drei'
 import * as THREE from 'three'
@@ -345,7 +345,11 @@ export default function Scene({ active }) {
         <CyanOrb />
         <RingStack />
         {/* Hide the HeroMesh decorative cluster on the Contact page */}
-        {active !== 'contact' && <HeroMesh />}
+        {active !== 'contact' && (
+          <Suspense fallback={null}>
+            <HeroMesh />
+          </Suspense>
+        )}
       </Canvas>
     </div>
   )
