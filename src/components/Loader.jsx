@@ -81,7 +81,7 @@ function InfinityTunnel() {
     const delays = [120, 180, 150, 210, 170, 140, 230, 160, 190, 175, 205, 145, 225, 180]
     let index = 0
 
-    setActiveRings(0)
+    // initial active rings is already 0
 
     const run = () => {
       if (!mounted) return
@@ -215,16 +215,21 @@ export default function Loader({ onDone }) {
   const [done, setDone] = useState(false)
   const [showSkeleton, setShowSkeleton] = useState(false)
   const [exitTunnel, setExitTunnel] = useState(false)
-  const [reducedMotion, setReducedMotion] = useState(false)
+  const [reducedMotion, setReducedMotion] = useState(() => {
+    try {
+      return typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    } catch {
+      return false
+    }
+  })
 
   useEffect(() => {
     try {
       const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
-      setReducedMotion(mq.matches)
       const handler = (e) => setReducedMotion(e.matches)
       mq.addEventListener?.('change', handler)
       return () => mq.removeEventListener?.('change', handler)
-    } catch (err) {
+    } catch {
       return undefined
     }
   }, [])
