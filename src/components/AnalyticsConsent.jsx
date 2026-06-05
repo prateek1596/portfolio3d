@@ -8,7 +8,7 @@ export default function AnalyticsConsent() {
   const [granted, setGranted] = useState(() => {
     try {
       return localStorage.getItem(STORAGE_KEY) === 'true'
-    } catch (e) {
+    } catch {
       return false
     }
   })

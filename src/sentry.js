@@ -16,10 +16,9 @@ if (dsn) {
         release: import.meta.env.VITE_SENTRY_RELEASE,
         environment: import.meta.env.MODE,
       })
-    } catch (e) {
+    } catch {
       // If module is not installed, fail gracefully.
       // Consumers can still import this file; Sentry will simply be null.
-      // console.debug('Sentry not initialized:', e)
     }
   })()
 }
