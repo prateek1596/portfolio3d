@@ -51,13 +51,13 @@ function SectionFallback() {
       const p = params.get('page')
       if (p && ['home', 'work', 'about', 'blog', 'contact'].includes(p)) return p
     } catch (err) {
-      // ignore
+        // ignore
     }
     try {
       const stored = window.sessionStorage.getItem('portfolio3d:page')
       if (stored && ['home', 'work', 'about', 'blog', 'contact'].includes(stored)) return stored
     } catch (err) {
-      // ignore
+        // ignore
     }
     return 'home'
   }
@@ -116,14 +116,14 @@ function SectionFallback() {
     try {
       window.sessionStorage.setItem('portfolio3d:page', page)
     } catch (err) {
-      // ignore
+        // ignore
     }
     try {
       const url = new URL(window.location.href)
       url.searchParams.set('page', page)
       window.history.replaceState({}, '', url.toString())
     } catch (err) {
-      // ignore in non-browser environments
+        // ignore in non-browser environments
     }
   }, [active])
 
