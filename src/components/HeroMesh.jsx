@@ -94,15 +94,21 @@ export default function HeroMesh() {
   const groupRef = useRef()
   const rotation = useDragControls()
 
-  const [reducedMotion, setReducedMotion] = useState(false)
+  const [reducedMotion, setReducedMotion] = useState(() => {
+    try {
+      return typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    } catch {
+      return false
+    }
+  })
+
   useEffect(() => {
     try {
       const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
-      setReducedMotion(mq.matches)
       const handler = (e) => setReducedMotion(e.matches)
       mq.addEventListener?.('change', handler)
       return () => mq.removeEventListener?.('change', handler)
-    } catch (err) {
+    } catch {
       return undefined
     }
   }, [])
