@@ -13,6 +13,7 @@ import CommandPalette from './components/CommandPalette'
 import EasterEggs from './components/EasterEggs'
 import Home from './pages/Home'
 import { injectStructuredData, updateMetaTags, getPageMetaTags } from './utils/seo'
+import AnalyticsConsent from './components/AnalyticsConsent'
 
 const loadScene = () => import('./components/Scene')
 const loadWork = () => import('./pages/Work')
@@ -231,6 +232,7 @@ function SectionFallback() {
         }
       }} />
       <Cursor />
+      <AnalyticsConsent />
     </>
   )
 }

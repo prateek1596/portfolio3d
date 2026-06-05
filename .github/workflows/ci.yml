@@ -33,6 +33,18 @@ jobs:
       - name: Wait for server
         run: npx wait-on http://localhost:5173
 
+      - name: Install test deps
+        run: npm ci
+
+      - name: Run unit tests
+        run: npm run test:ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Run Playwright e2e
+        run: npm run test:e2e
+
       - name: Run Lighthouse
         run: |
           npx lighthouse http://localhost:5173 --quiet --chrome-flags="--no-sandbox --headless" --only-categories=performance,accessibility,seo,best-practices --output html --output-path ./lighthouse-report.html || true

@@ -1,5 +1,9 @@
 import { useRef, useMemo, useEffect, lazy, Suspense } from 'react'
 const HeroMesh = lazy(() => import('./HeroMesh'))
+const Particles = lazy(() => import('./scene-parts/Particles'))
+const GlowOrb = lazy(() => import('./scene-parts/GlowOrb'))
+const CyanOrb = lazy(() => import('./scene-parts/CyanOrb'))
+const RingStack = lazy(() => import('./scene-parts/RingStack'))
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { Float, MeshDistortMaterial, Sphere, MeshWobbleMaterial, Torus } from '@react-three/drei'
 import * as THREE from 'three'
@@ -101,42 +105,7 @@ function Grid() {
 }
 
 /* ─── Floating particles ─── */
-function Particles() {
-  const mesh = useRef()
-  const { isDark } = useTheme()
-  const sceneTheme = getSceneTheme(isDark)
-  const COUNT = sceneTheme.particleCount
-  const { pos, sp } = useMemo(() => {
-    const pos = new Float32Array(COUNT * 3)
-    const sp = new Float32Array(COUNT)
-    for (let i = 0; i < COUNT; i++) {
-      pos[i * 3]     = (Math.random() - 0.5) * 45
-      pos[i * 3 + 1] = (Math.random() - 0.5) * 26
-      pos[i * 3 + 2] = (Math.random() - 0.5) * 22
-      sp[i] = Math.random() * 0.45 + 0.05
-    }
-    return { pos, sp }
-  }, [])
-  useFrame(({ clock }) => {
-    if (!mesh.current) return
-    const arr = mesh.current.geometry.attributes.position.array
-    const t = clock.elapsedTime
-    for (let i = 0; i < COUNT; i++) {
-      arr[i * 3 + 1] += sp[i] * 0.007
-      if (arr[i * 3 + 1] > 13) arr[i * 3 + 1] = -13
-      arr[i * 3] += Math.sin(t * sp[i] * 0.4 + i) * 0.0007
-    }
-    mesh.current.geometry.attributes.position.needsUpdate = true
-  })
-  return (
-    <points ref={mesh}>
-      <bufferGeometry>
-        <bufferAttribute attach="attributes-position" count={COUNT} array={pos} itemSize={3} />
-      </bufferGeometry>
-      <pointsMaterial size={0.032} color={sceneTheme.particle} transparent opacity={sceneTheme.particleOpacity} sizeAttenuation />
-    </points>
-  )
-}
+
 
 /* ─── Wireframe torus ─── */
 function WireTorus() {
@@ -198,67 +167,7 @@ function WireOcta() {
   )
 }
 
-/* ─── Distorted glowing orb ─── */
-function GlowOrb() {
-  const m = useRef()
-  const { isDark } = useTheme()
-  const sceneTheme = getSceneTheme(isDark)
-  useFrame(({ clock }) => {
-    if (m.current?.material) {
-      m.current.material.distort = 0.28 + Math.sin(clock.elapsedTime * 0.48) * 0.14
-    }
-  })
-  return (
-    <Float speed={1.4} rotationIntensity={0.25} floatIntensity={0.7}>
-      <Sphere ref={m} args={[0.95, 64, 64]} position={[-4.5, 2.2, -6.5]}>
-        <MeshDistortMaterial color={sceneTheme.gold} transparent opacity={sceneTheme.goldOpacity * 0.45} distort={0.3} speed={2} />
-      </Sphere>
-    </Float>
-  )
-}
 
-/* ─── Second orb (cyan) ─── */
-function CyanOrb() {
-  const m = useRef()
-  const { isDark } = useTheme()
-  const sceneTheme = getSceneTheme(isDark)
-  useFrame(({ clock }) => {
-    if (m.current?.material) {
-      m.current.material.factor = 0.4 + Math.sin(clock.elapsedTime * 0.6) * 0.2
-    }
-  })
-  return (
-    <Float speed={1.1} rotationIntensity={0.4} floatIntensity={0.9}>
-      <Sphere ref={m} args={[0.55, 32, 32]} position={[6, -1.5, -5]}>
-        <MeshWobbleMaterial color={sceneTheme.particle} transparent opacity={sceneTheme.cyanOpacity} factor={0.4} speed={2} />
-      </Sphere>
-    </Float>
-  )
-}
-
-/* ─── Ring stack ─── */
-function RingStack() {
-  const group = useRef()
-  const { isDark } = useTheme()
-  const sceneTheme = getSceneTheme(isDark)
-  useFrame(({ clock }) => {
-    if (!group.current) return
-    const t = clock.elapsedTime
-    group.current.rotation.y = t * 0.08
-    group.current.rotation.x = Math.sin(t * 0.3) * 0.15
-    group.current.position.y = Math.sin(t * 0.25) * 0.4 + 1
-  })
-  return (
-    <group ref={group} position={[-2, 0, -9]}>
-      {[1.8, 1.4, 1.0].map((r, i) => (
-        <mesh key={i} rotation={[Math.PI / 2 + i * 0.3, 0, i * 0.5]}>
-          <torusGeometry args={[r, 0.018, 12, 80]} />
-          <meshBasicMaterial color={sceneTheme.gold} transparent opacity={sceneTheme.goldOpacity * (0.5 - i * 0.1)} />
-        </mesh>
-      ))}
-    </group>
-  )
-}
 
 /* ─── Mouse-driven camera rig ─── */
 function CameraRig() {
@@ -337,13 +246,13 @@ export default function Scene({ active }) {
         <pointLight position={[-10, -5, 5]} intensity={sceneTheme.accentLight} color={sceneTheme.particle} />
         <pointLight position={[0, 8, -8]} intensity={sceneTheme.redLight} color="#ff2d55" />
         <Grid />
-        <Particles />
+        <Suspense fallback={null}><Particles /></Suspense>
         <WireTorus />
         <WireIcosa />
         <WireOcta />
-        <GlowOrb />
-        <CyanOrb />
-        <RingStack />
+        <Suspense fallback={null}><GlowOrb /></Suspense>
+        <Suspense fallback={null}><CyanOrb /></Suspense>
+        <Suspense fallback={null}><RingStack /></Suspense>
         {/* Hide the HeroMesh decorative cluster on the Contact page */}
         {active !== 'contact' && (
           <Suspense fallback={null}>
