@@ -27,10 +27,7 @@
     "three": "^0.184.0",
     "use-sound": "^5.0.0"
   },
-  "optionalDependencies": {
-    "@sentry/react": "^7.38.0",
-    "@sentry/tracing": "^7.38.0"
-  },
+  
   "devDependencies": {
     "@playwright/test": "^1.40.0",
     "@testing-library/jest-dom": "^6.0.0",

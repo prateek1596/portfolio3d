@@ -1,3 +1,4 @@
+/* eslint-env serviceworker */
 // Enhanced Service Worker: cache-first for assets, stale-while-revalidate for API/images,
 // and a navigation fallback to an offline page.
 const CACHE_VERSION = 2
