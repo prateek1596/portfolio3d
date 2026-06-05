@@ -115,8 +115,8 @@ function SectionFallback() {
     setActive(page)
     try {
       window.sessionStorage.setItem('portfolio3d:page', page)
-    } catch (err) {
-        // ignore
+    } catch {
+      // ignore
     }
     try {
       const url = new URL(window.location.href)
